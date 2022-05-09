@@ -1,16 +1,16 @@
-import classNames from 'classnames';
+import classNames from 'classnames'
 import { SearchIcon } from '@heroicons/react/outline'
 
 export default function TopSearch({}) {
-    const handleChange = () => {
-        const target = e.target;
-        const value = target.value;
+    const handleChange = (e: { target: any }) => {
+        const target = e.target
+        const value = target.value
     }
 
     return (
-        <div className="flex border-2 border-gradient-left rounded">
+        <div className='flex border-2 border-gradient-left rounded'>
             <div className='flex-grow'>
-                <input 
+                <input
                     type='text'
                     name='top-search'
                     placeholder='Search Top Talent'
@@ -19,10 +19,8 @@ export default function TopSearch({}) {
                 />
             </div>
             <div className='flex bg-gradient-left px-6 items-center'>
-                <SearchIcon 
-                    className='w-6 h-6 text-white' 
-                />
+                <SearchIcon className='w-6 h-6 text-white' />
             </div>
         </div>
-    );
+    )
 }

@@ -1,5 +1,6 @@
+
 function classNames(...classes) {
-    return classes.filter(Boolean).join(' ');
+    return classes.filter(Boolean).join(' ')
 }
 
 export default function FlatButton({
@@ -7,9 +8,9 @@ export default function FlatButton({
     as = `span`,
     type = null,
     className = null,
-    children
+    children,
 }) {
-    const Component = `${as}`;
+    const Component = `${as}` as any
     return (
         <Component
             data-attr={id}
@@ -17,9 +18,8 @@ export default function FlatButton({
             className={classNames(
                 className ? className : '',
                 'px-4 p-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
-            )}
-        >
+            )}>
             {children}
         </Component>
-    );
+    )
 }
