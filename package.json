@@ -1,6 +1,9 @@
 {
   "name": "atcampus-smidig",
   "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev -p 9001",
     "build": "next build",
@@ -37,10 +40,7 @@
       "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
       "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
       "post-applypatch": "echo \"[Husky] post-applypatch\"",
-      "pre-commit": "echo \"[Husky] post-applypatch\"",
-      "version": "1.0.0",
-      "main": "index.js",
-      "license": "MIT"
+      "pre-commit": "echo \"[Husky] post-applypatch\""
     }
   }
 }
