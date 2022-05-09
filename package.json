@@ -9,7 +9,7 @@
     "p:check": "prettier --check **/*.{js,jsx,ts,tsx}",
     "p:format": "prettier --write **/*.{js,jsx,ts,tsx}",
     "verify": "yarn p:check && tsc --noEmit",
-    "pre-commit": "yarn verify"
+    "pre-commit": "husky install"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
@@ -37,7 +37,7 @@
       "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
       "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
       "post-applypatch": "echo \"[Husky] post-applypatch\"",
-      "pre-commit": "echo \"[Husky] pre-commit\"",
+      "pre-commit": "yarn verify",
       "version": "1.0.0",
       "main": "index.js",
       "license": "MIT"
