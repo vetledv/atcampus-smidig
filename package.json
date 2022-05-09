@@ -9,7 +9,7 @@
     "p:check": "prettier --check **/*.{js,jsx,ts,tsx}",
     "p:format": "prettier --write **/*.{js,jsx,ts,tsx}",
     "verify": "yarn p:check && tsc --noEmit",
-    "pre-commit": "husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
