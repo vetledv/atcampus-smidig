@@ -37,7 +37,7 @@
       "applypatch-msg": "echo \"[Husky] applypatch-msg\"",
       "pre-applypatch": "echo \"[Husky] pre-applypatch\"",
       "post-applypatch": "echo \"[Husky] post-applypatch\"",
-      "pre-commit": "yarn verify",
+      "pre-commit": "echo \"[Husky] post-applypatch\"",
       "version": "1.0.0",
       "main": "index.js",
       "license": "MIT"
