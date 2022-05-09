@@ -1,0 +1,31 @@
+{
+  "name": "atcampus-components",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 9001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@heroicons/react": "^1.0.6",
+    "classnames": "^2.3.1",
+    "next": "^12.1.6",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "@types/react": "^18.0.9",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.15.0",
+    "eslint-config-next": "^12.1.6",
+    "postcss": "^8.4.13",
+    "tailwindcss": "^3.0.24",
+    "typescript": "^4.6.4",
+    "yarn-upgrade-all": "^0.7.1"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
