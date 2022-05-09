@@ -1,9 +1,9 @@
-const plugin = require('tailwindcss/plugin');
+const plugin = require('tailwindcss/plugin')
 module.exports = {
     mode: 'jit',
     content: [
         './pages/**/*.{js,ts,jsx,tsx}',
-        './components/**/*.{js,ts,jsx,tsx}'
+        './components/**/*.{js,ts,jsx,tsx}',
     ],
     theme: {
         extend: {
@@ -22,11 +22,11 @@ module.exports = {
                 'gradient-left': '#9F83F1',
                 'gradient-right': '#7C7FCA',
                 'icon-yellow': '#FFD66B',
-                'icon-red': '#FFA1A1'
+                'icon-red': '#FFA1A1',
             },
             borderRadius: {
-                standard: '7px'
-            }
+                standard: '7px',
+            },
         },
         fontSize: {
             xs: '12px',
@@ -34,7 +34,7 @@ module.exports = {
             md: '16px',
             lg: '18px',
             xl: '24px',
-            '2xl': '36px'
+            '2xl': '36px',
         },
         fontFamily: {
             sans: ['ui-sans', 'system-ui'],
@@ -44,7 +44,7 @@ module.exports = {
             bold: ['"Be Vietnam Bold"'],
             regular: ['"Be Vietnam"'],
             medium: ['"Be Vietnam Medium"'],
-            form: ['Helvetica', 'Arial']
+            form: ['Helvetica', 'Arial'],
         },
         screens: {
             xs: '400px',
@@ -52,24 +52,24 @@ module.exports = {
             md: '768px',
             lg: '1024px',
             xl: '1280px',
-            '2xl': '1536px'
-        }
+            '2xl': '1536px',
+        },
     },
     variants: {
-        extend: {}
+        extend: {},
     },
     plugins: [
         plugin(function ({ addUtilities }) {
             const newUtilities = {
                 '.menu-gradient': {
                     background:
-                        'linear-gradient(90.25deg, rgba(159, 131, 241, 0.15) 0.13%, rgba(124, 127, 202, 0.15) 72.19%)'
+                        'linear-gradient(90.25deg, rgba(159, 131, 241, 0.15) 0.13%, rgba(124, 127, 202, 0.15) 72.19%)',
                 },
                 '.input-shadow': {
-                    'box-shadow': '0px 1px 10px rgba(128, 113, 218, 0.3)'
-                }
-            };
-            addUtilities(newUtilities);
-        })
-    ]
-};
+                    'box-shadow': '0px 1px 10px rgba(128, 113, 218, 0.3)',
+                },
+            }
+            addUtilities(newUtilities)
+        }),
+    ],
+}
