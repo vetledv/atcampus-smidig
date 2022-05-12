@@ -5,7 +5,8 @@ import GradientButton from 'components/GradientButton'
 import TextInputField from 'components/TextInputField'
 import TopSearch from '../components/TopSearch'
 import Head from 'next/head'
-import Tabs from '../components/Tabs'
+/*import Tabs from '../components/Tabs'*/
+import Tabs from '../components/General/Tabs'
 
 export default function HomePage() {
     return (
