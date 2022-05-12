@@ -18,7 +18,7 @@ export default function HomePage() {
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
                 <TopSearch />
-                <Tabs />
+                <Tabs tabTextOne={"Home"} tabTextTwo={"Chat"} tabTextThree={"Calender"} />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
