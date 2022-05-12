@@ -1,42 +1,41 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-export default function Tabs({tabTextOne, tabTextTwo, tabTextThree}) {
+interface Tabs {
+    tabTextOne: string
+    tabTextTwo: string
+    tabTextThree: string
+    underline: boolean
+}
+
+const Tabs = (props: Tabs) => {
     const [color, setColor] = useState(0)
- 
-    const selectedTab = 'border-b-4 border-purple-1 text-dark-1'
 
-    const switchColor = (idx: React.SetStateAction<number>) => {
+    const selectedTab = 'bg-purple-1 text-white rounded'
+    const selectedTabUnderline = 'border-b-4 border-purple-1 text-dark-1'
+
+    const switchColor = (idx: number) => {
         setColor(idx)
     }
+
+    const tab = (i: number, text: string) => {
+        const tabStyle = props.underline ? selectedTabUnderline : selectedTab
+        return (
+            <div
+                onClick={() => switchColor(i)}
+                className={`${
+                    color === i ? tabStyle : 'bg-gray-200 text-dark-3'
+                } py-2 px-6 font-semibold text-center w-full cursor-pointer`}>
+                {text}
+            </div>
+        )
+    }
+
     return (
-        <div className='flex bg-gray-200 my-3 justify-between text-md px-6'>
-            <div>
-                <div
-                    onClick={() => switchColor(0)}
-                    className={`${
-                        color === 0 ? selectedTab : 'text-dark-3'
-                    } py-2 px-6 font-semibold text-center cursor-pointer`}>
-                    {tabTextOne}
-                </div>
-            </div>
-            <div>
-                <div
-                    onClick={() => switchColor(1)}
-                    className={`${
-                        color === 1 ? selectedTab : 'text-dark-3'
-                    } py-2 px-6 font-semibold text-center cursor-pointer`}>
-                    {tabTextTwo}
-                </div>
-            </div>
-            <div>
-                <div
-                    onClick={() => switchColor(2)}
-                    className={`${
-                        color === 2 ? selectedTab : 'text-dark-3'
-                    } py-2 px-6 font-semibold text-center cursor-pointer`}>
-                    {tabTextThree}
-                </div>
-            </div>
+        <div className='flex bg-gray-200 my-3 justify-between text-md'>
+            {tab(0, props.tabTextOne)}
+            {tab(1, props.tabTextTwo)}
+            {tab(2, props.tabTextThree)}
         </div>
     )
 }
+export default Tabs

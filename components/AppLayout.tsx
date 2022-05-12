@@ -1,4 +1,4 @@
-import Menu from 'components/Menu'
+import Menu from 'components/navigation/Menu'
 
 const AppLayout = ({ children }) => {
     return (

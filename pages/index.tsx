@@ -1,12 +1,11 @@
 import { MailIcon } from '@heroicons/react/outline'
 import AppLayout from 'components/AppLayout'
-import FlatButton from 'components/FlatButton'
-import GradientButton from 'components/GradientButton'
-import TextInputField from 'components/TextInputField'
-import TopSearch from '../components/TopSearch'
+import FlatButton from 'components/buttons/FlatButton'
+import TextInputField from 'components/general/TextInputField'
+import TopSearch from 'components/general/TopSearch'
+import GradientButton from 'components/buttons/GradientButton'
 import Head from 'next/head'
-/*import Tabs from '../components/Tabs'*/
-import Tabs from '../components/General/Tabs'
+import Tabs from '../components/general/Tabs'
 
 export default function HomePage() {
     return (
@@ -18,7 +17,12 @@ export default function HomePage() {
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
                 <TopSearch />
-                <Tabs tabTextOne={"Home"} tabTextTwo={"Chat"} tabTextThree={"Calender"} />
+                <Tabs
+                    tabTextOne={'Home'}
+                    tabTextTwo={'Chat'}
+                    tabTextThree={'Calender'}
+                    underline={false}
+                />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
