@@ -15,13 +15,13 @@ export default function TextInputField({
     className,
 }) {
     let classes = classNames(
-        'text-dark-1 font-semibold bg-white text-md ring-gradient-left outline-none block w-full',
+        'text-dark-1 font-semibold bg-white text-md ring-gradient-left outline-none block w-full ',
         icon ? 'pl-12' : '',
         className
     )
 
     return (
-        <div className=''>
+        <div className='bg-white'>
             {label && name && (
                 <label
                     htmlFor={name}

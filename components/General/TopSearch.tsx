@@ -11,7 +11,7 @@ export default function TopSearch({}) {
     return (
         <div
             className={
-                'flex border-2 rounded border-dark-3 focus-within:border-gradient-left'
+                'flex border-2 rounded border-dark-3 focus-within:border-gradient-left bg-white input-shadow'
             }>
             <div className='flex px-6 items-center'>
                 <SearchIcon className='w-6 h-6 text-dark-3' />

@@ -12,11 +12,27 @@ import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Tabs from '../components/general/Tabs'
+import DropDown from '../components/general/DropDown'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
     const router = useRouter()
     console.log(session)
+
+    const items = [
+        {
+            id: 1,
+            value: 'Høyskolen Kristiania',
+        },
+        {
+            id: 2,
+            value: 'Oslo Met',
+        },
+        {
+            id: 3,
+            value: 'Handelshøyskolen BI',
+        },
+    ]
 
     if (status === 'loading') {
         return <>Loading...</>
@@ -50,6 +66,10 @@ const HomePage: NextPage = () => {
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
                 <TopSearch />
+                <div className='mt-8 pb-12'>
+                    <h2 className='text-lg lg:text-xl'>Drop Down</h2>
+                    <DropDown items={items} dropDownTitle={'Instutisjoner'} />
+                </div>
                 <Tabs
                     tabTextOne={'Home'}
                     tabTextTwo={'Chat'}

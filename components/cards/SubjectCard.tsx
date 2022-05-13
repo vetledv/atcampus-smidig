@@ -11,7 +11,7 @@ const SubjectCard = ({
 }) => {
     return (
         <>
-            <div className='flex p-3 input-shadow w-96 items-center hover:text-purple-1 cursor-pointer'>
+            <div className='flex p-3 input-shadow w-96 items-center cursor-default'>
                 <img src={groupImage} className={'w-32 h-32'} />
                 <div className={'px-6'}>
                     <div className='p-1'>
