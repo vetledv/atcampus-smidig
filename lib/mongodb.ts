@@ -1,28 +1,31 @@
 import dotenv from 'dotenv'
 import mongoose, { Mongoose } from 'mongoose'
-import { Db } from 'mongoose/node_modules/mongodb'
+import { Db, MongoClient } from 'mongoose/node_modules/mongodb'
 
 dotenv.config()
 const MONGODB_URL = process.env.MONGODB_URL
-const MONGODB_NAME = process.env.MONGODB_NAME
 
-const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}
 if (!MONGODB_URL) {
     throw new Error('MONGODB_URL is not defined')
 }
+
 let cachedClient: Mongoose = null
 let cachedDb: Db = null
+let cachedMongoClient: MongoClient = null
 
 export const connectToDB = async () => {
-    if (cachedClient && cachedDb) {
-        return { client: cachedClient, db: cachedDb }
+    if (cachedClient && cachedDb && cachedMongoClient) {
+        return {
+            client: cachedClient,
+            db: cachedDb,
+            mongoClient: cachedMongoClient,
+        }
     }
-    const client: Mongoose = await mongoose.connect(MONGODB_URL)
-    const db: Db = client.connection.db
-    cachedClient = client
-    cachedDb = db
-    return { client, db }
+
+    await mongoose.connect(MONGODB_URL)
+
+    const client = mongoose
+    const db = client.connection.db
+    const mongoClient = client.connection.getClient()
+    return { client, db, mongoClient }
 }

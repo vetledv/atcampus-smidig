@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@next-auth/mongodb-adapter": "^1.0.3",
     "classnames": "^2.3.1",
     "dotenv": "^16.0.1",
     "mongodb": "^4.6.0",
