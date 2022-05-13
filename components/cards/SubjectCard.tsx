@@ -1,6 +1,6 @@
 import FlatButton from 'components/buttons/FlatButton'
+import { GroupMembers } from 'components/general/Lib'
 import React from 'react'
-import { UserGroupIcon } from '@heroicons/react/outline'
 
 const SubjectCard = ({
     groupImage,
@@ -11,7 +11,7 @@ const SubjectCard = ({
 }) => {
     return (
         <>
-            <div className='flex p-3 input-shadow w-96 items-center cursor-default bg-white rounded-standard'>
+            <div className='flex p-3 input-shadow w-96 items-center cursor-default bg-white rounded-standard text-dark-1'>
                 <img src={groupImage} className={'w-32 h-32'} />
                 <div className={'px-6'}>
                     <div className='p-1'>
@@ -21,12 +21,11 @@ const SubjectCard = ({
                         <div className='text-sm'>{subjectCode}</div>
                     </div>
                     <div className='py-1'>
-                        <div className={'py-1 flex'}>
-                            <UserGroupIcon className={'w-6 h-6 px-1'} />
-                            <p>
-                                {members}/{totalMembers}
-                            </p>
-                        </div>
+                        <GroupMembers
+                            members={members}
+                            totalMembers={totalMembers}
+                            color={'dark-1'}
+                        />
                         <div className={'py-1'}>
                             <FlatButton children={'Join Group'} />
                         </div>

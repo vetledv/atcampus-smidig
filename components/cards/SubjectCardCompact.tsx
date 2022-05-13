@@ -11,7 +11,7 @@ const SubjectCardCompact = ({
         <>
             {' '}
             <Link href={`/${groupId}`}>
-                <div className='flex p-3 input-shadow w-96 items-center bg-white rounded-standard'>
+                <div className='flex p-3 input-shadow w-96 items-center bg-white rounded-standard text-dark-1'>
                     <img src={groupImage} className={'w-16 h-16'} />
                     <div className={'px-6'}>
                         <div className='p-1'>

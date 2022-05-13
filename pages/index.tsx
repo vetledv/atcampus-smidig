@@ -13,6 +13,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Tabs from '../components/general/Tabs'
 import DropDown from 'components/general/DropDown'
+import GroupHeaderMobile from 'components/groups/GroupHeaderMobile'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -178,6 +179,11 @@ const HomePage: NextPage = () => {
                         members={7}
                         totalMembers={12}
                     />
+                </div>
+
+                <div className='mt-8'>
+                    <h2 className='text-lg lg:text-xl'>GroupHeader</h2>
+                    <GroupHeaderMobile />
                 </div>
 
                 <div className='mt-4'>
