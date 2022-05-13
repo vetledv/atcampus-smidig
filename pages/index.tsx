@@ -183,7 +183,10 @@ const HomePage: NextPage = () => {
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>GroupHeader</h2>
-                    <GroupHeaderMobile />
+                    <GroupHeaderMobile
+                        groupName={'Prog n Chill'}
+                        activeMembers={3}
+                    />
                 </div>
 
                 <div className='mt-4'>
