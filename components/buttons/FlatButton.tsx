@@ -8,15 +8,17 @@ export default function FlatButton({
     type = null,
     className = null,
     children,
+    onClick = null,
 }) {
     const Component = `${as}` as any
     return (
         <Component
             data-attr={id}
             type={type}
+            onClick={onClick}
             className={classNames(
                 className ? className : '',
-                'px-4 p-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70 '
+                'px-4 py-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70 cursor-pointer'
             )}>
             {children}
         </Component>

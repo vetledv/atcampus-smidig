@@ -6,14 +6,44 @@ import TopSearch from 'components/general/TopSearch'
 import GradientButton from 'components/buttons/GradientButton'
 import Head from 'next/head'
 import Tabs from '../components/general/Tabs'
+import { NextPage } from 'next'
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-export default function HomePage() {
+const HomePage: NextPage = () => {
+    const { data: session, status } = useSession()
+    const router = useRouter()
+    console.log(session)
+
+    if (status === 'loading') {
+        return <>Loading...</>
+    }
     return (
         <AppLayout>
             <Head>
                 <title>atcampus components</title>
             </Head>
             <main className='m-4'>
+                {status === 'unauthenticated' && (
+                    <>
+                        <div>Not signed in</div>
+                        <FlatButton
+                            as={'button'}
+                            onClick={() => router.push('/auth/login')}>
+                            Login
+                        </FlatButton>
+                    </>
+                )}
+                {status === 'authenticated' && (
+                    <>
+                        <div>Signed in as {session.user.email}</div>
+                        <FlatButton as={'button'} onClick={() => signOut()}>
+                            Sign out
+                        </FlatButton>
+                    </>
+                )}
+
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
                 <TopSearch />
@@ -105,3 +135,4 @@ export default function HomePage() {
         </AppLayout>
     )
 }
+export default HomePage
