@@ -2,6 +2,8 @@ import { MailIcon } from '@heroicons/react/outline'
 import AppLayout from 'components/AppLayout'
 import FlatButton from 'components/buttons/FlatButton'
 import GradientButton from 'components/buttons/GradientButton'
+import SubjectCard from 'components/cards/SubjectCard'
+import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 import TextInputField from 'components/general/TextInputField'
 import TopSearch from 'components/general/TopSearch'
 import Header from 'components/navigation/Header'
@@ -24,7 +26,7 @@ const HomePage: NextPage = () => {
             <Head>
                 <title>atcampus components</title>
             </Head>
-            <main className='m-4'>
+            <main className='m-4 w-full'>
                 <Header />
                 {status === 'unauthenticated' && (
                     <>
@@ -126,6 +128,29 @@ const HomePage: NextPage = () => {
                         id={undefined}
                         value={undefined}
                         className={undefined}
+                    />
+                </div>
+
+                <div className='mt-8'>
+                    <h2 className='text-lg lg:text-xl'>Card</h2>
+                    <SubjectCardCompact
+                        groupId={'fdskfsjd343q'}
+                        groupImage={
+                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                        }
+                        groupName={'Matematikk'}
+                        subjectCode={'PG2341'}
+                    />
+                    <div className='py-3'></div>
+
+                    <SubjectCard
+                        groupImage={
+                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                        }
+                        groupName={'Matematikk'}
+                        subjectCode={'PG2341'}
+                        members={7}
+                        totalMembers={12}
                     />
                 </div>
 
