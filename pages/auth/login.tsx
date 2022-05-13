@@ -1,9 +1,19 @@
 import FlatButton from 'components/buttons/FlatButton'
 import { GetServerSideProps } from 'next'
-import { getProviders, signIn } from 'next-auth/react'
+import { getProviders, signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const Login = ({ providers }: { providers: GetServerSideProps }) => {
+    const { data: session } = useSession()
+    const router = useRouter()
+    if (session) {
+        // Redirect to home page if user is already logged in
+        if (session.user) {
+            router.push('/')
+        }
+    }
+
     return (
         <div className='h-screen w-screen p-4'>
             <div className='w-full max-w-prose text-left sm:mx-auto sm:w-full '>
