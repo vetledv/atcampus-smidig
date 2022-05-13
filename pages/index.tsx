@@ -56,6 +56,12 @@ const HomePage: NextPage = () => {
                     tabTextThree={'Calender'}
                     underline={false}
                 />
+                <Tabs
+                    tabTextOne={'Home'}
+                    tabTextTwo={'Chat'}
+                    tabTextThree={'Calender'}
+                    underline={true}
+                />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
