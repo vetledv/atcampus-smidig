@@ -16,7 +16,7 @@ export default function FlatButton({
             type={type}
             className={classNames(
                 className ? className : '',
-                'px-4 p-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70 '
+                'px-4 p-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:bg-purple-2 hover:shadow-purple-2/50 active:bg-purple-1/70 '
             )}>
             {children}
         </Component>
