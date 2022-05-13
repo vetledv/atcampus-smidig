@@ -1,15 +1,14 @@
 import { MailIcon } from '@heroicons/react/outline'
 import AppLayout from 'components/AppLayout'
 import FlatButton from 'components/buttons/FlatButton'
+import GradientButton from 'components/buttons/GradientButton'
 import TextInputField from 'components/general/TextInputField'
 import TopSearch from 'components/general/TopSearch'
-import GradientButton from 'components/buttons/GradientButton'
-import Head from 'next/head'
-import Tabs from '../components/general/Tabs'
 import { NextPage } from 'next'
 import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Tabs from '../components/general/Tabs'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
