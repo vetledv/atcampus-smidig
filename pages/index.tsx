@@ -12,7 +12,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Tabs from '../components/general/Tabs'
-import DropDown from '../components/general/DropDown'
+import DropDown from 'components/general/DropDown'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()

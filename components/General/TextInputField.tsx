@@ -21,7 +21,7 @@ export default function TextInputField({
     )
 
     return (
-        <div className='bg-white'>
+        <div>
             {label && name && (
                 <label
                     htmlFor={name}
@@ -30,7 +30,7 @@ export default function TextInputField({
                 </label>
             )}
 
-            <div className='p-2 flex input-shadow focus:input-shadow border-2 border-transparent focus-within:border-purple-1 rounded-standard'>
+            <div className='p-2 flex input-shadow focus:input-shadow border-2 border-transparent focus-within:border-purple-1 rounded-standard bg-white'>
                 <div className='relative flex items-stretch flex-grow focus-within:z-10'>
                     <div className='absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none'>
                         {icon}
