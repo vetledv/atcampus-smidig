@@ -1,8 +1,13 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import dotenv from 'dotenv'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
+import { MongoClient } from 'mongodb'
 
 dotenv.config()
+
+const client = new MongoClient(process.env.MONGODB_AUTH_URL)
+const clientPromise = client.connect()
 
 export default NextAuth({
     secret: process.env.NEXT_AUTH_SECRET,
@@ -11,6 +16,7 @@ export default NextAuth({
         maxAge: 24 * 60 * 60 * 1000, // 1 day
         updateAge: 30 * 60 * 1000, // 30 minutes
     },
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,

@@ -7,6 +7,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { db, client } = await connectToDB()
+
     const collection = await db.collection('atcampus-groups').find({}).toArray()
     res.json(collection)
 }
