@@ -1,7 +1,14 @@
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import { withAuth } from 'next-auth/middleware'
 
 export async function middleware(req: NextRequest, res: NextResponse) {
-    //redirect any path to login if not authenticated
+    const secret_key = process.env.NEXT_AUTH_SECRET
+
+    const url = req.nextUrl.clone()
+    if (url.pathname === '/') {
+        const session = await getToken({ req, secret: secret_key })
+        url.pathname = 'auth/login'
+        if (!session) return NextResponse.redirect(url)
+    }
+    return NextResponse.next()
 }
