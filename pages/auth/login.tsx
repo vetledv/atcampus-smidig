@@ -7,8 +7,11 @@ import { useRouter } from 'next/router'
 const Login = ({ providers }: { providers: GetServerSideProps }) => {
     const { data: session } = useSession()
     const router = useRouter()
-    if (session.user) {
-        router.push('/')
+    if (session) {
+        // Redirect to home page if user is already logged in
+        if (session.user) {
+            router.push('/')
+        }
     }
 
     return (
