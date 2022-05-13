@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
-import onClickOutside from 'react-onclickoutside'
+import onClickOutside, { HandleClickOutside } from 'react-onclickoutside'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 
-function DropDown({ title, items, dropDownTitle }) {
+function DropDown({ title = undefined, items, dropDownTitle }) {
     const [open, setOpen] = useState(false) // dropdown is open or not
     const [selection, setSelection] = useState()
     const toggle = () => setOpen(!open) // toggle dropdown
     DropDown.handleClickOutside = () => setOpen(false)
 
     const handleOnClick = (item) => {
-        setSelection([selection, item]) //When an item in DD is clicked it is added to the selection. Use this to render the selected items.
+        setSelection(item) //When an item in DD is clicked it is added to the selection. Use this to render the selected items.
         toggle() //Closes the dropdown
     }
 
     return (
         /*May need to resize*/
         <div className='rounded-standard input-shadow absolute min-w-fit w-9/12 bg-white'>
-            <div tabIndex={0} onClick={() => toggle(!open)}>
+            <div tabIndex={0} onClick={() => toggle()}>
                 <div className='flex justify-between px-6 cursor-pointer items-center'>
                     <div className='font-semibold text-lg text-purple-1 '>
                         {dropDownTitle}
@@ -48,3 +48,7 @@ const clickOutsideConfig = {
 }
 
 export default onClickOutside(DropDown, clickOutsideConfig)
+
+namespace DropDown {
+    export let handleClickOutside: () => void
+}
