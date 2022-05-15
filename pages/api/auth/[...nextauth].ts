@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb'
 
 dotenv.config()
 
-const client = new MongoClient(process.env.MONGODB_AUTH_URL)
+const client = new MongoClient(process.env.MONGODB_AUTH_URL) //MONGODB_URL?
 const clientPromise = client.connect()
 
 export default NextAuth({

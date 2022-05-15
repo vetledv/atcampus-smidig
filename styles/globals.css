@@ -30,16 +30,16 @@
 }
 
 .burger-mid {
-    transform: translateY(7px);
+    transform: translateY(7px) !important;
 }
 
 .burger-bot {
-    transform: translateY(14px);
+    transform: translateY(14px) !important;
 }
 
 .open {
-    transform: rotate(90deg);
-    transform: translateY(0px);
+    transform: rotate(90deg) !important;
+    transform: translateY(0px) !important;
 }
 
 .open .burger-top {

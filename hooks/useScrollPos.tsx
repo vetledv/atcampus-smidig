@@ -2,15 +2,12 @@ import { useState, useEffect } from 'react'
 
 const useScrollPosition = () => {
     const [scrollPos, setScrollPos] = useState(false)
+    const handleScroll = () => {
+        setScrollPos(window.scrollY > 200)
+    }
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrollPos(window.scrollY > 200)
-        }
-
         window.addEventListener('scroll', handleScroll)
-
-        handleScroll()
 
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])

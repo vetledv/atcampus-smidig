@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useRef } from 'react'
 import { useState } from 'react'
-import useScrollPosition from './useScrollPos'
+import useScrollPosition from '../../hooks/useScrollPos'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

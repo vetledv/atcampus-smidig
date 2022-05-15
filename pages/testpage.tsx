@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const TestPage = () => {
     return (
-        <>
+        <div className='h-screen w-screen'>
             <NavBarTut2 />
             <div className='bg-red-800'>
                 <div className='flex flex-col items-center justify-center'>
@@ -27,7 +27,7 @@ const TestPage = () => {
                     </p>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

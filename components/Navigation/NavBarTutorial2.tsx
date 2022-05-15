@@ -1,15 +1,25 @@
 import Image from 'next/image'
 import React, { useRef } from 'react'
 import { useState } from 'react'
-import useScrollPosition from './useScrollPos'
+import useScrollPosition from '../../hooks/useScrollPos'
 
 const NavBarTut2 = () => {
     const scrollPos = useScrollPosition()
-    console.log(scrollPos)
+    //console.log(scrollPos)
+
+    const [isBurgerOpen, setIsBurgerOpen] = useState(false)
+
+    const handleBurgerClick = () => {
+        setIsBurgerOpen(!isBurgerOpen)
+        console.log(isBurgerOpen)
+    }
 
     return (
         /*Navbar*/
-        <nav className='bg-white w-screen container sticky top-0 mx-auto'>
+        <nav
+            className={`${
+                scrollPos ? '-top-24 ' : 'top-0 '
+            } bg-white w-screen sticky top-0 transition-all`}>
             {/*Container with flex*/}
             <div className='flex py-6 px-12 justify-between items-center sticky'>
                 <div className='pt-2 responsive hover:cursor-pointer'>
@@ -47,18 +57,27 @@ const NavBarTut2 = () => {
                 </a>
                 {/*Hamborgir*/}
                 <button
-                    id='btn-menu'
-                    className='hamburger focus:outline-none block md:hidden'>
-                    <span className='burger-top'></span>
-                    <span className='burger-mid'></span>
-                    <span className='burger-bot'></span>
+                    className={`hamburger focus:outline-none block visible sm:visible md:hidden text-black bg-black`}
+                    onClick={() => handleBurgerClick()}>
+                    <span
+                        className={`burger-top ${
+                            isBurgerOpen ? 'open' : ''
+                        }`}></span>
+                    <span
+                        className={`burger-mid ${
+                            isBurgerOpen ? 'open' : ''
+                        }`}></span>
+                    <span
+                        className={`burger-bot ${
+                            isBurgerOpen ? 'open' : ''
+                        }`}></span>
                 </button>
             </div>
             {/*Mobile*/}
-            <div className='md:hidden'>
+            <div className={`${isBurgerOpen ? 'visible' : 'hidden'}`}>
                 <div
                     id='menu-mobile'
-                    className='flex-col absolute hidden items-center self-end py-12 space-y-6 font-bold bg-purple-2 sm:w-auto sm:self-center left-0 right-0 drop-shadow-md'>
+                    className='flex-col absolute items-center self-end py-12 space-y-6 font-bold bg-purple-2 sm:w-auto sm:self-center left-0 right-0 drop-shadow-md'>
                     <a href='#features'>Features</a>
                     <a href='#pricing'>Pricing</a>
                     <a href='#faq'>FAQ</a>
