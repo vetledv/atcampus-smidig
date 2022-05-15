@@ -11,7 +11,7 @@ const Header = () => {
                         <TopSearch />
                     </div>
                     <div className='hidden lg:block lg:px-6 lg:w-2/5 xl:w-3/12'>
-                        <FlatButton children={'Still Spørsmål'} />
+                        <FlatButton>Still Spørsmål</FlatButton>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,6 @@ const NavBarTut2 = () => {
 
     const handleBurgerClick = () => {
         setIsBurgerOpen(!isBurgerOpen)
-        console.log(isBurgerOpen)
     }
 
     return (

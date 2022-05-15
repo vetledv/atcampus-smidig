@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const SubjectCardCompact = ({
     groupImage,
@@ -12,7 +13,7 @@ const SubjectCardCompact = ({
             {' '}
             <Link href={`/${groupId}`}>
                 <div className='flex p-3 input-shadow w-96 items-center bg-white rounded-standard text-dark-1'>
-                    <img src={groupImage} className={'w-16 h-16'} />
+                    <Image src={groupImage} className={'w-16 h-16'} alt='' />
                     <div className={'px-6'}>
                         <div className='p-1'>
                             <div className={'text-lg font-semibold'}>

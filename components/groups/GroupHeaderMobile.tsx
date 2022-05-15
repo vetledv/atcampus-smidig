@@ -15,11 +15,11 @@ const GroupHeaderMobile = ({ groupName, activeMembers }) => {
                                 {groupName}
                             </div>
                             <FlatButton
-                                children={'Følger Gruppe'}
                                 className={
                                     'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white '
-                                }
-                            />
+                                }>
+                                Følger Gruppe
+                            </FlatButton>
                         </div>
                         <div className=''>
                             <div className='flex flex-row items-center'>
