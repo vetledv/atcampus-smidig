@@ -5,9 +5,9 @@ import FindGroupsPopularSchools from 'components/findgroups/FindGroupsPopularSch
 import React, { useState } from 'react'
 
 const findgroup = () => {
-    const [selectedSchool, setSelectedSchool] = useState()
-    const [selectedSubject, setSelectedSubject] = useState()
-    const [selectedGrade, setSelectedGrade] = useState()
+    const [selectedSchool, setSelectedSchool] = useState('')
+    const [selectedSubject, setSelectedSubject] = useState('')
+    const [selectedGrade, setSelectedGrade] = useState('')
     console.log('selectedSchool', selectedSchool)
 
     const schools = [
@@ -36,7 +36,11 @@ const findgroup = () => {
                                 Populære institusjoner
                             </div>
                             {schools.map((school) => (
-                                <div key={school.id}>
+                                <div
+                                    key={school.id}
+                                    onClick={() =>
+                                        setSelectedSchool(school.value)
+                                    }>
                                     <FindGroupsPopularSchools />
                                 </div>
                             ))}
