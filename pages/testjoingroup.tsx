@@ -14,22 +14,25 @@ const TestPageJoinGroup = () => {
         'groupstest',
         fetchReactQuery('mongo')
     )
-    const mutate = useMutation((userInfo: any) =>
-        postJSON(`/api/testjoingroup`, userInfo)
+    const mutate = useMutation(
+        (userInfo: any) => postJSON(`/api/testjoingroup`, userInfo),
+        {
+            onSuccess: () => {
+                console.log('success')
+                groups.refetch()
+            },
+        }
     )
+
     let userId = null
     let userName = null
+
     if (session.status === 'authenticated') {
         userId = session.data.user.id
         userName = session.data.user.name
     }
-    mutate.isSuccess && groups.refetch()
 
-    if (mutate.isLoading) {
-        return <div>Loading...</div>
-    }
-
-    if (groups.isLoading) {
+    if (groups.isLoading || mutate.isLoading) {
         return <div>Loading...</div>
     }
     if (groups.isError) {
@@ -51,8 +54,8 @@ const TestPageJoinGroup = () => {
                                     onClick={() => {
                                         mutate.mutateAsync({
                                             groupId: group._id,
-                                            userId: userId,
-                                            userName: userName,
+                                            userId: session.data.user.id,
+                                            userName: session.data.user.name,
                                         })
                                     }}>
                                     {group?.members?.filter(
