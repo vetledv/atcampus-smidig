@@ -17,7 +17,9 @@ const ProgressBar = () => {
         return true
     }
 
-    function step4Validator() {}
+    function step4Validator() {
+        return true
+    }
 
     function onFormSubmit() {
         // handle the submit logic here
