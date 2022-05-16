@@ -1,6 +1,6 @@
+import { baseUrl } from 'lib/constants'
 import { useRouter } from 'next/router'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
-import dotenv from 'dotenv'
 
 const GroupPage = () => {
     const router = useRouter()
@@ -28,8 +28,6 @@ const GroupPage = () => {
 }
 
 export async function getServerSideProps(context) {
-    dotenv.config()
-    const baseUrl = process.env.NEXTAUTH_URL
     const query = context.query
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery(['group', query.group], () => {
