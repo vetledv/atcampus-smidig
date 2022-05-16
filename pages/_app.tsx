@@ -5,7 +5,17 @@ import { SessionProvider } from 'next-auth/react'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-    const [queryClient] = useState(() => new QueryClient())
+    const [queryClient] = useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        refetchOnMount: true,
+                        refetchOnWindowFocus: false,
+                    },
+                },
+            })
+    )
     return (
         <SessionProvider session={session}>
             <QueryClientProvider client={queryClient}>
