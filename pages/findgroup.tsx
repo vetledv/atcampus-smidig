@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 // Contents of this file will be moved. This page will serve the find group functionality.
 // TODO: add steps to create a group
 
-const findgroup = () => {
+const FindGroupPage = () => {
     const [selectedSchool, setSelectedSchool] = useState('')
     const [selectedSubject, setSelectedSubject] = useState('')
     const [selectedGrade, setSelectedGrade] = useState('')
@@ -50,7 +50,7 @@ const findgroup = () => {
                             ))}
 
                             <div className='p-16'>
-                                <FlatButton children={'Gå videre'} />
+                                <FlatButton>Gå videre</FlatButton>
                             </div>
                         </div>
                     </div>
@@ -60,4 +60,4 @@ const findgroup = () => {
     )
 }
 
-export default findgroup
+export default FindGroupPage

@@ -1,8 +1,7 @@
-import classNames from 'classnames'
 import { SearchIcon } from '@heroicons/react/outline'
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function TopSearch({ title }) {
+export default function TopSearch({ title }: { title: string }) {
     const handleChange = (e: { target: any }) => {
         const target = e.target
         const value = target.value

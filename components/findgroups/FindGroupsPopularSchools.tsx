@@ -8,9 +8,9 @@ const FindGroupsPopularSchools = () => {
                 <FlatButton
                     className={
                         'text-2xl bg-slate-200 text-purple-1 border-solid border-purple-1 hover:bg-purple-5 hover:input-shadow'
-                    }
-                    children={'skole 1'}
-                />
+                    }>
+                    skole 1
+                </FlatButton>
             </div>
         </>
     )

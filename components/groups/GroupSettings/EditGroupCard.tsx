@@ -53,14 +53,12 @@ const EditTagCard = () => {
                         />
 
                         <div className='my-2 items-center justify-center space-y-2 align-center grid grid-cols-1 w-[240px] py-2'>
-                            <FlatButton
-                                children={'Oppdater'}
-                                onClick={handleSubmit}
-                            />
-                            <FlatButton
-                                children={'Slett'}
-                                onClick={deleteSubmit}
-                            />
+                            <FlatButton onClick={handleSubmit}>
+                                Oppdater
+                            </FlatButton>
+                            <FlatButton onClick={deleteSubmit}>
+                                Slett
+                            </FlatButton>
                         </div>
                     </form>
                 </div>
