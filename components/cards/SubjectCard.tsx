@@ -2,6 +2,7 @@ import FlatButton from 'components/buttons/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const SubjectCard = ({
     groupImage,
@@ -10,9 +11,12 @@ const SubjectCard = ({
     members,
     totalMembers,
 }) => {
+    const router = useRouter()
     return (
         <>
-            <div className='flex p-3 input-shadow w-96 items-center cursor-default bg-white rounded-standard text-dark-1'>
+            <div
+                onClick={() => router.push(`/groups/${groupName}`)}
+                className='cursor-pointer flex p-3 input-shadow w-96 items-center bg-white rounded-standard text-dark-1'>
                 <Image src={groupImage} width={128} height={128} alt='' />
                 <div className={'px-6'}>
                     <div className='p-1'>

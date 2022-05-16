@@ -20,17 +20,15 @@ const Groups = () => {
                     <ul>
                         {groups.data.map((group) => (
                             <li key={group.groupName}>
-                                <a href={`/groups/${group.groupName}`}>
-                                    <SubjectCard
-                                        groupName={group.groupName}
-                                        groupImage={
-                                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                                        }
-                                        subjectCode={'PG63'}
-                                        members={group.members.length}
-                                        totalMembers={group.members.length}
-                                    />
-                                </a>
+                                <SubjectCard
+                                    groupName={group.groupName}
+                                    groupImage={
+                                        'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                    }
+                                    subjectCode={'PG63'}
+                                    members={group.members.length}
+                                    totalMembers={group.members.length}
+                                />
                             </li>
                         ))}
                     </ul>
