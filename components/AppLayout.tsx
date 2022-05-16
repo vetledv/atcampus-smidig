@@ -14,11 +14,9 @@ const AppLayout = ({ children }) => {
                         <Header />
                     </div>
                     {children}
+                    <Footer />
                 </div>
             </div>
-            <footer>
-                <Footer />
-            </footer>
         </div>
     )
 }
