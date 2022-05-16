@@ -1,3 +1,4 @@
+import AddTag from 'components/groups/AddTag'
 import NavBarTut from 'components/navigation/NavBarTutorial'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import React from 'react'
@@ -8,6 +9,7 @@ const TestPage = () => {
         <div className='h-screen w-screen'>
             <NavBarTut2 />
             <div className='bg-red-800'>
+                <AddTag />
                 <div className='flex flex-col items-center justify-center'>
                     <h1 className='text-3xl font-bold'>TestPage</h1>
                     <p className='text-xl my-36 space-y-36'>
