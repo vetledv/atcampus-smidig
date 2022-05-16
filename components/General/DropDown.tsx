@@ -15,7 +15,7 @@ function DropDown({ title = undefined, items, dropDownTitle }) {
 
     return (
         /*May need to resize*/
-        <div className='rounded-standard input-shadow min-w-fit absolute w-4/5 bg-white'>
+        <div className='rounded-standard input-shadow min-w-fit absolute max-w-screen-lg w-4/5 bg-white'>
             <div tabIndex={0} onClick={() => toggle()}>
                 <div className='flex justify-between px-6 cursor-pointer items-center'>
                     <div className='font-semibold text-lg text-purple-1 '>

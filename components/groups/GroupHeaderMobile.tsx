@@ -4,10 +4,10 @@ import FlatButton from 'components/buttons/Button'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 
-const GroupHeaderMobile = ({ groupName, activeMembers }) => {
+const GroupHeader = ({ groupName, activeMembers }) => {
     return (
         <>
-            <div className={'h-48 w-96 bg-dark-1 text-white'}>
+            <div className={'h-48 min-w-96 max-w-6xl bg-dark-1 text-white'}>
                 <div className='flex justify-between h-full'>
                     <div className='flex flex-col justify-evenly px-6'>
                         <div className='pb-3'>
@@ -16,7 +16,7 @@ const GroupHeaderMobile = ({ groupName, activeMembers }) => {
                             </div>
                             <FlatButton
                                 className={
-                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white '
+                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white cursor-default'
                                 }>
                                 Følger Gruppe
                             </FlatButton>
@@ -48,4 +48,4 @@ const GroupHeaderMobile = ({ groupName, activeMembers }) => {
     )
 }
 
-export default GroupHeaderMobile
+export default GroupHeader
