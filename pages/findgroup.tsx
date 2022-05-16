@@ -3,12 +3,16 @@ import { FindGroupsFilter } from 'components/findgroups/FindGroupsFilter'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
 import FindGroupsPopularSchools from 'components/findgroups/FindGroupsPopularSchools'
 import React, { useState } from 'react'
+// Contents of this file will be moved. This page will serve the find group functionality.
+// TODO: add steps to create a group
 
 const findgroup = () => {
     const [selectedSchool, setSelectedSchool] = useState('')
     const [selectedSubject, setSelectedSubject] = useState('')
     const [selectedGrade, setSelectedGrade] = useState('')
     console.log('selectedSchool', selectedSchool)
+
+    const [step, setStep] = useState(0)
 
     const schools = [
         {
