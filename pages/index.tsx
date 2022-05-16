@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import Tabs from '../components/general/Tabs'
 import DropDown from 'components/general/DropDown'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
+import Footer from 'components/general/Footer'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -175,6 +176,7 @@ const HomePage: NextPage = () => {
                 <div className='mt-4'>
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
+                <Footer />
             </main>
         </>
     )

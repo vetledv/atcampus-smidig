@@ -15,19 +15,25 @@ export default function Menu() {
             name: 'Grupper',
             icon: DocumentTextIcon,
             href: '/groupsOld',
-            current: router.asPath === '/assignment',
+            current: router.asPath === '/groupsOld',
         },
         {
             name: 'Kollokviegrupper',
             icon: DocumentTextIcon,
             href: '/groups',
-            current: router.asPath === '/assignment',
+            current: router.asPath === '/groups',
         },
         {
             name: 'Mine Grupper',
             icon: DocumentTextIcon,
             href: '/testpage',
-            current: router.asPath === '/assignment',
+            current: router.asPath === '/testpage',
+        },
+        {
+            name: 'Finn Gruppe',
+            icon: DocumentTextIcon,
+            href: '/findgroup',
+            current: router.asPath === '/findgroup',
         },
     ]
 
