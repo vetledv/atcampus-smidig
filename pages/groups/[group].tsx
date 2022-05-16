@@ -1,40 +1,39 @@
-import { baseUrl } from 'lib/constants'
+import { fetchReactQuery, useGroup } from 'hooks/useGroups'
 import { useRouter } from 'next/router'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
+import { dehydrate, QueryClient } from 'react-query'
+import { Group } from 'types/groups'
 
 const GroupPage = () => {
     const router = useRouter()
-    const query = router.query
-    const rQuery = useQuery(['group', query.group], () => {
-        return fetch(`/api/groups/${query.group}`)
-            .then((res) => res.json())
-            .then((res) => res)
-    })
-    if (rQuery.isLoading) {
+    const { groupName } = router.query
+    const group = useGroup(groupName as string)
+
+    if (group.isLoading) {
         return <div>Loading...</div>
     }
-    if (rQuery.isError) {
+    if (group.isError) {
         return <div>Error</div>
     }
     return (
         <div>
-            {rQuery.data && (
+            {group.data && (
                 <div>
-                    <h1>{rQuery.data.groupName}</h1>
+                    <h1>{group.data.groupName}</h1>
                 </div>
             )}
         </div>
     )
 }
 
-export async function getServerSideProps(context) {
-    const query = context.query
+export async function getServerSideProps(context: {
+    query: { group: string }
+}) {
+    const { group } = context.query
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery(['group', query.group], () => {
-        return fetch(`${baseUrl}/api/groups/${query.group}`)
-            .then((res) => res.json())
-            .then((res) => res)
-    })
+    await queryClient.prefetchQuery<Group, Error>(
+        ['group', group],
+        fetchReactQuery(`groups/${group}`)
+    )
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
