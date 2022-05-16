@@ -3,7 +3,6 @@ import AppLayout from 'components/AppLayout'
 import FlatButton from 'components/buttons/FlatButton'
 import GradientButton from 'components/buttons/GradientButton'
 import SubjectCard from 'components/cards/SubjectCard'
-import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 import TextInputField from 'components/general/TextInputField'
 import TopSearch from 'components/general/TopSearch'
 import Header from 'components/navigation/Header'
@@ -46,25 +45,27 @@ const HomePage: NextPage = () => {
             <Head>
                 <title>atcampus components</title>
             </Head>
-            <main className='m-4 flex flex-col'>
-                {status === 'unauthenticated' && (
-                    <>
-                        <div>Not signed in</div>
-                        <FlatButton
-                            as={'button'}
-                            onClick={() => router.push('/auth/login')}>
-                            Login
-                        </FlatButton>
-                    </>
-                )}
-                {status === 'authenticated' && (
-                    <>
-                        <div>Signed in as {session.user.email}</div>
-                        <FlatButton as={'button'} onClick={() => signOut()}>
-                            Sign out
-                        </FlatButton>
-                    </>
-                )}
+            <main className='m-4 flex flex-col gap'>
+                <div className='w-96'>
+                    {status === 'unauthenticated' && (
+                        <>
+                            <div>Not signed in</div>
+                            <FlatButton
+                                as={'button'}
+                                onClick={() => router.push('/auth/login')}>
+                                Login
+                            </FlatButton>
+                        </>
+                    )}
+                    {status === 'authenticated' && (
+                        <>
+                            <div>Signed in as {session.user.email}</div>
+                            <FlatButton as={'button'} onClick={() => signOut()}>
+                                Sign out
+                            </FlatButton>
+                        </>
+                    )}
+                </div>
 
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
@@ -156,13 +157,13 @@ const HomePage: NextPage = () => {
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Card</h2>
-                    <SubjectCardCompact
-                        groupId={'fdskfsjd343q'}
+                    <SubjectCard
                         groupImage={
                             'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                         }
                         groupName={'Matematikk'}
                         subjectCode={'PG2341'}
+                        compact={true}
                     />
                     <div className='py-3'></div>
 
@@ -174,6 +175,7 @@ const HomePage: NextPage = () => {
                         subjectCode={'PG2341'}
                         members={7}
                         totalMembers={12}
+                        compact={false}
                     />
                 </div>
 

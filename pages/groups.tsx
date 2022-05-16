@@ -25,6 +25,7 @@ const Groups = () => {
                                     groupImage={
                                         'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                                     }
+                                    compact={false}
                                     subjectCode={'PG63'}
                                     members={group.members.length}
                                     totalMembers={group.members.length}
