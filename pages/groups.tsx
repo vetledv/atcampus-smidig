@@ -1,3 +1,4 @@
+import SubjectCard from 'components/cards/SubjectCard'
 import { baseUrl } from 'lib/constants'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 
@@ -22,7 +23,15 @@ const Groups = () => {
                         {rQuery.data.map((group) => (
                             <li key={group.groupName}>
                                 <a href={`/groups/${group.groupName}`}>
-                                    {group.groupName}
+                                    <SubjectCard
+                                        groupName={group.groupName}
+                                        groupImage={
+                                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                        }
+                                        subjectCode={'PG63'}
+                                        members={12}
+                                        totalMembers={12}
+                                    />
                                 </a>
                             </li>
                         ))}

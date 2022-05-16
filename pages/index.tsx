@@ -176,7 +176,7 @@ const HomePage: NextPage = () => {
                 <div className='mt-4'>
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
-                <ProgressBar/>
+                <ProgressBar />
             </main>
         </>
     )
