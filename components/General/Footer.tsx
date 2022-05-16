@@ -31,9 +31,9 @@ const Footer = () => {
                                             tabIndex={0}
                                             aria-label={'facebook logo'}
                                             className='ring-background-hover rounded'
-                                            width={10}
-                                            height={19}
-                                            src={'/facebook.svg'}
+                                            width={20}
+                                            height={38}
+                                            src={'/facebook-logo.svg'}
                                         />
                                     </div>
                                     {/* Media 2 */}
@@ -42,9 +42,9 @@ const Footer = () => {
                                             tabIndex={0}
                                             aria-label={'instagram logo'}
                                             className='ring-background-hover rounded'
-                                            width={10}
-                                            height={19}
-                                            src={'/facebook.svg'}
+                                            width={20}
+                                            height={38}
+                                            src={'/instagram-logo.svg'}
                                         />
                                     </div>
                                     {/* Media 3 */}
@@ -53,9 +53,9 @@ const Footer = () => {
                                             tabIndex={0}
                                             aria-label={'twitter logo'}
                                             className='ring-background-hover rounded'
-                                            width={10}
-                                            height={19}
-                                            src={'/facebook.svg'}
+                                            width={20}
+                                            height={38}
+                                            src={'/twitter-logo.svg'}
                                         />
                                     </div>
                                 </div>

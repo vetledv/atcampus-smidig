@@ -24,7 +24,7 @@ export default function Menu() {
             current: router.asPath === '/assignment',
         },
         {
-            name: 'test',
+            name: 'Mine Grupper',
             icon: DocumentTextIcon,
             href: '/testpage',
             current: router.asPath === '/assignment',
@@ -43,9 +43,9 @@ export default function Menu() {
                         tabIndex={0}
                         aria-label={'atcampus logo'}
                         className='ring-background-hover rounded'
-                        width={139}
-                        height={29}
-                        src={'/atcampus-full-logo.svg'}
+                        width={'62'}
+                        height={62}
+                        src={'/atcampus-upper-left.png'}
                     />
                 </div>
                 <nav
