@@ -1,12 +1,13 @@
 import { fetchReactQuery, useGroup } from 'hooks/useGroups'
+import { baseUrl } from 'lib/constants'
 import { useRouter } from 'next/router'
 import { dehydrate, QueryClient } from 'react-query'
 import { Group } from 'types/groups'
 
 const GroupPage = () => {
     const router = useRouter()
-    const { groupName } = router.query
-    const group = useGroup(groupName as string)
+    const routerQuery = router.query
+    const group = useGroup(routerQuery.group as string)
 
     if (group.isLoading) {
         return <div>Loading...</div>
@@ -29,10 +30,15 @@ export async function getServerSideProps(context: {
     query: { group: string }
 }) {
     const { group } = context.query
+    console.log(group)
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group, Error>(
         ['group', group],
-        fetchReactQuery(`groups/${group}`)
+        async () => {
+            const res = await fetch(`${baseUrl}/api/groups`)
+            const data = await res.json()
+            return data
+        }
     )
     return {
         props: {
