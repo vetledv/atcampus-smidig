@@ -16,12 +16,12 @@ const GroupTags = () => {
         },
     ]
     return (
-        <div className='h-max  text-dark-4 grid grid-cols-2   '>
+        <div className='text-dark-4 flex flex-wrap max-w-xs min-w-min bg-red-300'>
             {/*tag*/}
             {tags.map((tag) => (
                 <div
                     key={tag.id}
-                    className='flex items-center w-full border-2 border-dark-5 rounded-standard justify-center mr-1 my-2 text-center  '>
+                    className='flex w-fit px-2 border-2 border-dark-5 rounded-standard mr-1 my-2 '>
                     <h1 className='text-sm  font-semibold px-1 '>
                         {tag.value}
                     </h1>

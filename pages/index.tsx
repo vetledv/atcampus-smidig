@@ -46,7 +46,7 @@ const HomePage: NextPage = () => {
             <Head>
                 <title>atcampus components</title>
             </Head>
-            <main className='m-4 w-fit'>
+            <main className='m-4 flex flex-col'>
                 {status === 'unauthenticated' && (
                     <>
                         <div>Not signed in</div>
