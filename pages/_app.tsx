@@ -18,16 +18,16 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             })
     )
     return (
-        <AppLayout>
-            <SessionProvider session={session}>
-                <QueryClientProvider client={queryClient}>
-                    <Hydrate state={pageProps.dehydratedState}>
+        <SessionProvider session={session}>
+            <QueryClientProvider client={queryClient}>
+                <Hydrate state={pageProps.dehydratedState}>
+                    <AppLayout>
                         <Component {...pageProps} />
-                    </Hydrate>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-            </SessionProvider>
-        </AppLayout>
+                    </AppLayout>
+                </Hydrate>
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+        </SessionProvider>
     )
 }
 

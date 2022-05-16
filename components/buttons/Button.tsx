@@ -7,6 +7,7 @@ export default function FlatButton({
     as = `span`,
     type = null,
     className = null,
+    onClick = null,
     children,
 }) {
     const Component = `${as}` as any
@@ -14,9 +15,10 @@ export default function FlatButton({
         <Component
             data-attr={id}
             type={type}
+            onClick={onClick}
             className={classNames(
                 className ? className : '',
-                'px-4 p-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:bg-purple-2 hover:shadow-purple-2/50 active:bg-purple-1/70 '
+                'px-4 p-2 text-md font-bold cursor-pointer text-center rounded-standard text-white bg-purple-1 hover:bg-purple-2 hover:shadow-purple-2/50 active:bg-purple-1/70 '
             )}>
             {children}
         </Component>
