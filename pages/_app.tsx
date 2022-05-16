@@ -3,6 +3,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { SessionProvider } from 'next-auth/react'
 import '../styles/globals.css'
+import AppLayout from 'components/AppLayout'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     const [queryClient] = useState(
@@ -17,14 +18,16 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             })
     )
     return (
-        <SessionProvider session={session}>
-            <QueryClientProvider client={queryClient}>
-                <Hydrate state={pageProps.dehydratedState}>
-                    <Component {...pageProps} />
-                </Hydrate>
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-        </SessionProvider>
+        <AppLayout>
+            <SessionProvider session={session}>
+                <QueryClientProvider client={queryClient}>
+                    <Hydrate state={pageProps.dehydratedState}>
+                        <Component {...pageProps} />
+                    </Hydrate>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            </SessionProvider>
+        </AppLayout>
     )
 }
 

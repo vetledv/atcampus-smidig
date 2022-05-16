@@ -39,12 +39,11 @@ const HomePage: NextPage = () => {
         return <>Loading...</>
     }
     return (
-        <AppLayout>
+        <>
             <Head>
                 <title>atcampus components</title>
             </Head>
-            <main className='m-4 w-full'>
-                <Header />
+            <main className='m-4 w-fit'>
                 {status === 'unauthenticated' && (
                     <>
                         <div>Not signed in</div>
@@ -66,23 +65,10 @@ const HomePage: NextPage = () => {
 
                 <h1 className='text-xl lg:text-2xl'>atcampus components</h1>
 
-                <TopSearch />
                 <div className='mt-8 pb-12'>
                     <h2 className='text-lg lg:text-xl'>Drop Down</h2>
                     <DropDown items={items} dropDownTitle={'Instutisjoner'} />
                 </div>
-                <Tabs
-                    tabTextOne={'Home'}
-                    tabTextTwo={'Chat'}
-                    tabTextThree={'Calender'}
-                    underline={false}
-                />
-                <Tabs
-                    tabTextOne={'Home'}
-                    tabTextTwo={'Chat'}
-                    tabTextThree={'Calender'}
-                    underline={true}
-                />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
@@ -90,7 +76,7 @@ const HomePage: NextPage = () => {
                     <FlatButton as={'button'}>Text goes here</FlatButton>
                 </div>
 
-                <div className='mt-8'>
+                <div className='mt-8 w-96'>
                     <h2 className='text-lg lg:text-xl'>Text Input Field</h2>
 
                     <TextInputField
@@ -103,7 +89,7 @@ const HomePage: NextPage = () => {
                     />
                 </div>
 
-                <div className='mt-8'>
+                <div className='mt-8 w-96'>
                     <h2 className='text-lg lg:text-xl'>
                         Text Input Field with label
                     </h2>
@@ -119,7 +105,7 @@ const HomePage: NextPage = () => {
                     />
                 </div>
 
-                <div className='mt-8'>
+                <div className='mt-8 w-96'>
                     <h2 className='text-lg lg:text-xl'>
                         Text Input Field with icon
                     </h2>
@@ -136,7 +122,7 @@ const HomePage: NextPage = () => {
                     />
                 </div>
 
-                <div className='mt-8'>
+                <div className='mt-8 w-96'>
                     <h2 className='text-lg lg:text-xl'>
                         Text Input Field with icon and button
                     </h2>
@@ -190,7 +176,7 @@ const HomePage: NextPage = () => {
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
             </main>
-        </AppLayout>
+        </>
     )
 }
 export default HomePage

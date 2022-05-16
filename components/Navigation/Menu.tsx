@@ -6,15 +6,27 @@ export default function Menu() {
     const router = useRouter()
     const navigation = [
         {
-            name: 'Components',
+            name: 'Home',
             icon: HomeIcon,
             href: '/',
             current: router.asPath === '/',
         },
         {
-            name: 'Assignment',
+            name: 'Grupper',
             icon: DocumentTextIcon,
-            href: '/assignment',
+            href: '/groupsOld',
+            current: router.asPath === '/assignment',
+        },
+        {
+            name: 'Kollokviegrupper',
+            icon: DocumentTextIcon,
+            href: '/groups',
+            current: router.asPath === '/assignment',
+        },
+        {
+            name: 'test',
+            icon: DocumentTextIcon,
+            href: '/testpage',
             current: router.asPath === '/assignment',
         },
     ]
@@ -24,7 +36,7 @@ export default function Menu() {
     }
 
     return (
-        <div className='sticky top-0 left-0 flex-1 flex flex-col min-h-0 bg-gradient-to-r from-gradient-left to-gradient-right rounded-br-lg'>
+        <div className='sticky top-0 left-0 flex-1 flex flex-col min-h-0 bg-purple-5'>
             <div className='flex-1 flex flex-col pt-5 pb-4 overflow-y-auto'>
                 <div className='flex items-center flex-shrink-0 px-4'>
                     <Image
@@ -33,7 +45,7 @@ export default function Menu() {
                         className='ring-background-hover rounded'
                         width={139}
                         height={29}
-                        src={'/atcampus-full-logo-white.svg'}
+                        src={'/atcampus-full-logo.svg'}
                     />
                 </div>
                 <nav
@@ -45,12 +57,12 @@ export default function Menu() {
                             href={item.href}
                             className={classNames(
                                 item.current
-                                    ? 'bg-dark-1 text-white shadow'
-                                    : 'text-white hover:bg-dark-1 hover:shadow',
+                                    ? 'border-2 border-solid border-purple-1'
+                                    : 'text-purple-1 hover:border-purple-2 hover:border-solid hover:border-2',
                                 'group flex items-center px-2 py-2 text-sm font-semibold rounded-md'
                             )}>
                             <item.icon
-                                className='mr-3 flex-shrink-0 h-6 w-6 text-white'
+                                className='mr-3 flex-shrink-0 h-6 w-6 purple-1'
                                 aria-hidden='true'
                             />
                             <span className='flex-1'>{item.name}</span>
