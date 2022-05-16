@@ -1,10 +1,9 @@
-import { baseUrl } from 'lib/constants'
 import { useQuery } from 'react-query'
 import { Group } from 'types/groups'
 
 export const fetchReactQuery = (query?: string) => {
     return async () => {
-        const res = await fetch(`${baseUrl}/api/${query}`)
+        const res = await fetch(`/api/${query}`)
         const data = await res.json()
         return data
     }
