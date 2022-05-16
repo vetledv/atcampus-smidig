@@ -26,8 +26,8 @@ const NavBarTut2 = () => {
                     <Image
                         src={'/atcampus-full-logo.svg'}
                         alt={'atcampus logo'}
-                        width={'125'}
-                        height={'25'}></Image>
+                        width={25}
+                        height={25}></Image>
                 </div>
                 {/*Menu items*/}
                 <div className='hidden items-end space-x-12 md:flex'>

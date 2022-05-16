@@ -34,8 +34,8 @@ export const NavBarTut = () => {
                     <Image
                         src={'/atcampus-full-logo-white.svg'}
                         alt={'atcampus logo'}
-                        width={'125'}
-                        height={'25'}></Image>
+                        width={125}
+                        height={25}></Image>
                 </div>
                 {/*Menu items*/}
                 <div className='hidden items-end space-x-12 md:flex'>

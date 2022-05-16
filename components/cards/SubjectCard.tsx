@@ -13,7 +13,7 @@ const SubjectCard = ({
     return (
         <>
             <div className='flex p-3 input-shadow w-96 items-center cursor-default bg-white rounded-standard text-dark-1'>
-                <Image src={groupImage} className={'w-32 h-32'} alt='' />
+                <Image src={groupImage} width={128} height={128} alt='' />
                 <div className={'px-6'}>
                     <div className='p-1'>
                         <div className={'text-lg font-semibold'}>
