@@ -1,5 +1,5 @@
-import AddTag from 'components/groups/AddTag'
-import EditTagCard from 'components/groups/EditGroupCard'
+import AddTag from 'components/groups/GroupSettings/AddTag'
+import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
 import NavBarTut from 'components/navigation/NavBarTutorial'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import React from 'react'

@@ -13,6 +13,7 @@ export default function TextInputField({
     register = (any?: any) => {},
     value,
     className,
+    onChange,
 }) {
     let classes = classNames(
         'text-dark-1 font-semibold bg-white text-md ring-gradient-left outline-none block w-full ',
@@ -46,6 +47,7 @@ export default function TextInputField({
                         value={value}
                         className={classes}
                         disabled={disabled}
+                        onChange={onChange}
                     />
                 </div>
                 <div className='-ml-px relative'>{button}</div>

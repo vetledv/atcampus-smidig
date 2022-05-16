@@ -15,6 +15,8 @@ import Tabs from '../components/general/Tabs'
 import DropDown from 'components/general/DropDown'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
 import Footer from 'components/general/Footer'
+import AddTag from 'components/groups/GroupSettings/AddTag'
+import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -71,6 +73,9 @@ const HomePage: NextPage = () => {
                     <DropDown items={items} dropDownTitle={'Instutisjoner'} />
                 </div>
 
+                <AddTag />
+                <EditTagCard />
+
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
 
@@ -87,6 +92,7 @@ const HomePage: NextPage = () => {
                         id={undefined}
                         value={undefined}
                         className={undefined}
+                        onChange={undefined}
                     />
                 </div>
 
@@ -103,6 +109,7 @@ const HomePage: NextPage = () => {
                         id={undefined}
                         value={undefined}
                         className={undefined}
+                        onChange={undefined}
                     />
                 </div>
 
@@ -120,6 +127,7 @@ const HomePage: NextPage = () => {
                         id={undefined}
                         value={undefined}
                         className={undefined}
+                        onChange={undefined}
                     />
                 </div>
 
@@ -142,6 +150,7 @@ const HomePage: NextPage = () => {
                         id={undefined}
                         value={undefined}
                         className={undefined}
+                        onChange={undefined}
                     />
                 </div>
 
@@ -176,7 +185,6 @@ const HomePage: NextPage = () => {
                 <div className='mt-4'>
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
-                <Footer />
             </main>
         </>
     )
