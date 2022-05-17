@@ -13,8 +13,9 @@ export default async function handler(
         secret: secret_key,
     })
     const { db } = await connectToDB()
-    const collection = await db
-        .collection('atcampus-groups')
+    console.log(session.sub)
+    const collection = db.collection('atcampus-groups')
+    collection
         .find({
             members: {
                 $elemMatch: {
@@ -23,5 +24,17 @@ export default async function handler(
             },
         })
         .toArray()
-    res.json(collection)
+        .then((groups) => {
+            if (groups.length > 0) {
+                res.status(200).json(groups)
+            } else {
+                res.status(200).json([])
+            }
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: 'error',
+                error: err,
+            })
+        })
 }

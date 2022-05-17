@@ -2,7 +2,7 @@ import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(req: NextRequest, res: NextResponse) {
-    const secret_key = process.env.NEXT_AUTH_SECRET
+    const secret_key = process.env.SECRET_KEY
 
     const session = await getToken({ req, secret: secret_key })
     const url = req.nextUrl.clone()
@@ -13,12 +13,12 @@ export async function middleware(req: NextRequest, res: NextResponse) {
             url.pathname = '/'
             return NextResponse.redirect(url)
         }
+    } else {
+        if (!session && !url.pathname.startsWith('/api/auth' || '/auth/')) {
+            url.pathname = '/auth/login'
+            return NextResponse.redirect(url)
+        }
     }
-    //redirect non-logged in users to the login page when they try to access pages
-    if (url.pathname === '/') {
-        console.log(session)
-        url.pathname = 'auth/login'
-        if (!session) return NextResponse.redirect(url)
-    }
+
     return NextResponse.next()
 }

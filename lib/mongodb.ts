@@ -1,31 +1,23 @@
-import dotenv from 'dotenv'
-import mongoose, { Mongoose } from 'mongoose'
-import { Db, MongoClient } from 'mongoose/node_modules/mongodb'
+import { Db, MongoClient } from 'mongodb'
+import { mongodb_name, mongodb_url } from './constants'
 
-dotenv.config()
-const MONGODB_URL = process.env.MONGODB_URL
-
-if (!MONGODB_URL) {
+if (!mongodb_url) {
     throw new Error('MONGODB_URL is not defined')
 }
 
-let cachedClient: Mongoose = null
+let cachedClient: MongoClient = null
 let cachedDb: Db = null
-let cachedMongoClient: MongoClient = null
 
 export const connectToDB = async () => {
-    if (cachedClient && cachedDb && cachedMongoClient) {
+    if (cachedClient && cachedDb) {
         return {
             client: cachedClient,
             db: cachedDb,
-            mongoClient: cachedMongoClient,
         }
     }
 
-    await mongoose.connect(MONGODB_URL)
+    const client = await MongoClient.connect(mongodb_url)
 
-    const client = mongoose
-    const db = client.connection.db
-    const mongoClient = client.connection.getClient()
-    return { client, db, mongoClient }
+    const db = client.db(mongodb_name)
+    return { client, db }
 }

@@ -10,28 +10,36 @@ const Groups = () => {
         return <div>Loading...</div>
     }
     if (groups.isError) {
-        return <div>Error</div>
+        return <div>Error: {groups.error.message}</div>
     }
     return (
         <div>
             {groups.data && (
                 <div>
                     <h1>Groups</h1>
-                    <ul>
-                        {groups.data.map((group) => (
-                            <li key={group.groupName}>
-                                <SubjectCard
-                                    groupName={group.groupName}
-                                    groupImage={
-                                        'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                                    }
-                                    compact={false}
-                                    subjectCode={'PG63'}
-                                    members={group.members.length}
-                                    totalMembers={group.members.length}
-                                />
-                            </li>
-                        ))}
+                    <ul className='flex flex-wrap gap-4'>
+                        {groups.data.length === 0 ? (
+                            <div>
+                                <p>Not in any groups.</p>
+                            </div>
+                        ) : (
+                            <>
+                                {groups.data.map((group) => (
+                                    <li key={group.groupName}>
+                                        <SubjectCard
+                                            groupName={group.groupName}
+                                            groupImage={
+                                                'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                            }
+                                            compact={true}
+                                            subjectCode={'PG63'}
+                                            members={group.members.length}
+                                            totalMembers={group.members.length}
+                                        />
+                                    </li>
+                                ))}
+                            </>
+                        )}
                     </ul>
                 </div>
             )}

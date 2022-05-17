@@ -7,6 +7,8 @@ const GroupChatSchema = new mongoose.Schema(
             required: true,
         },
         memberIds: Array,
+        memberNames: Array,
+        messages: Array,
     },
     {
         timestamps: true,

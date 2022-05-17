@@ -1,44 +1,60 @@
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
+import {
+    google_client_id,
+    google_client_secret,
+    mongodb_name,
+    mongodb_url,
+    secret_key,
+} from 'lib/constants'
+import { MongoClient } from 'mongodb'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import dotenv from 'dotenv'
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-import { MongoClient } from 'mongodb'
+import { connectToDB } from 'lib/mongodb'
 
-dotenv.config()
+const clientold = new MongoClient(mongodb_url + mongodb_name) //MONGODB_URL?
 
-const client = new MongoClient(process.env.MONGODB_AUTH_URL) //MONGODB_URL?
-const clientPromise = client.connect()
+const mongodb = connectToDB()
+const clientPromise = clientold.connect()
+const clientPromiseNew = mongodb.then((mongodb) => mongodb.client.connect())
 
 export default NextAuth({
-    secret: process.env.NEXT_AUTH_SECRET,
+    secret: secret_key,
     session: {
         strategy: 'jwt',
         maxAge: 24 * 60 * 60 * 1000, // 1 day
         updateAge: 30 * 60 * 1000, // 30 minutes
     },
-    adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientId: google_client_id,
+            clientSecret: google_client_secret,
             authorization: {
                 params: {
                     prompt: 'consent',
                     access_type: 'offline',
                     response_type: 'code',
+                    scope: 'openid profile email',
                 },
+            },
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
+                }
             },
         }),
     ],
     callbacks: {
-        async session({ session, user, token }) {
+        async session({ session, token }) {
             session.accessToken = token.accessToken
             session.user = token.user
             // console.log('SESSION: ', session)
             //console.log('TOKEN:', token)
             return session
         },
-        async jwt({ token, user, account, profile, isNewUser }) {
+        async jwt({ token, user, account }) {
             if (account) {
                 token.accessToken = account.access_token
             }
@@ -48,6 +64,7 @@ export default NextAuth({
             return token
         },
     },
+    adapter: MongoDBAdapter(clientPromiseNew),
     pages: {
         signIn: '/api/auth/login',
         signOut: '/api/auth/logout',
