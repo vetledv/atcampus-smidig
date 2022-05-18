@@ -10,6 +10,7 @@ export default async function handler(
     const { groupId, userId, userName } = JSON.parse(req.body)
 
     //TODO: if group is private, add user to pendingMembers instead of members
+    //TODO: if group is full, send error message
 
     const filter = {
         _id: new ObjectId(groupId),

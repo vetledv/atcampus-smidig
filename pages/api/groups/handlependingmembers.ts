@@ -19,6 +19,7 @@ export default async function handler(
     const filter = {
         _id: new ObjectId(groupId),
     }
+
     const add = {
         $addToSet: {
             members: {
@@ -27,7 +28,6 @@ export default async function handler(
             },
         },
     }
-    //if method delete, then remove from members
 
     const pull = {
         $pull: {
@@ -38,12 +38,14 @@ export default async function handler(
         },
     }
 
+    //check if user is admin
     if (admin.userId.toString() !== session.sub) {
         res.status(401).json({
             message: 'unauthorized',
         })
     } else {
         if (action === 'REMOVE') {
+            //remove user from pending members if action is remove
             await db
                 .collection('atcampus-groups')
                 .updateOne(filter, pull)
@@ -57,6 +59,7 @@ export default async function handler(
                     })
                 })
         } else if (action === 'ADD') {
+            //add user to members and remove from pending if action is add
             await db
                 .collection('atcampus-groups')
                 .updateOne(filter, { ...add, ...pull })
@@ -69,47 +72,11 @@ export default async function handler(
                         error: err,
                     })
                 })
+        } else {
+            //if action is not add or remove
+            res.status(400).json({
+                message: 'invalid action',
+            })
         }
     }
 }
-
-// switch (action) {
-//     case 'ADD':
-//         await db
-//             .collection('atcampus-groups')
-//             .updateOne(filter, { ...add, ...pull })
-//             .then(() => {
-//                 res.status(200).send('success')
-//             }
-//             )
-//             .catch((err: Error) => {
-//                 res.status(400).json({
-//                     message: 'error',
-//                     error: err,
-//                 })
-//             }
-//             )
-//         break
-//     case 'REMOVE':
-//         await db
-//             .collection('atcampus-groups')
-//             .updateOne(filter, pull)
-//             .then(() => {
-//                 res.status(200).send('success')
-//             }
-//             )
-//             .catch((err: Error) => {
-//                 res.status(400).json({
-//                     message: 'error',
-//                     error: err,
-//                 })
-//             }
-//             )
-//         break
-//     default:
-//         res.status(400).json({
-//             message: 'error',
-//             error: 'invalid action',
-//         })
-//         break
-//     }

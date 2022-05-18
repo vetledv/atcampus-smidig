@@ -181,7 +181,7 @@ const HomePage: NextPage = () => {
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>GroupHeader</h2>
-                    <GroupHeader groupName={'Prog n Chill'} activeMembers={3} />
+                    <GroupHeader group={undefined} />
                 </div>
 
                 <div className='mt-4'>

@@ -13,7 +13,6 @@ export default async function handler(
         secret: secret_key,
     })
     const { db } = await connectToDB()
-    console.log(session.sub)
 
     await db
         .collection('atcampus-groups')
