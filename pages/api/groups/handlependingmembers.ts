@@ -72,3 +72,44 @@ export default async function handler(
         }
     }
 }
+
+// switch (action) {
+//     case 'ADD':
+//         await db
+//             .collection('atcampus-groups')
+//             .updateOne(filter, { ...add, ...pull })
+//             .then(() => {
+//                 res.status(200).send('success')
+//             }
+//             )
+//             .catch((err: Error) => {
+//                 res.status(400).json({
+//                     message: 'error',
+//                     error: err,
+//                 })
+//             }
+//             )
+//         break
+//     case 'REMOVE':
+//         await db
+//             .collection('atcampus-groups')
+//             .updateOne(filter, pull)
+//             .then(() => {
+//                 res.status(200).send('success')
+//             }
+//             )
+//             .catch((err: Error) => {
+//                 res.status(400).json({
+//                     message: 'error',
+//                     error: err,
+//                 })
+//             }
+//             )
+//         break
+//     default:
+//         res.status(400).json({
+//             message: 'error',
+//             error: 'invalid action',
+//         })
+//         break
+//     }

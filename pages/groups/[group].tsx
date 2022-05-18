@@ -60,7 +60,11 @@ const GroupPage = () => {
     }
     const isAdmin =
         session?.data?.user?.id === group.data?.admin.userId?.toString()
-    messages.data && console.log(messages.data.messages[0].timestamp)
+    messages.data &&
+        console.log(
+            'timestamp',
+            new Date(messages.data.messages[0].timestamp).toLocaleString()
+        )
     return (
         <>
             {group.data && (
@@ -156,7 +160,9 @@ const GroupPage = () => {
                                 {message.from.userName}
                                 {':'}
                             </div>
-                            <div>asd {message.timestamp.toString()}</div>
+                            <div>
+                                {new Date(message.timestamp).toLocaleString()}
+                            </div>
                             <div>{message.message}</div>
                         </div>
                     ))}

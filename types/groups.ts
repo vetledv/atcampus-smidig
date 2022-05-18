@@ -24,7 +24,7 @@ export interface GroupMessages {
 }
 
 export interface Message {
-    timestamp: Timestamp
+    timestamp: Date
     from: Member
     message: string
 }
