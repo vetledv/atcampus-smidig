@@ -6,8 +6,10 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { db, client } = await connectToDB()
+    const { db } = await connectToDB()
     const { groupId, userId, userName } = JSON.parse(req.body)
+
+    //TODO: if group is private, add user to pendingMembers instead of members
 
     const filter = {
         _id: new ObjectId(groupId),

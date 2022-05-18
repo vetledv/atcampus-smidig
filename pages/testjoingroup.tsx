@@ -1,12 +1,9 @@
 import FlatButton from 'components/buttons/Button'
 import { baseUrl } from 'lib/constants'
-import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
 import { Group } from 'types/groups'
 import { fetchReactQuery, postJSON } from '../hooks/useGroups'
-import { Member } from './../types/groups'
 
 const TestPageJoinGroup = () => {
     const session = useSession()
@@ -23,13 +20,12 @@ const TestPageJoinGroup = () => {
             },
         }
     )
-
-    let userId = null
-    let userName = null
-
-    if (session.status === 'authenticated') {
-        userId = session.data.user.id
-        userName = session.data.user.name
+    const handleJoin = async (group: Group) => {
+        mutate.mutateAsync({
+            groupId: group._id,
+            userId: session?.data?.user?.id,
+            userName: session?.data?.user?.name,
+        })
     }
 
     if (groups.isLoading || mutate.isLoading) {
@@ -50,17 +46,9 @@ const TestPageJoinGroup = () => {
                                 key={group.groupName}
                                 className={'p-4 flex gap-2'}>
                                 <div>{group.groupName}</div>
-                                <FlatButton
-                                    onClick={() => {
-                                        mutate.mutateAsync({
-                                            groupId: group._id,
-                                            userId: session.data.user.id,
-                                            userName: session.data.user.name,
-                                        })
-                                    }}>
-                                    {group?.members?.filter(
-                                        (member) => member.userId === userId
-                                    ).length != 0
+                                <FlatButton onClick={() => handleJoin(group)}>
+                                    {group?.members?.map((member) => member)
+                                        .length != 0
                                         ? 'Joined'
                                         : 'Join'}
                                 </FlatButton>

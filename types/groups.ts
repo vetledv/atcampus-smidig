@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb'
+import { ObjectId, Timestamp } from 'mongodb'
 
 export interface Member {
     userId: ObjectId
@@ -13,6 +13,18 @@ export interface Group {
     tags: string[]
     description: string
     private: boolean
-    admin?: Member
-    pendingMembers?: Member[] | []
+    admin: Member | null
+    pendingMembers: Member[]
+}
+
+export interface GroupMessages {
+    _id: ObjectId
+    groupId: ObjectId
+    messages: Message[]
+}
+
+export interface Message {
+    timestamp: Timestamp
+    from: Member
+    message: string
 }

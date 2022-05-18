@@ -2,7 +2,7 @@ import SubjectCard from 'components/cards/SubjectCard'
 import { useGroups } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { dehydrate, QueryClient } from 'react-query'
-import { Group } from 'types/groups'
+import type { Group } from 'types/groups'
 
 const Groups = () => {
     const groups = useGroups()

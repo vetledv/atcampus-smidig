@@ -8,8 +8,16 @@ export default async function handler(
 ) {
     const { db } = await connectToDB()
     const { group } = req.query
-    const collection = await db
+    await db
         .collection('atcampus-groups')
         .findOne({ groupName: group })
-    res.json(collection)
+        .then((group) => {
+            res.status(200).json(group)
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: 'error',
+                error: err,
+            })
+        })
 }

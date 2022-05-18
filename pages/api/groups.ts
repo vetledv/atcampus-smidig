@@ -14,8 +14,9 @@ export default async function handler(
     })
     const { db } = await connectToDB()
     console.log(session.sub)
-    const collection = db.collection('atcampus-groups')
-    collection
+
+    await db
+        .collection('atcampus-groups')
         .find({
             members: {
                 $elemMatch: {
