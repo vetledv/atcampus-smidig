@@ -10,8 +10,8 @@ export default async function handler(
 ) {
     const { db } = await connectToDB()
     console.log('REQUEST METHOD: ', req.method)
+    const { messages: groupId } = req.query
     if (req.method === 'GET') {
-        const { messages: groupId } = req.query
         console.log('[messages] groupId: ', groupId)
         await db
             .collection('group-messages')
@@ -37,9 +37,10 @@ export default async function handler(
     }
 
     if (req.method === 'POST') {
-        const { messages: groupId } = req.query
-        const message: SendMessage = JSON.parse(req.body)
-        console.log('[messages] message: ', message.message)
+        const { userId, userName, message } = JSON.parse(
+            req.body
+        ) as SendMessage
+        console.log('[messages] message: ', message)
         console.log('[messages] groupId: ', groupId)
         await db
             .collection('group-messages')
@@ -50,17 +51,17 @@ export default async function handler(
                         messages: {
                             timestamp: new Date(),
                             from: {
-                                userId: new ObjectId(message.userId),
-                                userName: message.userName,
+                                userId: new ObjectId(userId),
+                                userName: userName,
                             },
-                            message: message.message,
+                            message: message,
                         },
                     },
                 }
             )
             .then((messages) => {
-                res.status(200).json(messages)
                 res?.socket?.server?.io?.emit(`message ${groupId}`, message)
+                res.status(201).json(messages)
             })
             .catch((err) => {
                 res.status(500).json({

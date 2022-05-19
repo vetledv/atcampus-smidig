@@ -56,10 +56,11 @@ const GroupPage = () => {
     const [msg, setMsg] = useState<string>('')
     const [connected, setConnected] = useState<boolean>(false)
 
-    useEffect(() => {
+    useEffect((): any => {
         const socket = SocketIOClient(process.env.NEXTAUTH_URL, {
             path: '/api/groups/socket',
-        })
+        }).connect()
+
         socket.on('connect', () => {
             console.log('socket connected, id:', socket.id)
             setConnected(true)
@@ -67,8 +68,8 @@ const GroupPage = () => {
         socket.on('disconnect', () => {
             setConnected(false)
         })
-        socket.on(`message ${group.data?._id.toString()}`, (msg) => {
-            console.log('message received:', msg)
+        socket.on(`message ${group.data?._id}`, (message) => {
+            console.log('message received:', message)
             messages.refetch()
         })
         return () => {
