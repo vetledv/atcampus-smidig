@@ -30,18 +30,7 @@ const MemberCard = () => {
                     key={member.id}
                     className={
                         'flex justify-between items-center text-white bg-purple-2 h-12 rounded-standard my-2 px-3'
-                    }>
-                    <div>
-                        <Image
-                            src={member.image}
-                            height={32}
-                            width={32}
-                            alt={'image not found'}
-                        />
-                    </div>
-                    <div className='font-serif'>{member.name}</div>
-                    <div className='pt-4 font-thin'>{member.type}</div>
-                </div>
+                    }></div>
             ))}
         </>
     )

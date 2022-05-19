@@ -6,7 +6,7 @@ import { useState } from 'react'
 const SelectGoals = () => {
     return (
         <div className='bg-white w-full'>
-            <FindGroupsHeader />
+            <FindGroupsHeader step={'Velg Mål'} />
             <div className='flex flex-col justify-center p-4'>
                 <SelectGoal />
                 <SelectPreferances />

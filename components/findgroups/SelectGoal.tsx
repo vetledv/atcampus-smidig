@@ -1,4 +1,4 @@
-import Checkbox from 'components/General/Checkbox'
+import Checkbox from 'components/general/Checkbox'
 import { useState } from 'react'
 
 const SelectGoal = () => {
