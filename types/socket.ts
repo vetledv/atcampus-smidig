@@ -1,6 +1,7 @@
 import { Server as NetServer, Socket } from 'net'
-import { NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { Server as SocketIOServer } from 'socket.io'
+import { Db, MongoClient } from 'mongodb'
 
 export type NextApiResponseServerIO = NextApiResponse & {
     socket: Socket & {
@@ -8,4 +9,8 @@ export type NextApiResponseServerIO = NextApiResponse & {
             io: SocketIOServer
         }
     }
+}
+export type NextApiReqAndDB = NextApiRequest & {
+    db: Db
+    dbClient: MongoClient
 }
