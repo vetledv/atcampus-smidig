@@ -33,4 +33,6 @@ export interface SendMessage {
     userId: ObjectId | string
     userName: string
     message: string
+    groupName: string
+    groupId: ObjectId
 }

@@ -5,6 +5,7 @@ if (!mongodb_url) {
     throw new Error('MONGODB_URL is not defined')
 }
 
+let promise: Promise<MongoClient> = null
 let cachedClient: MongoClient = null
 let cachedDb: Db = null
 
@@ -15,9 +16,13 @@ export const connectToDB = async () => {
             db: cachedDb,
         }
     }
+    if (!promise) {
+        promise = MongoClient.connect(mongodb_url)
+    }
 
-    const client = await MongoClient.connect(mongodb_url)
-
+    const client = await promise
     const db = client.db(mongodb_name)
-    return { client, db }
+    cachedClient = client
+    cachedDb = db
+    return { client: cachedClient, db: cachedDb }
 }

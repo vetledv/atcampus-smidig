@@ -25,8 +25,8 @@ export default async function handler(
                 //     db.collection('group-messages').insertOne(newMessages)
                 //     res.status(200).json(newMessages)
                 // }
-                console.log('messages: ', messages)
                 res.status(200).json(messages)
+                console.log('added message')
             })
             .catch((err) => {
                 res.status(500).json({
@@ -37,7 +37,7 @@ export default async function handler(
     }
 
     if (req.method === 'POST') {
-        const { userId, userName, message } = JSON.parse(
+        const { userId, userName, message, groupName } = JSON.parse(
             req.body
         ) as SendMessage
         console.log('[messages] message: ', message)
@@ -60,8 +60,9 @@ export default async function handler(
                 }
             )
             .then((messages) => {
-                res?.socket?.server?.io?.emit(`message ${groupId}`, message)
+                res?.socket?.server?.io?.emit(`message ${groupName}`, message)
                 res.status(201).json(messages)
+                console.log(`message ${groupName.toString()}`)
             })
             .catch((err) => {
                 res.status(500).json({

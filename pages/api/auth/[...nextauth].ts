@@ -11,10 +11,7 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { connectToDB } from 'lib/mongodb'
 
-const clientold = new MongoClient(mongodb_url + mongodb_name) //MONGODB_URL?
-
 const mongodb = connectToDB()
-const clientPromise = clientold.connect()
 const clientPromiseNew = mongodb.then((mongodb) => mongodb.client.connect())
 
 export default NextAuth({

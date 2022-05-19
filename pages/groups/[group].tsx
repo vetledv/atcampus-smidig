@@ -1,14 +1,13 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
+import MessageComponent from 'components/groups/MessageComponent'
 import { fetchReactQuery, postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
-import SocketIOClient from 'socket.io-client'
-import type { Group, GroupMessages, Member, SendMessage } from 'types/groups'
+import type { Group, GroupMessages, Member } from 'types/groups'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -23,11 +22,8 @@ const GroupPage = () => {
     const session = useSession()
 
     const group = useGroup(routerQuery.group as string)
-    const messages = useQuery<GroupMessages, Error>(
-        ['messages', group.data?._id],
-        fetchReactQuery(`groups/messages/${group.data?._id}`)
-    )
-    const mutate = useMutation(
+
+    const adminMutatePending = useMutation(
         (object: AddMutateObj) =>
             postJSON(`/api/groups/handlependingmembers`, object),
         {
@@ -40,6 +36,15 @@ const GroupPage = () => {
             },
         }
     )
+    const messages = useQuery<GroupMessages, Error>(
+        ['messages', group.data?._id],
+        fetchReactQuery(`groups/messages/${group.data?._id}`)
+    )
+    const refetchMsg = () => {
+        console.log('DEEEZ')
+        messages.refetch()
+    }
+
     const handlePendingMember = async (
         userToAdd: Member,
         action: 'ADD' | 'REMOVE'
@@ -50,47 +55,10 @@ const GroupPage = () => {
             userToAdd: userToAdd,
             action: action,
         }
-        mutate.mutateAsync(addMutateObj)
+        adminMutatePending.mutateAsync(addMutateObj)
     }
 
-    const [msg, setMsg] = useState<string>('')
-    const [connected, setConnected] = useState<boolean>(false)
-
-    useEffect((): any => {
-        const socket = SocketIOClient(process.env.NEXTAUTH_URL, {
-            path: '/api/groups/socket',
-        }).connect()
-
-        socket.on('connect', () => {
-            console.log('socket connected, id:', socket.id)
-            setConnected(true)
-        })
-        socket.on('disconnect', () => {
-            setConnected(false)
-        })
-        socket.on(`message ${group.data?._id}`, (message) => {
-            console.log('message received:', message)
-            messages.refetch()
-        })
-        return () => {
-            socket.disconnect()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const handleSendMessage = () => {
-        if (msg.length > 0) {
-            const message: SendMessage = {
-                userId: session?.data?.user?.id,
-                userName: session?.data?.user?.name,
-                message: msg,
-            }
-            postJSON(`/api/groups/messages/${group.data?._id}`, message)
-            setMsg('')
-        }
-    }
-
-    if (group.isLoading || mutate.isLoading) {
+    if (group.isLoading || adminMutatePending.isLoading) {
         return <div>Loading...</div>
     }
     if (group.isError) {
@@ -187,47 +155,12 @@ const GroupPage = () => {
                     </div>
                 </div>
             )}
-
             {messages.data && (
-                <div className='flex flex-col gap-2 w-fit'>
-                    <h1 className='font-semibold'>Messages</h1>
-                    {messages.data.messages?.map((message, i) => (
-                        <div key={i} className='flex bg-pink-400 gap-2'>
-                            <div>
-                                {message.from.userName}
-                                {':'}
-                            </div>
-                            <div>
-                                {new Date(message.timestamp).toLocaleString()}
-                            </div>
-                            <div>{message.message}</div>
-                        </div>
-                    ))}
-                    <div className='flex gap-2'>
-                        <input
-                            value={msg}
-                            placeholder={
-                                connected
-                                    ? 'Type a message...'
-                                    : 'Connecting...'
-                            }
-                            disabled={!connected}
-                            className='px-4 border-[1px] border-gray-300 rounded'
-                            onChange={(e) => {
-                                setMsg(e.target.value)
-                            }}
-                            onKeyUp={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSendMessage()
-                                }
-                            }}></input>
-                        <FlatButton
-                            disabled={!connected}
-                            onClick={() => handleSendMessage()}>
-                            Send
-                        </FlatButton>
-                    </div>
-                </div>
+                <MessageComponent
+                    groupName={group.data?.groupName}
+                    messages={messages.data}
+                    refetchMsg={refetchMsg}
+                />
             )}
         </>
     )
