@@ -69,6 +69,7 @@ const GroupPage = () => {
             setConnected(false)
         })
         socket.on('message', (msg) => {
+            console.log('message received:', msg)
             messages.refetch()
         })
         return () => {
