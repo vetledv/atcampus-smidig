@@ -24,7 +24,7 @@ const EditTagCard = () => {
 
     return (
         <div className='grid sm:grid-cols-1 lg:grid-cols-1 gap-2 '>
-            <div className='flex flex-col bg-white rounded-xl py-2 px-8 w-[340px] h-[370px] drop-shadow '>
+            <div className='flex flex-col bg-white rounded-xl py-2 px-8 w-[340px] h-[370px] drop-shadow'>
                 <div className='  my-2 items-start'>
                     <h1 className='text-center text-md text-dark-1 font-semibold pb-2 '>
                         Gruppeinstillinger
@@ -56,7 +56,9 @@ const EditTagCard = () => {
                             <FlatButton onClick={handleSubmit}>
                                 Oppdater
                             </FlatButton>
-                            <FlatButton onClick={deleteSubmit}>
+                            <FlatButton
+                                onClick={deleteSubmit}
+                                className='bg-red-600 hover:bg-red-500 focus:bg-red-500'>
                                 Slett
                             </FlatButton>
                         </div>
