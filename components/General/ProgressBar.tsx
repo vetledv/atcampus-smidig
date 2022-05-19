@@ -6,7 +6,7 @@ import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
 import 'react-step-progress/src/progressBar.module.css'
 
-const ProgressBar = ({}) => {
+const ProgressBar = ({pageLabel}) => {
     const [step, setStep] = useState(0)
     const [stepOne, setStepOne] = useState(false)
     const [stepTwo, setStepTwo] = useState(false)
@@ -49,24 +49,24 @@ const ProgressBar = ({}) => {
             nextBtnName='Neste'
             steps={[
                 {
-                    label: 'Velg skole',
+                    label: pageLabel,
                     name: 'step 1',
                     content: step1Content,
                 },
                 {
-                    label: 'Velg fag',
+                    label: pageLabel,
                     name: 'step 2',
                     content: step2Content,
                     validator: step2Validator,
                 },
                 {
-                    label: 'Velg Mål',
+                    label: pageLabel,
                     name: 'step 3',
                     content: step3Content,
                     validator: step3Validator,
                 },
                 {
-                    label: 'Forslag',
+                    label: pageLabel,
                     name: 'step 4',
                     content: step4Content,
                     validator: step4Validator,

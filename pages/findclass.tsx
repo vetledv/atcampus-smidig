@@ -24,19 +24,19 @@ const FindClassPage = () => {
             classCode: '1234',
         },
         {
-            id: '1',
+            id: '4',
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'mattematikk',
             classCode: '1234',
         },
         {
-            id: '2',
+            id: '5',
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Prog',
             classCode: '1234',
         },
         {
-            id: '3',
+            id: '6',
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Ebiss',
             classCode: '1234',
