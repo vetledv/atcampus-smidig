@@ -16,6 +16,8 @@ import GroupHeader from 'components/groups/GroupHeaderMobile'
 import Footer from 'components/general/Footer'
 import AddTag from 'components/groups/GroupSettings/AddTag'
 import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
+import Checkbox from 'components/General/Checkbox'
+import BigCheckbox from 'components/General/BigCheckbox'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -184,9 +186,32 @@ const HomePage: NextPage = () => {
                     <GroupHeader group={undefined} />
                 </div>
 
+                <div className='mt-8'>
+                    <h2 className='text-lg lg:text-xl mb-1'>Checkboxes</h2>
+                    <div className='flex'>
+                        <div className='flex-1'>
+                            <Checkbox 
+                                value={undefined}
+                                id={undefined}
+                                name={'Bestått'}
+                                className={undefined}
+                            />
+                        </div>
+                        <div className='flex-1'>
+                            <BigCheckbox 
+                                value={undefined}
+                                id={undefined}
+                                name={'Stille Spørsmål'}
+                                className={undefined}
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 <div className='mt-4'>
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
+
             </main>
         </>
     )
