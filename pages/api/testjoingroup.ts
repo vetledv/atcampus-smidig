@@ -25,7 +25,8 @@ export default async function handlera(
     }
 
     if (req.method === 'POST') {
-        const { groupId, userId, userName } = req.body
+        console.log('POST')
+        const { groupId, userId, userName } = JSON.parse(req.body)
         const filter = {
             _id: new ObjectId(groupId),
         }
@@ -41,7 +42,8 @@ export default async function handlera(
         await db
             .collection('atcampus-groups')
             .updateOne(filter, update)
-            .then(() => {
+            .then((asd) => {
+                console.log(groupId)
                 res.status(200).send('success')
             })
             .catch((err) => {
