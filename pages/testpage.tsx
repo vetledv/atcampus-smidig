@@ -14,7 +14,9 @@ const TestPage = () => {
             <div className='bg-red-800'>
                 <AddTag />
                 <EditTagCard />
-                <TwoOptionsButtons />
+                <div className='p-4'>
+                    <TwoOptionsButtons />
+                </div>
                 <GroupMembers />
                 <div className='flex flex-col items-center justify-center'>
                     <h1 className='text-3xl font-bold'>TestPage</h1>
