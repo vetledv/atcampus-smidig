@@ -1,3 +1,4 @@
+import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
 import AddTag from 'components/groups/GroupSettings/AddTag'
 import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
 import NavBarTut from 'components/navigation/NavBarTutorial'
@@ -12,6 +13,7 @@ const TestPage = () => {
             <div className='bg-red-800'>
                 <AddTag />
                 <EditTagCard />
+                <TwoOptionsButtons />
                 <div className='flex flex-col items-center justify-center'>
                     <h1 className='text-3xl font-bold'>TestPage</h1>
                     <p className='text-xl my-36 space-y-36'>

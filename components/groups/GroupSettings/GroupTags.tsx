@@ -16,7 +16,7 @@ const GroupTags = () => {
         },
     ]
     return (
-        <div className='text-dark-4 flex flex-wrap max-w-xs min-w-min bg-red-300'>
+        <div className='text-dark-4 flex flex-wrap max-w-xs min-w-min'>
             {/*tag*/}
             {tags.map((tag) => (
                 <div
