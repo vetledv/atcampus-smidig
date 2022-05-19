@@ -18,7 +18,7 @@ export default async function handler(
     const update = {
         $addToSet: {
             members: {
-                userId: new ObjectId(userId),
+                userId: userId,
                 userName: userName,
             },
         },

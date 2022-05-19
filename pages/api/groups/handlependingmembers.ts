@@ -23,7 +23,7 @@ export default async function handler(
     const add = {
         $addToSet: {
             members: {
-                userId: new ObjectId(userToAdd.userId),
+                userId: userToAdd.userId,
                 userName: userToAdd.userName,
             },
         },
@@ -32,7 +32,7 @@ export default async function handler(
     const pull = {
         $pull: {
             pendingMembers: {
-                userId: new ObjectId(userToAdd.userId),
+                userId: userToAdd.userId,
                 userName: userToAdd.userName,
             },
         },

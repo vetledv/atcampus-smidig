@@ -52,7 +52,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         .find({
             members: {
                 $elemMatch: {
-                    userId: new ObjectId(session?.sub),
+                    userId: session?.sub,
                 },
             },
         })

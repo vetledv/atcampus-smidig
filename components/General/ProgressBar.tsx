@@ -1,6 +1,6 @@
 import FindClassPage from 'pages/findclass'
 import FindGroupPage from 'pages/findgroup'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
@@ -11,15 +11,14 @@ const ProgressBar = ({}) => {
     const [stepOne, setStepOne] = useState(false)
     const [stepTwo, setStepTwo] = useState(false)
     const [stepThree, setStepThree] = useState(false)
-    
-    const preFixPath = prefix => path => `${prefix}${path}`
+
+    const preFixPath = (prefix) => (path) => `${prefix}${path}`
     const LANDING = ''
     const getRegPath = preFixPath(LANDING)
     const step1Content = <></>
     const step2Content = <> </>
     const step3Content = <h1></h1>
     const step4Content = <h1></h1>
-
 
     // setup step validators, will be called before proceeding to the next step
     function step2Validator() {
@@ -52,7 +51,7 @@ const ProgressBar = ({}) => {
                 {
                     label: 'Velg skole',
                     name: 'step 1',
-                    content: step1Content
+                    content: step1Content,
                 },
                 {
                     label: 'Velg fag',

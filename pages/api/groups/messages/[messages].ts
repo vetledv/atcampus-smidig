@@ -56,7 +56,7 @@ messagesHandler.post(
                         messages: {
                             timestamp: new Date(),
                             from: {
-                                userId: new ObjectId(userId),
+                                userId: userId,
                                 userName: userName,
                             },
                             message: message,

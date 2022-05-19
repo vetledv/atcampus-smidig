@@ -31,6 +31,7 @@ export default NextAuth({
                 },
             },
             profile(profile) {
+                console.log('profile: ', profile.sub)
                 return {
                     id: profile.sub,
                     name: profile.name,

@@ -1,7 +1,7 @@
 import { ObjectId, Timestamp } from 'mongodb'
 
 export interface Member {
-    userId: ObjectId
+    userId: string
     userName: string
 }
 
@@ -30,7 +30,7 @@ export interface Message {
 }
 
 export interface SendMessage {
-    userId: ObjectId | string
+    userId: string
     userName: string
     message: string
     groupName: string
