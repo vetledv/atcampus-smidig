@@ -60,6 +60,7 @@ export default async function handler(
             )
             .then((messages) => {
                 res.status(200).json(messages)
+                res?.socket?.server?.io?.emit(`message ${groupId}`, message)
             })
             .catch((err) => {
                 res.status(500).json({
@@ -67,7 +68,5 @@ export default async function handler(
                     error: err,
                 })
             })
-
-        res?.socket?.server?.io?.emit('message', message)
     }
 }

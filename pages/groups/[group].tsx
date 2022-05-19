@@ -1,15 +1,14 @@
 import FlatButton from 'components/buttons/FlatButton'
+import GroupHeader from 'components/groups/GroupHeaderMobile'
 import { fetchReactQuery, postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
-import GroupHeader from 'components/groups/GroupHeaderMobile'
-import SocketIOClient from 'socket.io-client'
 import { useEffect, useState } from 'react'
+import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
+import SocketIOClient from 'socket.io-client'
 import type { Group, GroupMessages, Member, SendMessage } from 'types/groups'
-import { ObjectID } from 'bson'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -68,7 +67,7 @@ const GroupPage = () => {
         socket.on('disconnect', () => {
             setConnected(false)
         })
-        socket.on('message', (msg) => {
+        socket.on(`message ${group.data?._id.toString()}`, (msg) => {
             console.log('message received:', msg)
             messages.refetch()
         })
