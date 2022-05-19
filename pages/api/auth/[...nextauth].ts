@@ -2,17 +2,14 @@ import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import {
     google_client_id,
     google_client_secret,
-    mongodb_name,
-    mongodb_url,
     secret_key,
 } from 'lib/constants'
-import { MongoClient } from 'mongodb'
+import { connectToDB } from 'lib/mongodb'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { connectToDB } from 'lib/mongodb'
 
-const mongodb = connectToDB()
-const clientPromiseNew = mongodb.then((mongodb) => mongodb.client.connect())
+//const mongodb = connectToDB()
+//const clientPromise = mongodb.then((mongodb) => mongodb.client.connect())
 
 export default NextAuth({
     secret: secret_key,
@@ -34,6 +31,7 @@ export default NextAuth({
                 },
             },
             profile(profile) {
+                console.log('profile: ', profile.sub)
                 return {
                     id: profile.sub,
                     name: profile.name,
@@ -61,7 +59,7 @@ export default NextAuth({
             return token
         },
     },
-    adapter: MongoDBAdapter(clientPromiseNew),
+    //adapter: MongoDBAdapter(clientPromise),
     pages: {
         signIn: '/api/auth/login',
         signOut: '/api/auth/logout',
