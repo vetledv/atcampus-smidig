@@ -8,8 +8,8 @@ import { connectToDB } from 'lib/mongodb'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-const mongodb = connectToDB()
-const clientPromise = mongodb.then((mongodb) => mongodb.client.connect())
+//const mongodb = connectToDB()
+//const clientPromise = mongodb.then((mongodb) => mongodb.client.connect())
 
 export default NextAuth({
     secret: secret_key,
@@ -58,7 +58,7 @@ export default NextAuth({
             return token
         },
     },
-    adapter: MongoDBAdapter(clientPromise),
+    //adapter: MongoDBAdapter(clientPromise),
     pages: {
         signIn: '/api/auth/login',
         signOut: '/api/auth/logout',
