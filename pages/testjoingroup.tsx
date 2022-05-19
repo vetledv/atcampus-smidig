@@ -9,7 +9,7 @@ const TestPageJoinGroup = () => {
     const session = useSession()
     const groups = useQuery<Group[], Error>(
         'groupstest',
-        fetchReactQuery('mongo')
+        fetchReactQuery('testjoingroup')
     )
     const mutate = useMutation(
         (userInfo: any) => postJSON(`/api/testjoingroup`, userInfo),
@@ -71,7 +71,7 @@ export default TestPageJoinGroup
 export async function getServerSideProps() {
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery('groupstest', async () => {
-        const res = await fetch(`${baseUrl}/api/mongo`)
+        const res = await fetch(`${baseUrl}/api/testjoingroup`)
         const data = await res.json()
         return data
     })
