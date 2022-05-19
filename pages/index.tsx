@@ -16,8 +16,8 @@ import GroupHeader from 'components/groups/GroupHeaderMobile'
 import Footer from 'components/general/Footer'
 import AddTag from 'components/groups/GroupSettings/AddTag'
 import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
-import Checkbox from 'components/General/Checkbox'
-import BigCheckbox from 'components/General/BigCheckbox'
+import Checkbox from 'components/general/Checkbox'
+import BigCheckbox from 'components/general/BigCheckbox'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -190,7 +190,7 @@ const HomePage: NextPage = () => {
                     <h2 className='text-lg lg:text-xl mb-1'>Checkboxes</h2>
                     <div className='flex'>
                         <div className='flex-1'>
-                            <Checkbox 
+                            <Checkbox
                                 value={undefined}
                                 id={undefined}
                                 name={'Bestått'}
@@ -198,7 +198,7 @@ const HomePage: NextPage = () => {
                             />
                         </div>
                         <div className='flex-1'>
-                            <BigCheckbox 
+                            <BigCheckbox
                                 value={undefined}
                                 id={undefined}
                                 name={'Stille Spørsmål'}
@@ -211,7 +211,6 @@ const HomePage: NextPage = () => {
                 <div className='mt-4'>
                     <p className='py-4 text-sm text-dark-1'>❤️</p>
                 </div>
-
             </main>
         </>
     )

@@ -28,13 +28,16 @@
     "react-dom": "^18.1.0",
     "react-onclickoutside": "^6.12.1",
     "react-query": "^3.39.0",
-    "react-step-progress": "^1.0.3"
+    "react-step-progress": "^1.0.3",
+    "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.31",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
     "@types/react-onclickoutside": "^6.7.4",
+    "@types/socket.io-client": "^3.0.0",
     "autoprefixer": "^10.4.7",
     "eslint": "^8.15.0",
     "eslint-config-next": "^12.1.6",

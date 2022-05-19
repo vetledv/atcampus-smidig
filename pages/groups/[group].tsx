@@ -6,7 +6,10 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
-import type { Group, GroupMessages, Member } from 'types/groups'
+import SocketIOClient from 'socket.io-client'
+import { useEffect, useState } from 'react'
+import type { Group, GroupMessages, Member, SendMessage } from 'types/groups'
+import { ObjectID } from 'bson'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -25,7 +28,6 @@ const GroupPage = () => {
         ['messages', group.data?._id],
         fetchReactQuery(`groups/messages/${group.data?._id}`)
     )
-
     const mutate = useMutation(
         (object: AddMutateObj) =>
             postJSON(`/api/groups/handlependingmembers`, object),
@@ -50,6 +52,41 @@ const GroupPage = () => {
             action: action,
         }
         mutate.mutateAsync(addMutateObj)
+    }
+
+    const [msg, setMsg] = useState<string>('')
+    const [connected, setConnected] = useState<boolean>(false)
+
+    useEffect(() => {
+        const socket = SocketIOClient(process.env.NEXTAUTH_URL, {
+            path: '/api/groups/socket',
+        })
+        socket.on('connect', () => {
+            console.log('socket connected, id:', socket.id)
+            setConnected(true)
+        })
+        socket.on('disconnect', () => {
+            setConnected(false)
+        })
+        socket.on('message', (msg) => {
+            messages.refetch()
+        })
+        return () => {
+            socket.disconnect()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const handleSendMessage = () => {
+        if (msg.length > 0) {
+            const message: SendMessage = {
+                userId: session?.data?.user?.id,
+                userName: session?.data?.user?.name,
+                message: msg,
+            }
+            postJSON(`/api/groups/messages/${group.data?._id}`, message)
+            setMsg('')
+        }
     }
 
     if (group.isLoading || mutate.isLoading) {
@@ -151,7 +188,7 @@ const GroupPage = () => {
             )}
 
             {messages.data && (
-                <div>
+                <div className='flex flex-col gap-2 w-fit'>
                     <h1 className='font-semibold'>Messages</h1>
                     {messages.data.messages?.map((message, i) => (
                         <div key={i} className='flex bg-pink-400 gap-2'>
@@ -165,6 +202,30 @@ const GroupPage = () => {
                             <div>{message.message}</div>
                         </div>
                     ))}
+                    <div className='flex gap-2'>
+                        <input
+                            value={msg}
+                            placeholder={
+                                connected
+                                    ? 'Type a message...'
+                                    : 'Connecting...'
+                            }
+                            disabled={!connected}
+                            className='px-4 border-[1px] border-gray-300 rounded'
+                            onChange={(e) => {
+                                setMsg(e.target.value)
+                            }}
+                            onKeyUp={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSendMessage()
+                                }
+                            }}></input>
+                        <FlatButton
+                            disabled={!connected}
+                            onClick={() => handleSendMessage()}>
+                            Send
+                        </FlatButton>
+                    </div>
                 </div>
             )}
         </>

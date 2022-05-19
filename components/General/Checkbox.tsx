@@ -1,17 +1,14 @@
-import classNames from "classnames";
-import { useState } from "react";
+import classNames from 'classnames'
+import { useState } from 'react'
 
-const Checkbox = ({
-    type = 'checkbox',
-    value,
-    id,
-    name,
-    className,
-}) => {
+const Checkbox = ({ type = 'checkbox', value, id, name, className }) => {
     const [isChecked, setIsChecked] = useState(false)
-    const box = 'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
-    const checkedBox = 'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
-    const uncheckedBox = 'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
+    const box =
+        'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
+    const checkedBox =
+        'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
+    const uncheckedBox =
+        'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
 
     let classes = classNames(
         isChecked ? `${box} ${uncheckedBox}` : `${box} ${checkedBox}`,
@@ -19,8 +16,7 @@ const Checkbox = ({
     )
 
     return (
-        <label
-            className={classes}>
+        <label className={classes}>
             <input
                 name={name}
                 value={value}

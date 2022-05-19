@@ -28,3 +28,9 @@ export interface Message {
     from: Member
     message: string
 }
+
+export interface SendMessage {
+    userId: ObjectId | string
+    userName: string
+    message: string
+}

@@ -4,6 +4,7 @@ function classNames(...classes) {
 
 export default function FlatButton({
     id = null,
+    disabled = false,
     as = `span`,
     type = null,
     className = null,
