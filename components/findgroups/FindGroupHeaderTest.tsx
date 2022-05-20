@@ -1,5 +1,5 @@
 import React from 'react'
-import ProgressBar from 'components/general/ProgressBar'
+import ProgressBar from 'components/General/ProgressBar'
 
 const FindGroupsHeaderTest = ({ title }) => {
     return (
@@ -13,7 +13,7 @@ const FindGroupsHeaderTest = ({ title }) => {
                 </div>
 
                 <div className='w-6/12'>
-                    <ProgressBar pageLabel />
+                    <ProgressBar />
                 </div>
             </div>
         </div>

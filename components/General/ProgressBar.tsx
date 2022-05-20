@@ -5,15 +5,12 @@ import { useRouter } from 'next/router'
 import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
 
-const ProgressBar = ({ pageLabel }) => {
+const ProgressBar = ({  }) => {
     const [step, setStep] = useState(0)
     const [stepOne, setStepOne] = useState(false)
     const [stepTwo, setStepTwo] = useState(false)
     const [stepThree, setStepThree] = useState(false)
 
-    const preFixPath = (prefix) => (path) => `${prefix}${path}`
-    const LANDING = ''
-    const getRegPath = preFixPath(LANDING)
     const step1Content = <></>
     const step2Content = <> </>
     const step3Content = <h1></h1>
@@ -42,30 +39,31 @@ const ProgressBar = ({ pageLabel }) => {
         <StepProgressBar
             startingStep={0}
             onSubmit={onFormSubmit}
+            stepClass='p-5'
             primaryBtnClass='hidden'
             secondaryBtnClass='hidden'
             previousBtnName='Tilbake'
             nextBtnName='Neste'
             steps={[
                 {
-                    label: pageLabel,
+                    label: '',
                     name: 'step 1',
                     content: step1Content,
                 },
                 {
-                    label: pageLabel,
+                    label: '',
                     name: 'step 2',
                     content: step2Content,
                     validator: step2Validator,
                 },
                 {
-                    label: pageLabel,
+                    label: '',
                     name: 'step 3',
                     content: step3Content,
                     validator: step3Validator,
                 },
                 {
-                    label: pageLabel,
+                    label: '',
                     name: 'step 4',
                     content: step4Content,
                     validator: step4Validator,
