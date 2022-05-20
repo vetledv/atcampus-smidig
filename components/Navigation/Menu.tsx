@@ -41,6 +41,12 @@ export default function Menu() {
             href: '/choosegoal',
             current: router.asPath === '/choosegoal',
         },
+        {
+            name: 'testjoingroup',
+            icon: DocumentTextIcon,
+            href: '/testjoingroup',
+            current: router.asPath === '/choosegoal',
+        },
     ]
 
     function classNames(...classes) {
