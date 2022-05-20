@@ -73,7 +73,7 @@ const HomePage: NextPage = () => {
 
                 <div className='mt-8 pb-12'>
                     <h2 className='text-lg lg:text-xl'>Drop Down</h2>
-                    <DropDown items={items} dropDownTitle={'Instutisjoner'} />
+                    <DropDown items={items} dropDownTitle={'Institusjoner'} />
                 </div>
 
                 <AddTag />
