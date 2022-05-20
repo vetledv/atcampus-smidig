@@ -14,7 +14,7 @@ const GroupHeader = ({ group }: { group: Group | null }) => {
 
     return (
         <>
-            <div className={'h-48 min-w-96 max-w-6xl bg-dark-1 text-white'}>
+            <div className={'h-48 min-w-96 bg-dark-1 text-white'}>
                 <div className='flex justify-between h-full'>
                     <div className='flex flex-col justify-evenly px-6'>
                         <div className='pb-3'>

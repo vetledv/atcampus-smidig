@@ -36,14 +36,11 @@ const GroupPage = () => {
             },
         }
     )
-    const messages = useQuery<GroupMessages, Error>(
-        ['messages', group.data?._id],
-        fetchReactQuery(`groups/messages/${group.data?._id}`)
-    )
-    const refetchMsg = () => {
-        console.log('DEEEZ')
-        messages.refetch()
-    }
+
+    // const refetchMsg = () => {
+    //     console.log('DEEEZ')
+    //     messages.refetch()
+    // }
 
     const handlePendingMember = async (
         userToAdd: Member,
@@ -155,13 +152,10 @@ const GroupPage = () => {
                     </div>
                 </div>
             )}
-            {messages.data && (
-                <MessageComponent
-                    groupName={group.data?.groupName}
-                    messages={messages.data}
-                    refetchMsg={refetchMsg}
-                />
-            )}
+            <MessageComponent
+                groupId={group.data._id}
+                groupName={group.data.groupName}
+            />
         </>
     )
 }

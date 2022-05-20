@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
 
-const ProgressBar = ({}) => {
+const ProgressBar = () => {
     const [step, setStep] = useState(0)
     const [stepOne, setStepOne] = useState(false)
     const [stepTwo, setStepTwo] = useState(false)

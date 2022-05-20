@@ -1,4 +1,4 @@
-import React from 'react'
+import ProgressBar from 'components/general/ProgressBar'
 
 const FindGroupsHeader = ({ stepTitle }) => {
     return (
@@ -10,6 +10,7 @@ const FindGroupsHeader = ({ stepTitle }) => {
                 </div>
 
                 <div className='pr-16'></div>
+                <ProgressBar />
                 <div></div>
             </div>
         </div>
