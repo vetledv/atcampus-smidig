@@ -4,6 +4,7 @@ import FindGroupsHeaderTest from 'components/findgroups/FindGroupHeaderTest'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = () => {
+    const [selectedSubject, setSelectedSubject] = useState('')
     const [classes, setSelectedClass] = useState([
         {
             id: '1',
@@ -42,21 +43,28 @@ const FindClassPage = () => {
             classCode: '1234',
         },
     ])
+
+    console.log(selectedSubject)
+
     return (
-        <div className='w-full'>
-            <FindGroupsHeaderTest title='Velg Fag' />
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-                {classes.map((subject) => (
-                    <div key={subject.id} className='p-2'>
-                        <SubjectCardCompact
-                            subjectCode={subject.classCode}
-                            subjectImage={subject.image}
-                            subjectName={subject.className}
-                            subjectId={subject.id}
-                        />
-                    </div>
-                ))}
-            </div>
+        <div className='flex flex-wrap h-96'>
+            {classes.map((subject) => (
+                <div
+                    key={subject.id}
+                    className='p-8'
+                    onClick={() => {
+                        setSelectedSubject(''),
+                            setSelectedSubject(subject.classCode)
+                    }}>
+                    <SubjectCardCompact
+                        subjectCode={subject.classCode}
+                        subjectImage={subject.image}
+                        subjectName={subject.className}
+                        subjectId={subject.id}
+                        onClick={undefined}
+                    />
+                </div>
+            ))}
         </div>
     )
 }

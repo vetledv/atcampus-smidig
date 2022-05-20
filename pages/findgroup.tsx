@@ -2,6 +2,7 @@ import FlatButton from 'components/buttons/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
 import React, { useState } from 'react'
+import FindClassPage from './findclass'
 import SelectGoals from './selectgoals'
 // Contents of this file will be moved. This page will serve the find group functionality.
 // TODO: add steps to create a group
@@ -36,7 +37,7 @@ const FindGroupPage = () => {
                     <div className='bg-white input-shadow h-full min-w-min max-w-7xl w-full my-16'>
                         {step === 0 && <ChooseSchool />}
                         {
-                            step === 1 && <ChooseSchool /> //TODO: Add SelectSubject
+                            step === 1 && <FindClassPage /> //TODO: Add SelectSubject
                         }
                         {
                             step === 2 && <SelectGoals /> //TODO: Add SelectGoal

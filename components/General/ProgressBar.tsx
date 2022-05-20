@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
-import 'react-step-progress/src/progressBar.module.css'
 
 const ProgressBar = ({ pageLabel }) => {
     const [step, setStep] = useState(0)
@@ -43,8 +42,8 @@ const ProgressBar = ({ pageLabel }) => {
         <StepProgressBar
             startingStep={0}
             onSubmit={onFormSubmit}
-            primaryBtnClass='text-white bg-gradient-to-r from-gradient-left to-gradient-right hover:shadow-md hover:shadow-purple-2/50 active:to-purple-1/70 border-none rounded-standard'
-            secondaryBtnClass='text-white bg-gradient-to-r from-gradient-left to-gradient-right hover:shadow-md hover:shadow-purple-2/50 active:to-purple-1/70 border-none rounded-standard'
+            primaryBtnClass='hidden'
+            secondaryBtnClass='hidden'
             previousBtnName='Tilbake'
             nextBtnName='Neste'
             steps={[
