@@ -1,5 +1,4 @@
 import React from 'react'
-import ProgressBar from 'components/General/ProgressBar'
 
 const FindGroupsHeaderTest = ({ title }) => {
     return (
@@ -12,9 +11,7 @@ const FindGroupsHeaderTest = ({ title }) => {
                     <div className='text-2xl'>{title}(temporary)</div>
                 </div>
 
-                <div className='w-6/12'>
-                    <ProgressBar />
-                </div>
+                <div className='w-6/12'></div>
             </div>
         </div>
     )

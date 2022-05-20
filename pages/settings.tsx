@@ -1,6 +1,6 @@
-import AddTag from 'components/groups/GroupSettings/AddTag'
-import EditTagCard from 'components/groups/GroupSettings/EditGroupCard'
-import MembersSettings from 'components/groups/GroupSettings/MembersSettings'
+import AddTag from 'components/groups/groupsettings/AddTag'
+import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
+import MembersSettings from 'components/groups/groupsettings/MembersSettings'
 import React from 'react'
 
 const Settings = () => {
