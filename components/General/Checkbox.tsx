@@ -1,7 +1,14 @@
 import classNames from 'classnames'
 import { useState } from 'react'
 
-const Checkbox = ({ type = 'checkbox', value, id, name, className }) => {
+const Checkbox = ({
+    type = 'checkbox',
+    value,
+    id,
+    name,
+    className,
+    onClick,
+}) => {
     const [isChecked, setIsChecked] = useState(false)
     const box =
         'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
@@ -25,6 +32,7 @@ const Checkbox = ({ type = 'checkbox', value, id, name, className }) => {
                 type={type}
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.currentTarget.checked)}
+                onClick={onClick}
             />
             <span>{name}</span>
         </label>

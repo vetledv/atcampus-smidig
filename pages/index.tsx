@@ -195,6 +195,7 @@ const HomePage: NextPage = () => {
                                 id={undefined}
                                 name={'Bestått'}
                                 className={undefined}
+                                onClick={undefined}
                             />
                         </div>
                         <div className='flex-1'>
@@ -203,6 +204,7 @@ const HomePage: NextPage = () => {
                                 id={undefined}
                                 name={'Stille Spørsmål'}
                                 className={undefined}
+                                onClick={undefined}
                             />
                         </div>
                     </div>

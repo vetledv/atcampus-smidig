@@ -5,8 +5,7 @@ import { useState } from 'react'
 
 const SelectGoals = () => {
     return (
-        <div className='bg-white w-full'>
-            <FindGroupsHeader stepTitle={'Velg Mål'} />
+        <div className='bg-white w-full h-96'>
             <div className='flex flex-col justify-center p-4'>
                 <SelectGoal />
                 <SelectPreferances />

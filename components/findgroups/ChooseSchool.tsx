@@ -26,20 +26,24 @@ const ChooseSchool = () => {
     ]
     return (
         <>
-            <FindGroupsFilter items={schools} />
-            <div>
-                <div className='font-semibold text-xl text-dark-1 p-4'>
-                    Populære institusjoner
-                </div>
-                {schools.map((school) => (
-                    <div
-                        key={school.id}
-                        onClick={() => {
-                            setSelectedSchool(school.value)
-                        }}>
-                        <FindGroupsPopularSchools schoolName={school.value} />
+            <div className='h-96'>
+                <FindGroupsFilter items={schools} />
+                <div>
+                    <div className='font-semibold text-xl text-dark-1 p-4'>
+                        Populære institusjoner
                     </div>
-                ))}
+                    {schools.map((school) => (
+                        <div
+                            key={school.id}
+                            onClick={() => {
+                                setSelectedSchool(school.value)
+                            }}>
+                            <FindGroupsPopularSchools
+                                schoolName={school.value}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     )

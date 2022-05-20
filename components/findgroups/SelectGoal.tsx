@@ -1,7 +1,13 @@
 import Checkbox from 'components/general/Checkbox'
 import { useState } from 'react'
 
+interface State {
+    selectedGoal: Array<String>
+}
+
 const SelectGoal = () => {
+    const [selectedGoal, setSelectedGoal] = useState([])
+
     const goals = [
         {
             id: 1,
@@ -32,6 +38,18 @@ const SelectGoal = () => {
             value: 'Stryk',
         },
     ]
+
+    const handleClick = (e) => {
+        if (!selectedGoal.includes(e.target.value)) {
+            setSelectedGoal([...selectedGoal, e.target.value])
+        } else {
+            setSelectedGoal(
+                selectedGoal.filter((goal) => goal !== e.target.value)
+            )
+        }
+    }
+    console.log('selectedGoal', selectedGoal)
+
     return (
         <section>
             <h3 className='mb-5'>Hva ønsker du å oppnå?</h3>
@@ -43,6 +61,7 @@ const SelectGoal = () => {
                         value={goal.value}
                         id={goal.id}
                         className=''
+                        onClick={handleClick}
                     />
                 ))}
             </div>

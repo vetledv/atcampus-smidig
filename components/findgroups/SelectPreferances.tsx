@@ -2,6 +2,7 @@ import BigCheckbox from 'components/general/BigCheckbox'
 import { useState } from 'react'
 
 const SelectPreferances = () => {
+    const [selectedPreferances, setSelectedPreferances] = useState([])
     const preferances = [
         'Stille spørsmål',
         'Hjelpe andre',
@@ -9,6 +10,19 @@ const SelectPreferances = () => {
         'Øve til Eksamen',
         'Ha det gøy',
     ]
+
+    const handleClick = (e) => {
+        if (!selectedPreferances.includes(e.target.value)) {
+            setSelectedPreferances([...selectedPreferances, e.target.value])
+        } else {
+            setSelectedPreferances(
+                selectedPreferances.filter(
+                    (preferance) => preferance !== e.target.value
+                )
+            )
+        }
+    }
+    console.log(selectedPreferances)
 
     return (
         <section>
@@ -21,6 +35,7 @@ const SelectPreferances = () => {
                         name={preferance}
                         id={preferance}
                         className='m-1'
+                        onClick={handleClick}
                     />
                 ))}
             </div>

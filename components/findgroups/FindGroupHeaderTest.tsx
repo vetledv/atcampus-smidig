@@ -13,7 +13,7 @@ const FindGroupsHeaderTest = ({ title }) => {
                 </div>
 
                 <div className='w-6/12'>
-                    <ProgressBar />
+                    <ProgressBar pageLabel />
                 </div>
             </div>
         </div>
