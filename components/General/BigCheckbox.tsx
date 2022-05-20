@@ -4,9 +4,12 @@ import { useState } from 'react'
 
 const BigCheckbox = ({ type = 'checkbox', value, id, name, className }) => {
     const [isChecked, setIsChecked] = useState(false)
-    const box = 'flex cursor-pointer w-64 text-md items-center h-20 text-center rounded-standard border-2 font-normal'
-    const checkedBox = 'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
-    const uncheckedBox = 'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
+    const box =
+        'flex cursor-pointer w-64 text-md items-center h-20 text-center rounded-standard border-2 font-normal'
+    const checkedBox =
+        'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
+    const uncheckedBox =
+        'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
 
     let classes = classNames(
         isChecked ? `${box} ${checkedBox}` : `${box} ${uncheckedBox}`,

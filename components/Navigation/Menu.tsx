@@ -35,6 +35,12 @@ export default function Menu() {
             href: '/findgroup',
             current: router.asPath === '/findgroup',
         },
+        {
+            name: 'Velg Mål',
+            icon: DocumentTextIcon,
+            href: '/choosegoal',
+            current: router.asPath === '/choosegoal',
+        },
     ]
 
     function classNames(...classes) {

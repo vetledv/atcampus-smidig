@@ -4,7 +4,7 @@ import GroupTags from './GroupTags'
 
 const AddTag = () => {
     return (
-        <div className='flex flex-col w-fit bg-white rounded-standard p-6 drop-shadow gap-4'>
+        <div className='flex flex-col bg-white rounded-standard p-6 drop-shadow gap-4 w-80 h-96'>
             {/*Header container*/}
             <h1 className='text-2xl text-dark-1 font-bold'>Tags</h1>
             {/*Sub txt*/}
