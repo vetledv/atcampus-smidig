@@ -1,7 +1,7 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GradientButton from 'components/buttons/GradientButton'
 import TextInputField from 'components/general/TextInputField'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import InputItem from './InputItem'
 
 const EditTagCard = () => {
