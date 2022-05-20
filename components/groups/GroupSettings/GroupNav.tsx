@@ -12,9 +12,32 @@ const GroupNav = () => {
                             className={
                                 active === 0
                                     ? 'text-dark-1 border-b-4  border-purple-1'
-                                    : ' ' + ' text-dark-3 border-b-4'
+                                    : ' ' +
+                                      ' text-dark-3 border-b-4 border-white'
                             }>
-                            Group Name
+                            *Gruppenavn*
+                        </button>
+                    </div>
+                    <div onClick={() => setActive(1)}>
+                        <button
+                            className={
+                                active === 1
+                                    ? 'text-dark-1 border-b-4  border-purple-1'
+                                    : ' ' +
+                                      ' text-dark-3 border-b-4 border-white'
+                            }>
+                            Chat
+                        </button>
+                    </div>
+                    <div onClick={() => setActive(2)}>
+                        <button
+                            className={
+                                active === 2
+                                    ? 'text-dark-1 border-b-4  border-purple-1'
+                                    : ' ' +
+                                      ' text-dark-3 border-b-4 border-white'
+                            }>
+                            Kalender
                         </button>
                     </div>
                 </ul>
