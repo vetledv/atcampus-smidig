@@ -1,5 +1,4 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
-import GroupHeader from 'components/groups/GroupHeaderMobile'
 import AddTag from 'components/groups/groupsettings/AddTag'
 import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
 import GroupMembers from 'components/groups/groupsettings/GroupMembers'
