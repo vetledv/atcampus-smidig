@@ -35,6 +35,16 @@ const TestPageJoinGroup = () => {
         return <div>Error</div>
     }
 
+    const ozuisdrg = (group: Group) => {
+        if (
+            group.members.find(
+                (member) => member.userId === session?.data?.user?.id
+            )
+        ) {
+            return 'Joined'
+        } else return 'Join'
+    }
+
     return (
         <>
             {groups.data && (
@@ -47,10 +57,7 @@ const TestPageJoinGroup = () => {
                                 className={'p-4 flex gap-2'}>
                                 <div>{group.groupName}</div>
                                 <FlatButton onClick={() => handleJoin(group)}>
-                                    {group?.members?.map((member) => member)
-                                        .length != 0
-                                        ? 'Joined'
-                                        : 'Join'}
+                                    {ozuisdrg(group)}
                                 </FlatButton>
                             </li>
                         ))}
