@@ -1,11 +1,9 @@
 import FlatButton from 'components/buttons/FlatButton'
-import { group } from 'console'
 import { fetchReactQuery, postJSON } from 'hooks/useGroups'
-import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { dehydrate, QueryClient, useQuery, UseQueryResult } from 'react-query'
+import { useQuery } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
 import type { GroupMessages, SendMessage } from 'types/groups'
 
@@ -27,27 +25,28 @@ const MessageComponent = ({
     const socket = useRef<Socket>()
     const msgCont = useRef<HTMLDivElement>(null)
 
-    const refetch = useCallback(() => {
-        messages?.refetch()
-    }, [messages])
     const scrollToBot = () => {
         msgCont.current.scrollTop = msgCont.current.scrollHeight
     }
 
+    const refetch = useCallback(() => {
+        messages?.refetch()
+    }, [messages])
+
     useEffect(() => {
-        if (!!session.data.user) {
+        const socketStart = async () => {
             socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
                 path: '/api/groups/socket',
                 query: {
                     room: groupId,
-                    userId: session.data.user.id,
                 },
             })
-
+            console.log('in useeffect')
             socket.current.on('connect', () => {
                 console.log('socket connected, id:', socket.current.id)
                 //join a room
                 socket.current.emit('create', groupId)
+                console.log('joined room')
                 socket.current.emit('active', groupId)
                 setConnected(true)
             })
@@ -55,14 +54,15 @@ const MessageComponent = ({
             const currSocket = socket.current
             return () => {
                 console.log('socket disconnected')
+                currSocket.emit('leave', groupId)
                 currSocket.close()
             }
         }
+        socketStart()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(() => {
-        if (!socket.current) return
+    const socketHandler = async () => {
         socket.current.on('disconnect', () => {
             socket.current.emit('leave', groupId)
             socket.current.emit('active', groupId)
@@ -79,6 +79,10 @@ const MessageComponent = ({
             socket.current.emit('active', groupId)
             refetch()
         })
+    }
+    useEffect(() => {
+        if (!socket.current) return
+        socketHandler()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

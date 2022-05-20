@@ -11,7 +11,7 @@ const GroupHeader = ({ group }: { group: Group | null }) => {
     const maxMembers = group?.maxMembers ?? 12
     const groupName = group?.groupName ?? 'Group Name'
     //---
-
+    //TODO: context for socket active members
     return (
         <>
             <div className={'h-48 min-w-96 bg-dark-1 text-white'}>
