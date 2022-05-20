@@ -6,7 +6,7 @@ import StepProgressBar from 'react-step-progress'
 import 'react-step-progress/dist/index.css'
 import 'react-step-progress/src/progressBar.module.css'
 
-const ProgressBar = ({pageLabel}) => {
+const ProgressBar = ({ pageLabel }) => {
     const [step, setStep] = useState(0)
     const [stepOne, setStepOne] = useState(false)
     const [stepTwo, setStepTwo] = useState(false)

@@ -10,9 +10,7 @@ const messagesHandler = nextConnect()
 messagesHandler.get(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
-        console.log(db)
         const { messages: groupId } = req.query
-        console.log('REQUEST METHOD: ', req.method)
         console.log('[messages] groupId: ', groupId)
         await db
             .collection('group-messages')
