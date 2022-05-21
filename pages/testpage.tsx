@@ -1,4 +1,5 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
+import GroupMain from 'components/groups/GroupMain'
 import AddTag from 'components/groups/groupsettings/AddTag'
 import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
 import GroupMembers from 'components/groups/groupsettings/GroupMembers'
@@ -30,6 +31,9 @@ const TestPage = () => {
                 <GroupNav />
                 <div className='py-2'>
                     <GroupSettingsNav />
+                </div>
+                <div className='py-2'>
+                    <GroupMain />
                 </div>
 
                 <div className='flex flex-col items-center justify-center'>
