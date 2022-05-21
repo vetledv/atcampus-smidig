@@ -4,15 +4,15 @@ import Image from 'next/image'
 
 const GroupMain = () => {
     return (
-        <div className='bg-white h-[400px] w-[800px] rounded-lg p-6 '>
+        <div className='bg-white h-[400px] w-[800px] rounded-lg p-5 '>
             <div className='grid grid-cols-2 w-full h-1/3 '>
-                <div className='flex flex-col pt-3 bg-gradient-left p-1/2 mb-3 mr-3 rounded-md '>
+                <div className='flex flex-col pt-3 bg-gradient-right p-1/2 mb-2 mr-3 rounded-md '>
                     <ChatIcon className=' text-dark-6 text-xl h-12 text-center' />
                     <h1 className=' text-dark-6 font-regular text-xl text-center hover:font-medium '>
                         Chat
                     </h1>
                 </div>
-                <div className='flex flex-col pt-3 bg-gradient-left p-1/2 mb-3 mr-3 rounded-md '>
+                <div className='flex flex-col pt-3 bg-gradient-right p-1/2 mb-2 ml-3 rounded-md '>
                     <CalendarIcon className=' text-dark-6 text-xl h-12 text-center' />
                     <h1 className=' text-dark-6 font-regular text-xl text-center  hover:font-medium'>
                         Kalender
@@ -20,7 +20,7 @@ const GroupMain = () => {
                 </div>
             </div>
             <div className='grid grid-cols-1 w-full h-2/3'>
-                <div className='bg-gradient-left mt-3 rounded-md pt-3 '>
+                <div className='bg-gradient-right mt-3 rounded-md pt-1 '>
                     <h1 className=' text-dark-6 font-regular text-xl text-center hover:font-medium'>
                         Siste Hendelser
                     </h1>
@@ -60,7 +60,7 @@ const GroupMain = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className='w-1/2 h-full ml-6 mr-3 space-y-1 '>
+                        <div className='w-1/2 h-full ml-6 mr-6 space-y-1 '>
                             <div className='bg-dark-6 w-full h-1/3 rounded-sm grid grid-rows-2 items-top p-1'>
                                 <p className='text-dark-1 text-center -mt-1'>
                                     <span className='font-medium text-md hover:font-semibold'>
