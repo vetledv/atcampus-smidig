@@ -17,37 +17,49 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             path: '/api/groups/socket',
         })
         res.socket.server.io = io
-    }
-    res?.socket?.server?.io?.on('connection', (socket) => {
-        var query = socket.handshake.query
-        var room = query.room
-        console.log('ROOM: ', room)
+        io.on('connection', (socket) => {
+            var query = socket.handshake.query
+            var room = query.room
+            console.log('ROOM: ', room)
 
-        socket.on('create', async (room) => {
-            socket.join(room)
-            console.log('SOCKET: joined', room)
-            res?.socket?.server?.io
-                ?.in(req.query.room)
-                .allSockets()
-                .then((sockets) => {
-                    console.log('SOCKET_ACTIVE_JOIN_SIZE: ', sockets.size)
-                    socket.emit('active-members-join', sockets.size)
-                })
+            socket.on('create', async (room) => {
+                socket.join(room)
+                console.log('SOCKET: joined', room)
+                io.in(req.query.room)
+                    .allSockets()
+                    .then((sockets) => {
+                        console.log('SOCKET_CREATE_SIZE_: ', sockets.size)
+                        socket.emit('active-members', sockets.size)
+                    })
+            })
+            socket.on('active', async (room) => {
+                io.in(req.query.room)
+                    .allSockets()
+                    .then((sockets) => {
+                        console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
+                        socket.emit('active-members', sockets.size)
+                    })
+                //all active sockets in room
+            })
+            socket.on(`typing ${room}`, (data, user) => {
+                console.log('SOCKET_TYPING: ', data, 'user: ', user)
+                socket.broadcast.to(room).emit(`typing ${room}`, data, user)
+                //emit stopped typing after 5 seconds of inactivity
+            })
+            socket.on(`stopped-typing ${room}`, (data, user) => {
+                console.log('SOCKET_STOPPED_TYPING: ', data, 'user: ', user)
+                socket.broadcast
+                    .to(room)
+                    .emit(`stopped-typing ${room}`, data, user)
+            })
+            socket.on('leave', async (room) => {
+                console.log('SOCKET_LEAVE: ', room)
+                socket.leave(room)
+            })
         })
-        socket.on('active', async (room) => {
-            res?.socket?.server?.io
-                ?.in(req.query.room)
-                .allSockets()
-                .then((sockets) => {
-                    console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
-                    socket.emit('active-members', sockets.size)
-                })
-            //all active sockets in room
-        })
-        socket.on('leave', async (room) => {
-            console.log('SOCKET_LEAVE: ', room)
-            socket.leave(room)
-        })
-    })
+    } else {
+        console.log('Socket already running')
+    }
+    res.end()
 }
 export default SocketHandler

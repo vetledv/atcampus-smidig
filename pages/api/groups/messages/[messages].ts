@@ -7,26 +7,6 @@ import { SendMessage } from './../../../../types/groups'
 
 const messagesHandler = nextConnect()
 
-const middleware = async (
-    req: NextApiRequest,
-    res: NextApiResponseServerIO,
-    next
-) => {
-    const { messages: groupId } = req.query
-    console.log(`groupId: ${groupId}`)
-    res?.socket?.server?.io
-        .in(`${groupId}`)
-        .allSockets()
-        .then((sockets) => {
-            console.log(`room:${groupId} sockets size:`, sockets.size)
-            return sockets.size
-        })
-        .then((number) => {
-            res?.socket?.server?.io.in(`${groupId}`).emit('active', number)
-        })
-    next()
-}
-
 messagesHandler.get(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
@@ -84,7 +64,8 @@ messagesHandler.post(
                 //res?.socket?.server?.io?.emit(`message ${groupName}`, message)
                 res?.socket?.server?.io
                     ?.in(groupId)
-                    .emit(`message ${groupId}`, message)
+                    .emit(`message ${groupId as string}`, message)
+                console.log(`message ${groupId as string}`, message)
                 res.status(201).json(messages)
             })
             .catch((err) => {
@@ -95,6 +76,26 @@ messagesHandler.post(
             })
     }
 )
-messagesHandler.use(middleware)
+
+const middleware = async (
+    req: NextApiRequest,
+    res: NextApiResponseServerIO,
+    next
+) => {
+    const { messages: groupId } = req.query
+    console.log(`groupId: ${groupId}`)
+    res?.socket?.server?.io
+        .in(`${groupId}`)
+        .allSockets()
+        .then((sockets) => {
+            console.log(`room:${groupId} sockets size:`, sockets.size)
+            return sockets.size
+        })
+        .then((number) => {
+            res?.socket?.server?.io.in(`${groupId}`).emit('active', number)
+        })
+    next()
+}
+//messagesHandler.use(middleware)
 
 export default messagesHandler
