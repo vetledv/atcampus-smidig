@@ -5,13 +5,18 @@ import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 import { Group } from 'types/groups'
 
-const GroupHeader = ({ group }: { group: Group | null }) => {
+const GroupHeader = ({
+    group,
+    activeMembers,
+}: {
+    group: Group | null
+    activeMembers: number
+}) => {
     // for testing
     const membersAmount = group?.members?.length ?? 0
     const maxMembers = group?.maxMembers ?? 12
     const groupName = group?.groupName ?? 'Group Name'
-    //---
-    //TODO: context for socket active members
+
     return (
         <>
             <div className={'h-48 min-w-96 bg-dark-1 text-white'}>
@@ -30,8 +35,10 @@ const GroupHeader = ({ group }: { group: Group | null }) => {
                         </div>
                         <div className=''>
                             <div className='flex flex-row items-center'>
-                                <div>Medlemmer Aktive: {membersAmount} </div>{' '}
-                                <div className='text-xs'>🟢</div>
+                                <div>Medlemmer Aktive: {activeMembers} </div>{' '}
+                                {activeMembers > 0 && (
+                                    <div className='text-xs'>🟢</div>
+                                )}
                             </div>
                             <GroupMembers
                                 members={membersAmount}

@@ -17,6 +17,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             path: '/api/groups/socket',
         })
         res.socket.server.io = io
+
         io.on('connection', (socket) => {
             var query = socket.handshake.query
             var room = query.room
@@ -25,20 +26,10 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             socket.on('create', async (room) => {
                 socket.join(room)
                 console.log('SOCKET: joined', room)
-                io.in(req.query.room)
-                    .allSockets()
-                    .then((sockets) => {
-                        console.log('SOCKET_CREATE_SIZE_: ', sockets.size)
-                        socket.emit('active-members', sockets.size)
-                    })
+                broadcastActiveMembers()
             })
             socket.on('active', async (room) => {
-                io.in(req.query.room)
-                    .allSockets()
-                    .then((sockets) => {
-                        console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
-                        socket.emit('active-members', sockets.size)
-                    })
+                broadcastActiveMembers()
                 //all active sockets in room
             })
             socket.on(`typing ${room}`, (data, user) => {
@@ -56,6 +47,17 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
                 console.log('SOCKET_LEAVE: ', room)
                 socket.leave(room)
             })
+
+            function broadcastActiveMembers() {
+                io.in(req.query.room)
+                    .allSockets()
+                    .then((sockets) => {
+                        console.log('SOCKET_ACTIVE_SIZE_: ', sockets.size)
+                        socket.broadcast
+                            .to(room)
+                            .emit('active-members', sockets.size - 1)
+                    })
+            }
         })
     } else {
         console.log('Socket already running')

@@ -2,27 +2,35 @@ import FlatButton from 'components/buttons/FlatButton'
 import { fetchReactQuery, postJSON } from 'hooks/useGroups'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import { useQuery } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
-import type { GroupMessages, SendMessage } from 'types/groups'
+import type { GroupMessages, Message, SendMessage } from 'types/groups'
 
 const MessageComponent = ({
     groupName,
     groupId,
+    setActiveMembers,
 }: {
     groupId: ObjectId
     groupName: string
+    setActiveMembers: Dispatch<SetStateAction<number>>
 }) => {
     const session = useSession()
     const messages = useQuery<GroupMessages, Error>(
         ['messages', groupId],
         fetchReactQuery(`groups/messages/${groupId}`)
     )
-
     const [msg, setMsg] = useState<string>('')
     const [connected, setConnected] = useState<boolean>(false)
-    const [activeMembers, setActiveMembers] = useState<number>(0)
     const [userTyping, setUserTyping] = useState<string>('')
 
     const socket = useRef<Socket>()
@@ -36,9 +44,10 @@ const MessageComponent = ({
     }, [])
 
     const refetch = useCallback(() => {
-        messages?.refetch()
+        messages.refetch()
     }, [messages])
 
+    //initialize socket
     useEffect(() => {
         socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
             path: '/api/groups/socket',
@@ -54,7 +63,6 @@ const MessageComponent = ({
             console.log('joined room')
             setConnected(true)
         })
-
         const currSocket = socket.current
         return () => {
             currSocket.emit('leave', groupId)
@@ -65,20 +73,18 @@ const MessageComponent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    //socket events
     useEffect(() => {
         if (!socket.current) return
-
         socket.current.on('active-members', (data) => {
             console.log('active:', data)
             setActiveMembers(data)
         })
-
         socket.current.on(`message ${groupId.toString()}`, (message) => {
             console.log('message received:', message)
             socket.current.emit('active', groupId)
             refetch()
         })
-
         socket.current.on(
             `typing ${groupId.toString()}`,
             (data, user: string) => {
@@ -159,6 +165,24 @@ const MessageComponent = ({
         ]
     )
 
+    const messagesByDay = useMemo(() => {
+        if (!messages.data) return []
+        let messagesByDay = []
+        messages.data.messages.forEach((message) => {
+            const day = new Date(message.timestamp).toLocaleDateString()
+            const index = messagesByDay.findIndex((m) => m.day === day)
+            if (index === -1) {
+                messagesByDay.push({
+                    day,
+                    messages: [message],
+                })
+            } else {
+                messagesByDay[index].messages.push(message)
+            }
+        })
+        return messagesByDay
+    }, [messages.data])
+
     if (messages.isLoading) {
         return <div>Loading...</div>
     }
@@ -168,23 +192,40 @@ const MessageComponent = ({
     return (
         <div className='flex flex-col gap-2 w-fit'>
             <h1 className='font-semibold'>Messages</h1>
-            <div>Active members: {activeMembers}</div>
             <div className={' bg-white rounded-lg p-2 gap-2 flex flex-col'}>
                 <div
                     ref={msgCont}
                     className={` flex flex-col h-72 max-w-sm overflow-y-scroll gap-1`}>
-                    {messages.data?.messages?.map((message, i) => (
-                        <div
-                            key={i}
-                            className='flex flex-col bg-slate-50 p-2 rounded gap-2'>
-                            <div>
-                                {message.from.userName}
-                                {': '}
-                                {message.message}
-                            </div>
-                            <div className='italic text-dark-4 flex flex-row-reverse'>
-                                {new Date(message.timestamp).toLocaleString()}
-                            </div>
+                    {messagesByDay.map((day, i) => (
+                        <div key={i} className='flex flex-col gap-2'>
+                            {day.day === new Date().toLocaleDateString() ? (
+                                <div className='font-semibold text-dark-4 text-sm'>
+                                    Today
+                                </div>
+                            ) : (
+                                <div className='font-semibold text-dark-4 text-sm'>
+                                    {day.day}
+                                </div>
+                            )}
+                            {day.messages.map((message: Message, i) => (
+                                <div
+                                    key={i}
+                                    className='flex flex-col bg-slate-50 p-2 rounded gap-2'>
+                                    <div>
+                                        {message.from.userName}
+                                        {': '}
+                                        {message.message}
+                                    </div>
+                                    <div className='italic text-dark-4 flex flex-row-reverse'>
+                                        {new Date(
+                                            message.timestamp
+                                        ).toLocaleTimeString('no-NO', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     ))}
                 </div>
