@@ -15,6 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.17.12",
     "@fullcalendar/common": "^5.11.0",
     "@fullcalendar/interaction": "^5.11.0",
     "@fullcalendar/react": "^5.11.1",
