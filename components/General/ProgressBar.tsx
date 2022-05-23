@@ -1,4 +1,4 @@
-import FindClassPage from 'pages/findclass'
+import FindClassPage from 'components/findgroups/findclass'
 import FindGroupPage from 'pages/findgroup'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'

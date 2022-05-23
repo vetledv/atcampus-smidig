@@ -3,8 +3,8 @@ import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
 import React, { useState } from 'react'
 import StepProgressBar from 'react-step-progress'
-import FindClassPage from './findclass'
-import SelectGoals from './selectgoals'
+import FindClassPage from '../components/findgroups/findclass'
+import SelectGoals from '../components/findgroups/selectgoals'
 // Contents of this file will be moved. This page will serve the find group functionality.
 // TODO: add steps to create a group
 
