@@ -26,31 +26,59 @@ export default async function handlera(
 
     if (req.method === 'POST') {
         console.log('POST')
-        const { groupId, userId, userName } = JSON.parse(req.body)
+        const { groupId, userId, userName, picture, isPrivate } = JSON.parse(
+            req.body
+        )
         const filter = {
             _id: new ObjectId(groupId),
         }
-        const update = {
-            $addToSet: {
-                members: {
-                    userId: userId,
-                    userName: userName,
-                },
-            },
+        const members = {
+            userId,
+            userName,
+            picture,
         }
-
-        await db
-            .collection('atcampus-groups')
-            .updateOne(filter, update)
-            .then((asd) => {
-                console.log(groupId)
-                res.status(200).send('success')
-            })
-            .catch((err) => {
-                res.status(500).json({
-                    message: 'error',
-                    error: err,
+        if (isPrivate) {
+            await db
+                .collection('atcampus-groups')
+                .updateOne(filter, {
+                    $addToSet: {
+                        pendingMembers: members,
+                    },
                 })
-            })
+                .then((updateResult) => {
+                    console.log(groupId)
+                    res.status(200).json({
+                        message: 'success',
+                        private: true,
+                    })
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        message: 'error',
+                        error: err,
+                    })
+                })
+        } else {
+            await db
+                .collection('atcampus-groups')
+                .updateOne(filter, {
+                    $addToSet: {
+                        members,
+                    },
+                })
+                .then((updateResult) => {
+                    console.log(groupId)
+                    res.status(200).json({
+                        message: 'success',
+                        private: false,
+                    })
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        message: 'error',
+                        error: err,
+                    })
+                })
+        }
     }
 }

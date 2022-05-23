@@ -26,7 +26,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             socket.on('create', async (room) => {
                 socket.join(room)
                 console.log('SOCKET: joined', room)
-                broadcastActiveMembers()
+                getActiveMembers()
             })
             socket.on('active', async (room) => {
                 broadcastActiveMembers()
@@ -56,6 +56,14 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
                         socket.broadcast
                             .to(room)
                             .emit('active-members', sockets.size - 1)
+                    })
+            }
+            function getActiveMembers() {
+                io.in(req.query.room)
+                    .allSockets()
+                    .then((sockets) => {
+                        console.log('SOCKET_ACTIVE_SIZE_: ', sockets.size)
+                        socket.to(room).emit('active-members', sockets.size - 1)
                     })
             }
         })

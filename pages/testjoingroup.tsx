@@ -1,9 +1,26 @@
 import FlatButton from 'components/buttons/Button'
 import { baseUrl } from 'lib/constants'
 import { useSession } from 'next-auth/react'
-import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
+import { useState } from 'react'
+import {
+    dehydrate,
+    QueryClient,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from 'react-query'
 import { Group } from 'types/groups'
-import { fetchReactQuery, postJSON } from '../hooks/useGroups'
+import { fetchReactQuery, postJSON, postReactQuery } from '../hooks/useGroups'
+
+interface MutateResponse {
+    success: string
+    private: boolean
+}
+
+interface MutateError {
+    error: string
+    message: string
+}
 
 const TestPageJoinGroup = () => {
     const session = useSession()
@@ -11,12 +28,25 @@ const TestPageJoinGroup = () => {
         'groupstest',
         fetchReactQuery('testjoingroup')
     )
+    const [mutateRes, setMutateRes] = useState<MutateResponse>()
     const mutate = useMutation(
-        (userInfo: any) => postJSON(`/api/testjoingroup`, userInfo),
+        (userInfo: any) => postReactQuery(`/api/testjoingroup`, userInfo),
         {
-            onSuccess: () => {
+            onSuccess: async (data: MutateResponse, vars, ctx) => {
                 console.log('success')
+                console.log(data, vars, ctx)
+                console.log(data)
                 groups.refetch()
+            },
+            onSettled: (data: MutateResponse, error, vars, ctx) => {
+                console.log('settled')
+                console.log(data, error, vars, ctx)
+                setMutateRes(data)
+                console.log('mutateRes', mutateRes)
+            },
+            onError: (error, vars, ctx) => {
+                console.log('error')
+                console.log(error, vars, ctx)
             },
         }
     )
@@ -25,6 +55,8 @@ const TestPageJoinGroup = () => {
             groupId: group._id,
             userId: session?.data?.user?.id,
             userName: session?.data?.user?.name,
+            picture: session?.data?.user?.image,
+            isPrivate: group.private,
         })
     }
 
@@ -56,9 +88,20 @@ const TestPageJoinGroup = () => {
                                 key={group.groupName}
                                 className={'p-4 flex gap-2'}>
                                 <div>{group.groupName}</div>
-                                <FlatButton onClick={() => handleJoin(group)}>
-                                    {ozuisdrg(group)}
-                                </FlatButton>
+                                {group.pendingMembers.find(
+                                    (member) =>
+                                        member.userId ===
+                                        session?.data?.user?.id
+                                ) ? (
+                                    <div className='bg-pink-400 p-2'>
+                                        Invite pending
+                                    </div>
+                                ) : (
+                                    <FlatButton
+                                        onClick={() => handleJoin(group)}>
+                                        {ozuisdrg(group)}
+                                    </FlatButton>
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -66,7 +109,11 @@ const TestPageJoinGroup = () => {
             )}
             {mutate.isSuccess && (
                 <div>
-                    <h1>Joined</h1>
+                    {mutateRes.private ? (
+                        <h1>Request sent!</h1>
+                    ) : (
+                        <h1>Joined</h1>
+                    )}
                 </div>
             )}
         </>

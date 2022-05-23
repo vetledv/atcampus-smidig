@@ -19,6 +19,17 @@ export const postJSON = async (url: RequestInfo, object: any) => {
     }
 }
 
+export const postReactQuery = async (url: RequestInfo, object: any) => {
+    return await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(object),
+    })
+        .then((res) => res.json())
+        .catch((err) => {
+            console.error(err)
+        })
+}
+
 export const useGroups = () => {
     return useQuery<Group[], Error>('groups', fetchReactQuery('groups'))
 }

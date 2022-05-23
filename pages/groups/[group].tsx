@@ -39,18 +39,13 @@ const GroupPage = () => {
         }
     )
 
-    // const refetchMsg = () => {
-    //     console.log('DEEEZ')
-    //     messages.refetch()
-    // }
-
     const handlePendingMember = useCallback(
         async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
             const addMutateObj: AddMutateObj = {
                 groupId: group.data._id,
                 admin: group.data.admin,
-                userToAdd: userToAdd,
-                action: action,
+                userToAdd,
+                action,
             }
             adminMutatePending.mutateAsync(addMutateObj)
         },
@@ -110,46 +105,39 @@ const GroupPage = () => {
                                 {isAdmin() && (
                                     <div className='flex flex-col gap-2'>
                                         <h1>Pending members:</h1>
-                                        {group.data.pendingMembers.length >
-                                        0 ? (
-                                            <>
-                                                {group.data.pendingMembers.map(
-                                                    (pendingMember) => (
-                                                        <div
-                                                            key={pendingMember.userId.toString()}
-                                                            className='flex flex-row gap-2'>
-                                                            <div>
-                                                                {
-                                                                    pendingMember.userName
-                                                                }
-                                                            </div>
-                                                            <div className='flex gap-2'>
-                                                                <FlatButton
-                                                                    onClick={() => {
-                                                                        handlePendingMember(
-                                                                            pendingMember,
-                                                                            'ADD'
-                                                                        )
-                                                                    }}>
-                                                                    Add to group
-                                                                </FlatButton>
-                                                                <FlatButton
-                                                                    onClick={() => {
-                                                                        handlePendingMember(
-                                                                            pendingMember,
-                                                                            'REMOVE'
-                                                                        )
-                                                                    }}>
-                                                                    Decline
-                                                                </FlatButton>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                )}
-                                            </>
-                                        ) : (
-                                            <div>No pending members</div>
+                                        {group.data.pendingMembers.map(
+                                            (pendingMember) => (
+                                                <div
+                                                    key={pendingMember.userId.toString()}
+                                                    className='flex flex-row gap-2'>
+                                                    <div>
+                                                        {pendingMember.userName}
+                                                    </div>
+                                                    <div className='flex gap-2'>
+                                                        <FlatButton
+                                                            onClick={() => {
+                                                                handlePendingMember(
+                                                                    pendingMember,
+                                                                    'ADD'
+                                                                )
+                                                            }}>
+                                                            Add to group
+                                                        </FlatButton>
+                                                        <FlatButton
+                                                            onClick={() => {
+                                                                handlePendingMember(
+                                                                    pendingMember,
+                                                                    'REMOVE'
+                                                                )
+                                                            }}>
+                                                            Decline
+                                                        </FlatButton>
+                                                    </div>
+                                                </div>
+                                            )
                                         )}
+                                        {group.data.pendingMembers.length ===
+                                            0 && <div>No pending members</div>}
                                     </div>
                                 )}
                             </div>
@@ -158,6 +146,7 @@ const GroupPage = () => {
                         <MessageComponent
                             groupId={group.data._id}
                             groupName={group.data.groupName}
+                            groupMembers={group.data.members}
                             setActiveMembers={setActiveMembers}
                         />
                     </div>

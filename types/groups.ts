@@ -3,6 +3,11 @@ import { ObjectId, Timestamp } from 'mongodb'
 export interface Member {
     userId: string
     userName: string
+    picture: string
+}
+export interface MessageMember {
+    userId: string
+    userName: string
 }
 
 export interface Group {
@@ -25,7 +30,7 @@ export interface GroupMessages {
 
 export interface Message {
     timestamp: Date
-    from: Member
+    from: MessageMember
     message: string
 }
 
