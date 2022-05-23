@@ -1,4 +1,4 @@
-import TextInputField from 'components/generaltemp/TextInputField'
+import TextInputField from 'components/general/TextInputField'
 
 const InputItem = ({ textFieldTitle, name, placeholder, setState, type }) => {
     return (

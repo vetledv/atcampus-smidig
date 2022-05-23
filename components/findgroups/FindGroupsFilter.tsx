@@ -1,4 +1,4 @@
-import DropDown from 'components/generaltemp/DropDown'
+import DropDown from 'components/general/DropDown'
 
 export const FindGroupsFilter = ({ items }) => {
     return (

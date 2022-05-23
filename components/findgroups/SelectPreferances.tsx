@@ -1,4 +1,4 @@
-import BigCheckbox from 'components/generaltemp/BigCheckbox'
+import BigCheckbox from 'components/general/BigCheckbox'
 import { useState } from 'react'
 
 const SelectPreferances = () => {

@@ -1,6 +1,6 @@
-import Menu from 'components/navigationtemp/Menu'
-import Footer from './generaltemp/Footer'
-import Header from './navigationtemp/Header'
+import Menu from 'components/navigation/Menu'
+import Footer from './general/Footer'
+import Header from './navigation/Header'
 
 const AppLayout = ({ children }) => {
     return (
