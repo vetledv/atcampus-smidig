@@ -1,4 +1,5 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
+import DropDown from 'components/general/DropDown'
 import GroupMain from 'components/groups/GroupMain'
 import AddTag from 'components/groups/groupsettings/AddTag'
 import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
@@ -35,6 +36,7 @@ const TestPage = () => {
                 <div className='py-2'>
                     <GroupMain />
                 </div>
+                <div className='py-2'></div>
 
                 <div className='flex flex-col items-center justify-center'>
                     <h1 className='text-3xl font-bold'>TestPage</h1>
