@@ -3,10 +3,12 @@ import { GroupMembers } from 'components/general/Lib'
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { ObjectId } from 'mongodb'
 
 interface SubjectCardProps {
     groupName: string
     groupImage: string
+    groupId: ObjectId
     subjectCode: string
     members?: number
     totalMembers?: number
@@ -16,6 +18,7 @@ interface SubjectCardProps {
 const SubjectCard = ({
     groupImage,
     groupName,
+    groupId,
     subjectCode,
     members,
     totalMembers,
@@ -26,7 +29,7 @@ const SubjectCard = ({
 
     return (
         <div
-            onClick={() => router.push(`/groups/${groupName}`)}
+            onClick={() => router.push(`/groups/${groupId}`)}
             className='cursor-pointer flex p-3 input-shadow max-w-sm items-center bg-white rounded-standard text-dark-1'>
             <Image
                 src={groupImage}

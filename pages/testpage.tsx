@@ -1,9 +1,9 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
 import { GroupMembers } from 'components/general/Lib'
 import GroupMain from 'components/groups/GroupMain'
-import AddTag from 'components/groups/groupSettings/AddTag'
-import EditTagCard from 'components/groups/groupSettings/EditGroupCard'
-import GroupNav from 'components/groups/groupSettings/GroupNav'
+import AddTag from 'components/groups/movedTempCauseErrors/AddTag'
+import EditTagCard from 'components/groups/movedTempCauseErrors/EditGroupCard'
+import GroupNav from 'components/groups/GroupNav'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import { useState } from 'react'
 

@@ -7,11 +7,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { db } = await connectToDB()
-    const { group } = req.query
+    const { groupId } = req.query
     console.log(req.query)
     await db
         .collection('atcampus-groups')
-        .findOne({ groupName: group })
+        .findOne({ groupId })
         .then((group) => {
             res.status(200).json(group)
         })

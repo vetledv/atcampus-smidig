@@ -16,13 +16,17 @@ const GroupNav = ({
         return (
             <ul className='flex flex-row justify-start px-6 space-x-12 items-end font-medium text-dark-3 border-b-2 w-full '>
                 {tabs.map((tab, index) => (
-                    <div key={tab} onClick={() => setActiveTab(index)}>
+                    <div
+                        className='h-full'
+                        key={tab}
+                        onClick={() => setActiveTab(index)}>
                         <button
                             className={
-                                activeTab === index
+                                'h-full ' +
+                                (activeTab === index
                                     ? 'text-dark-1 border-b-4  border-purple-1'
                                     : ' ' +
-                                      ' text-dark-3 border-b-4 border-white'
+                                      ' text-dark-3 border-b-4 border-white ')
                             }>
                             {tab}
                         </button>

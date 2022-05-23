@@ -34,9 +34,9 @@ export const useGroups = () => {
     return useQuery<Group[], Error>('groups', fetchReactQuery('groups'))
 }
 
-export const useGroup = (groupName: string) => {
+export const useGroup = (groupId: string) => {
     return useQuery<Group, Error>(
-        ['group', groupName],
-        fetchReactQuery(`groups/${groupName}`)
+        ['group', groupId],
+        fetchReactQuery(`groups/${groupId}`)
     )
 }

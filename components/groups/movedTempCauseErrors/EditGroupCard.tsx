@@ -2,7 +2,7 @@ import FlatButton from 'components/buttons/FlatButton'
 import GradientButton from 'components/buttons/GradientButton'
 import TextInputField from 'components/general/TextInputField'
 import { useState } from 'react'
-import InputItem from './InputItem'
+import InputItem from '../groupsettings/InputItem'
 
 const EditTagCard = ({ groupName, groupDescription, groupMaxMembers }) => {
     const [stateName, setStateName] = useState(groupName)

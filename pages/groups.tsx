@@ -28,6 +28,7 @@ const Groups = () => {
                                     <li key={group.groupName}>
                                         <SubjectCard
                                             groupName={group.groupName}
+                                            groupId={group._id}
                                             groupImage={
                                                 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                                             }

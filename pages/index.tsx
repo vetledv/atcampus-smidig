@@ -6,9 +6,9 @@ import BigCheckbox from 'components/general/BigCheckbox'
 import Checkbox from 'components/general/Checkbox'
 import DropDown from 'components/general/DropDown'
 import TextInputField from 'components/general/TextInputField'
-import GroupHeader from 'components/groups/GroupHeaderMobile'
-import AddTag from 'components/groups/groupSettings/AddTag'
-import EditTagCard from 'components/groups/groupSettings/EditGroupCard'
+import AddTag from 'components/groups/movedTempCauseErrors/AddTag'
+import EditTagCard from 'components/groups/movedTempCauseErrors/EditGroupCard'
+import { ObjectId } from 'mongodb'
 import { NextPage } from 'next'
 import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -70,13 +70,6 @@ const HomePage: NextPage = () => {
                     <h2 className='text-lg lg:text-xl'>Drop Down</h2>
                     <DropDown items={items} dropDownTitle={'Institusjoner'} />
                 </div>
-
-                <AddTag tags={undefined} />
-                <EditTagCard
-                    groupName={undefined}
-                    groupDescription={undefined}
-                    groupMaxMembers={undefined}
-                />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
@@ -163,6 +156,7 @@ const HomePage: NextPage = () => {
                             'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                         }
                         groupName={'Matematikk'}
+                        groupId={new ObjectId()}
                         subjectCode={'PG2341'}
                         compact={true}
                     />
@@ -177,12 +171,8 @@ const HomePage: NextPage = () => {
                         members={7}
                         totalMembers={12}
                         compact={false}
+                        groupId={new ObjectId()}
                     />
-                </div>
-
-                <div className='mt-8'>
-                    <h2 className='text-lg lg:text-xl'>GroupHeader</h2>
-                    <GroupHeader group={undefined} activeMembers={2} />
                 </div>
 
                 <div className='mt-8'>

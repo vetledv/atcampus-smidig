@@ -1,6 +1,5 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
-import GroupNav from 'components/groups/groupSettings/GroupNav'
 import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
@@ -11,6 +10,7 @@ import { useCallback, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import Image from 'next/image'
 import type { Group, Member } from 'types/groups'
+import GroupNav from 'components/groups/GroupNav'
 
 interface AddMutateObj {
     groupId: ObjectId
