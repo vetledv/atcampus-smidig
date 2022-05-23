@@ -1,36 +1,36 @@
+import { group } from 'console'
 import Image from 'next/image'
 import React from 'react'
 
-const MemberCard = () => {
-    const members = [
-        {
-            id: 1,
-            name: 'Magnus Soleim',
-            type: 'Admin',
-            image: 'https://image.shutterstock.com/image-vector/male-face-avatar-on-white-260nw-527840896.jpg',
-        },
-        {
-            id: 2,
-            name: 'Vetle DeVries',
-            type: 'Member',
-            image: 'https://image.shutterstock.com/image-vector/male-face-avatar-on-white-260nw-527840896.jpg',
-        },
-        {
-            id: 3,
-            name: 'Jonas Gahr',
-            type: 'Member',
-            image: 'https://image.shutterstock.com/image-vector/male-face-avatar-on-white-260nw-527840896.jpg',
-        },
-    ]
-
+const MemberCard = ({ members, admin }) => {
     return (
         <>
             {members.map((member) => (
                 <div
-                    key={member.id}
+                    key={member.userId.toString()}
                     className={
                         'flex justify-between items-center text-white bg-purple-2 h-12 rounded-standard my-2 px-3'
-                    }></div>
+                    }>
+                    <div className='flex items-center'>
+                        <div className='h-fit w-fit flex'>
+                            <Image
+                                src={member.picture}
+                                alt=''
+                                width={32}
+                                height={32}
+                                className='rounded-full'
+                            />
+                        </div>
+                        <div className='flex flex-col ml-4'>
+                            <div>{member.userName}</div>
+                            {member.userId === admin?.userId ? (
+                                <div className='italic'>Admin</div>
+                            ) : (
+                                <div className='italic'>Gruppemedlem</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             ))}
         </>
     )

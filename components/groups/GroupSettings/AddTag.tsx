@@ -2,7 +2,7 @@ import TopSearch from 'components/general/TopSearch'
 import React from 'react'
 import GroupTags from './GroupTags'
 
-const AddTag = () => {
+const AddTag = ({ tags }) => {
     return (
         <div className='flex flex-col bg-white rounded-standard p-6 drop-shadow gap-4 w-80 h-96'>
             {/*Header container*/}
@@ -21,7 +21,7 @@ const AddTag = () => {
                     Dine tags:
                 </h1>
                 {/*Selected tags grid*/}
-                <GroupTags />
+                <GroupTags tags={tags} />
             </div>
         </div>
     )

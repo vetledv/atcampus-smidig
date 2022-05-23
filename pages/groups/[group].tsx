@@ -1,6 +1,6 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
-import GroupNav from 'components/groups/groupsettings/GroupNav'
+import GroupNav from 'components/groups/groupSettings/GroupNav'
 import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'

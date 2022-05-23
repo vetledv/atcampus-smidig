@@ -4,22 +4,22 @@ import TextInputField from 'components/general/TextInputField'
 import { useState } from 'react'
 import InputItem from './InputItem'
 
-const EditTagCard = () => {
-    const [groupName, setGroupName] = useState('')
-    const [groupDescription, setGroupDescription] = useState('')
-    const [groupTotalMembers, setGroupTotalMembers] = useState('')
+const EditTagCard = ({ groupName, groupDescription, groupMaxMembers }) => {
+    const [stateName, setStateName] = useState(groupName)
+    const [stateDescription, setStateDescription] = useState(groupDescription)
+    const [stateMaxMembers, setStateMaxMembers] = useState(groupMaxMembers)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
 
-        console.log(groupName, groupDescription, groupTotalMembers)
+        console.log(groupName, groupDescription, groupMaxMembers)
     }
     const deleteSubmit = (e) => {
         e.preventDefault()
-        setGroupName('')
-        setGroupDescription('')
-        setGroupTotalMembers('')
-        console.log(groupName, groupDescription, groupTotalMembers)
+        setStateName('')
+        setStateDescription('')
+        setStateMaxMembers('')
+        console.log(groupName, groupDescription, groupMaxMembers)
     }
 
     return (
@@ -32,24 +32,24 @@ const EditTagCard = () => {
                     <form onSubmit={handleSubmit}>
                         <InputItem
                             textFieldTitle={'Gruppenavn'}
-                            name={groupName}
-                            placeholder={groupName}
+                            name={stateName}
+                            placeholder={stateName}
                             type={'text'}
-                            setState={setGroupName}
+                            setState={setStateName}
                         />
                         <InputItem
                             textFieldTitle={'Beskrivelse'}
-                            name={groupName}
-                            placeholder={groupDescription}
+                            name={stateDescription}
+                            placeholder={stateDescription}
                             type={'text'}
-                            setState={setGroupDescription}
+                            setState={setStateDescription}
                         />
                         <InputItem
                             textFieldTitle={'Totalt antall medlemmer'}
-                            name={groupName}
-                            placeholder={groupTotalMembers}
+                            name={stateMaxMembers}
+                            placeholder={stateMaxMembers}
                             type={'number'}
-                            setState={setGroupTotalMembers}
+                            setState={setStateMaxMembers}
                         />
 
                         <div className='my-2 items-center justify-center space-y-2 align-center grid grid-cols-1 w-[240px] py-2'>

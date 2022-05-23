@@ -7,8 +7,8 @@ import Checkbox from 'components/general/Checkbox'
 import DropDown from 'components/general/DropDown'
 import TextInputField from 'components/general/TextInputField'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
-import AddTag from 'components/groups/groupsettings/AddTag'
-import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
+import AddTag from 'components/groups/groupSettings/AddTag'
+import EditTagCard from 'components/groups/groupSettings/EditGroupCard'
 import { NextPage } from 'next'
 import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -71,8 +71,12 @@ const HomePage: NextPage = () => {
                     <DropDown items={items} dropDownTitle={'Institusjoner'} />
                 </div>
 
-                <AddTag />
-                <EditTagCard />
+                <AddTag tags={undefined} />
+                <EditTagCard
+                    groupName={undefined}
+                    groupDescription={undefined}
+                    groupMaxMembers={undefined}
+                />
 
                 <div className='mt-8'>
                     <h2 className='text-lg lg:text-xl'>Flat Button</h2>
