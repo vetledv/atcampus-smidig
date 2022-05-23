@@ -2,9 +2,9 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useGroup } from 'hooks/useGroups'
-import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
-import AddTag from 'components/groups/groupsettings/AddTag'
-import MembersSettings from 'components/groups/groupsettings/MembersSettings'
+import AddTag from 'components/groups/settings/AddTag'
+import EditTagCard from 'components/groups/settings/EditGroupCard'
+import MembersSettings from 'components/groups/settings/MembersSettings'
 
 const Settings = ({ handleLeaveGroup }) => {
     const router = useRouter()

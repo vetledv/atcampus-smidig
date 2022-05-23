@@ -1,19 +1,37 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import { useGroups } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
+import Head from 'next/head'
 import { dehydrate, QueryClient } from 'react-query'
 import type { Group } from 'types/groups'
 
 const Groups = () => {
     const groups = useGroups()
     if (groups.isLoading) {
-        return <div>Loading...</div>
+        return (
+            <>
+                <Head>
+                    <title>Grupper</title>
+                </Head>
+                <div>Loading...</div>
+            </>
+        )
     }
     if (groups.isError) {
-        return <div>Error: {groups.error.message}</div>
+        return (
+            <>
+                <Head>
+                    <title>Grupper</title>
+                </Head>
+                <div>Error: {groups.error.message}</div>
+            </>
+        )
     }
     return (
         <div>
+            <Head>
+                <title>Grupper</title>
+            </Head>
             {groups.data && (
                 <div>
                     <h1>Groups</h1>
