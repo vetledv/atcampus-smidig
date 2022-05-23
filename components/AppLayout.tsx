@@ -1,5 +1,5 @@
 import Menu from 'components/Navigation/Menu'
-import Footer from './general/Footer'
+import Footer from './General/Footer'
 import Header from './Navigation/Header'
 
 const AppLayout = ({ children }) => {

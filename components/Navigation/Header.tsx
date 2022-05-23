@@ -1,5 +1,5 @@
 import React from 'react'
-import TopSearch from 'components/general/TopSearch'
+import TopSearch from 'components/General/TopSearch'
 import FlatButton from 'components/buttons/FlatButton'
 
 const Header = () => {

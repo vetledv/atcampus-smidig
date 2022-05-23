@@ -1,4 +1,4 @@
-import Checkbox from 'components/general/Checkbox'
+import Checkbox from 'components/General/Checkbox'
 import { useState } from 'react'
 
 interface State {

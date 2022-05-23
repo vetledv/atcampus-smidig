@@ -1,5 +1,5 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
-import { GroupMembers } from 'components/general/Lib'
+import { GroupMembers } from 'components/General/Lib'
 import GroupMain from 'components/groups/GroupMain'
 import GroupNav from 'components/groups/GroupNav'
 import NavBarTut2 from 'components/Navigation/NavBarTutorial2'

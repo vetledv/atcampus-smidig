@@ -1,4 +1,4 @@
-import TopSearch from 'components/general/TopSearch'
+import TopSearch from 'components/General/TopSearch'
 import React from 'react'
 import GroupTags from './GroupTags'
 
