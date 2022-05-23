@@ -1,6 +1,4 @@
-import { group } from 'console'
 import Image from 'next/image'
-import React from 'react'
 
 const MemberCard = ({ members, admin }) => {
     return (

@@ -1,4 +1,3 @@
-import React from 'react'
 import { PlusCircleIcon } from '@heroicons/react/outline'
 const TwoOptionsButtons = () => {
     return (

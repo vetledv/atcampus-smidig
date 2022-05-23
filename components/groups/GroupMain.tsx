@@ -1,6 +1,4 @@
-import React from 'react'
-import { ChatIcon, CalendarIcon } from '@heroicons/react/outline'
-import Image from 'next/image'
+import { CalendarIcon, ChatIcon } from '@heroicons/react/outline'
 
 const GroupMain = () => {
     return (

@@ -1,4 +1,4 @@
-import ProgressBar from 'components/general/ProgressBar'
+import ProgressBar from 'components/generaltemp/ProgressBar'
 
 const FindGroupsHeader = ({ stepTitle }) => {
     return (

@@ -1,5 +1,4 @@
-import React from 'react'
-import TextInputField from 'components/general/TextInputField'
+import TextInputField from 'components/generaltemp/TextInputField'
 
 const InputItem = ({ textFieldTitle, name, placeholder, setState, type }) => {
     return (

@@ -1,5 +1,4 @@
-import TopSearch from 'components/general/TopSearch'
-import React from 'react'
+import TopSearch from 'components/generaltemp/TopSearch'
 import GroupTags from './GroupTags'
 
 const AddTag = ({ tags }) => {

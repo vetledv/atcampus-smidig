@@ -1,6 +1,4 @@
 import FlatButton from 'components/buttons/FlatButton'
-import GradientButton from 'components/buttons/GradientButton'
-import TextInputField from 'components/general/TextInputField'
 import { useState } from 'react'
 import InputItem from './InputItem'
 

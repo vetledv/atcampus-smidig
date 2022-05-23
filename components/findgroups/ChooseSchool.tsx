@@ -1,5 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FindGroupsFilter } from './FindGroupsFilter'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 

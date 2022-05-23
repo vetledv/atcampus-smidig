@@ -1,5 +1,4 @@
-import DropDown from 'components/general/DropDown'
-import React from 'react'
+import DropDown from 'components/generaltemp/DropDown'
 
 export const FindGroupsFilter = ({ items }) => {
     return (

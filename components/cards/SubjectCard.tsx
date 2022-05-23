@@ -1,6 +1,5 @@
 import FlatButton from 'components/buttons/FlatButton'
-import { GroupMembers } from 'components/general/Lib'
-import React from 'react'
+import { GroupMembers } from 'components/generaltemp/Lib'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ObjectId } from 'mongodb'

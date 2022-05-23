@@ -1,8 +1,8 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
-import { GroupMembers } from 'components/general/Lib'
+import { GroupMembers } from 'components/generaltemp/Lib'
 import GroupMain from 'components/groups/GroupMain'
 import GroupNav from 'components/groups/GroupNav'
-import NavBarTut2 from 'components/navigation/NavBarTutorial2'
+import NavBarTut2 from 'components/navigationtemp/NavBarTutorial2'
 import { useState } from 'react'
 
 const TestPage = () => {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const GroupTags = ({ tags }) => {
     return (
         <div className='text-dark-4 flex flex-wrap max-w-xs min-w-min'>

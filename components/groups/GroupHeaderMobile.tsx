@@ -1,10 +1,8 @@
-import React from 'react'
 import { CogIcon } from '@heroicons/react/solid'
 import FlatButton from 'components/buttons/Button'
-import { GroupMembers } from 'components/general/Lib'
+import { GroupMembers } from 'components/generaltemp/Lib'
 import Link from 'next/link'
 import { Group } from 'types/groups'
-import { ObjectId } from 'mongoose'
 
 const GroupHeader = ({
     group,
