@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
+import Image from 'next/image'
 import type { Group, Member } from 'types/groups'
 
 interface AddMutateObj {
@@ -142,13 +143,33 @@ const GroupPage = () => {
                             </div>
                         )}
                         {activeTab === 1 && (
-                            <div>
-                                <h1 className='font-semibold'>Members:</h1>
+                            <div className='flex flex-col gap-2'>
                                 {group.data.members?.map((member) => (
                                     <div
                                         key={member.userId.toString()}
-                                        className='flex flex-col gap-2'>
-                                        <div>{member.userName}</div>
+                                        className='flex flex-row gap-2'>
+                                        <Image
+                                            src={member.picture}
+                                            alt=''
+                                            width={48}
+                                            height={48}
+                                            className='rounded-full'
+                                        />
+                                        <div className='flex flex-col'>
+                                            <div className='font-semibold'>
+                                                {member.userName}
+                                            </div>
+                                            {member.userId ===
+                                            group.data.admin?.userId ? (
+                                                <div className='italic'>
+                                                    Admin
+                                                </div>
+                                            ) : (
+                                                <div className='italic'>
+                                                    Gruppemedlem
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
