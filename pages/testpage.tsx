@@ -1,18 +1,14 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
-import DropDown from 'components/general/DropDown'
+import { GroupMembers } from 'components/general/Lib'
 import GroupMain from 'components/groups/GroupMain'
-import AddTag from 'components/groups/groupSettings/AddTag'
-import EditTagCard from 'components/groups/groupSettings/EditGroupCard'
-import GroupMembers from 'components/groups/groupSettings/GroupMembers'
-import GroupNav from 'components/groups/groupSettings/GroupNav'
-import GroupSettingsNav from 'components/groups/groupSettings/GroupSettingsNav'
-
-import NavBarTut from 'components/navigation/NavBarTutorial'
+import AddTag from 'components/groups/groupsettings/AddTag'
+import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
+import GroupNav from 'components/groups/groupsettings/GroupNav'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
-import React from 'react'
 import { useState } from 'react'
 
 const TestPage = () => {
+    const [activeTab, setActiveTab] = useState(0)
     return (
         <div className='h-screen w-screen'>
             <div className='py-2'>
@@ -27,12 +23,13 @@ const TestPage = () => {
                     <TwoOptionsButtons />
                 </div>
                 <div className='py-2'>
-                    <GroupMembers />
+                    <GroupMembers
+                        members={undefined}
+                        totalMembers={undefined}
+                        color={undefined}
+                    />
                 </div>
-                <GroupNav />
-                <div className='py-2'>
-                    <GroupSettingsNav />
-                </div>
+                <GroupNav activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className='py-2'>
                     <GroupMain />
                 </div>

@@ -1,5 +1,6 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
+import GroupNav from 'components/groups/groupsettings/GroupNav'
 import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
@@ -24,6 +25,9 @@ const GroupPage = () => {
 
     const group = useGroup(routerQuery.group as string)
     const [activeMembers, setActiveMembers] = useState<number>(0)
+    const [activeTab, setActiveTab] = useState(0)
+
+    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat']
 
     const adminMutatePending = useMutation(
         (object: AddMutateObj) =>
@@ -105,46 +109,60 @@ const GroupPage = () => {
                         group={group.data}
                         activeMembers={activeMembers}
                     />
-                    <div className='flex flex-col gap-4 max-w-5xl lg:flex-row'>
-                        <div>
-                            <div className='flex flex-col gap-2'>
-                                <p>{group.data.description}</p>
-                                <h1>Tags:</h1>
-                                {group.data.tags?.map((tag) => (
-                                    <div
-                                        className='bg-pink-300 rounded-md w-fit px-4'
-                                        key={tag}>
-                                        {tag}
-                                    </div>
-                                ))}
-                                <div>
-                                    <h1 className='font-semibold'>Members:</h1>
-                                    {group.data.members?.map((member) => (
+                    <GroupNav
+                        tabs={groupNavTabs}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
+
+                    <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
+                        {activeTab === 0 && (
+                            <div className='col-span-1 lg:col-span-3'>
+                                <div className='flex flex-col gap-2'>
+                                    <p>{group.data.description}</p>
+                                    <h1>Tags:</h1>
+                                    {group.data.tags?.map((tag) => (
                                         <div
-                                            key={member.userId.toString()}
-                                            className='flex flex-col gap-2'>
-                                            <div>{member.userName}</div>
+                                            className='bg-pink-300 rounded-md w-fit px-4'
+                                            key={tag}>
+                                            {tag}
                                         </div>
                                     ))}
-                                </div>
-                                {group.data.admin?.userId && (
-                                    <div>
-                                        <span className='font-semibold'>
-                                            Admin:{' '}
-                                        </span>
-                                        {group.data.admin.userName}
-                                    </div>
-                                )}
-                                {renderAdminPanel()}
-                            </div>
-                        </div>
 
-                        <MessageComponent
-                            groupId={group.data._id}
-                            groupName={group.data.groupName}
-                            groupMembers={group.data.members}
-                            setActiveMembers={setActiveMembers}
-                        />
+                                    {group.data.admin?.userId && (
+                                        <div>
+                                            <span className='font-semibold'>
+                                                Admin:{' '}
+                                            </span>
+                                            {group.data.admin.userName}
+                                        </div>
+                                    )}
+                                    {renderAdminPanel()}
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === 1 && (
+                            <div>
+                                <h1 className='font-semibold'>Members:</h1>
+                                {group.data.members?.map((member) => (
+                                    <div
+                                        key={member.userId.toString()}
+                                        className='flex flex-col gap-2'>
+                                        <div>{member.userName}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {activeTab === 2 && (
+                            <div className='col-span-1 lg:col-span-3'>
+                                <MessageComponent
+                                    groupId={group.data._id}
+                                    groupName={group.data.groupName}
+                                    groupMembers={group.data.members}
+                                    setActiveMembers={setActiveMembers}
+                                />
+                            </div>
+                        )}
                     </div>
                 </>
             )}

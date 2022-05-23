@@ -1,47 +1,40 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback } from 'react'
 
-const GroupNav = () => {
-    const [active, setActive] = useState(0)
-    console.log(active)
+const GroupNav = ({
+    activeTab,
+    setActiveTab,
+    tabs,
+}: {
+    activeTab: number
+    setActiveTab: Dispatch<SetStateAction<number>>
+    tabs?: string[]
+}) => {
+    //put const [activeTab, setActiveTab] = useState(0) in parent component
+
+    const renderTabs = useCallback(() => {
+        if (!tabs) return null
+        return (
+            <ul className='flex flex-row justify-start px-6 space-x-12 items-end font-medium text-dark-3 border-b-2 w-full '>
+                {tabs.map((tab, index) => (
+                    <div key={tab} onClick={() => setActiveTab(index)}>
+                        <button
+                            className={
+                                activeTab === index
+                                    ? 'text-dark-1 border-b-4  border-purple-1'
+                                    : ' ' +
+                                      ' text-dark-3 border-b-4 border-white'
+                            }>
+                            {tab}
+                        </button>
+                    </div>
+                ))}
+            </ul>
+        )
+    }, [activeTab, setActiveTab, tabs])
+
     return (
-        <div className={'h-12 min-w-96 max-w-6xl bg-white '}>
-            <div className='flex justify-between h-full'>
-                <ul className='flex flex-row justify-evenly px-6 space-x-12 items-end font-medium text-dark-3  '>
-                    <div onClick={() => setActive(0)}>
-                        <button
-                            className={
-                                active === 0
-                                    ? 'text-dark-1 border-b-4  border-purple-1'
-                                    : ' ' +
-                                      ' text-dark-3 border-b-4 border-white'
-                            }>
-                            *Gruppenavn*
-                        </button>
-                    </div>
-                    <div onClick={() => setActive(1)}>
-                        <button
-                            className={
-                                active === 1
-                                    ? 'text-dark-1 border-b-4  border-purple-1'
-                                    : ' ' +
-                                      ' text-dark-3 border-b-4 border-white'
-                            }>
-                            Chat
-                        </button>
-                    </div>
-                    <div onClick={() => setActive(2)}>
-                        <button
-                            className={
-                                active === 2
-                                    ? 'text-dark-1 border-b-4  border-purple-1'
-                                    : ' ' +
-                                      ' text-dark-3 border-b-4 border-white'
-                            }>
-                            Kalender
-                        </button>
-                    </div>
-                </ul>
-            </div>
+        <div className={'h-12 min-w-96 bg-white '}>
+            <div className='flex justify-between h-full'>{renderTabs()}</div>
         </div>
     )
 }

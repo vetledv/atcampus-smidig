@@ -267,12 +267,11 @@ const MessageComponent = ({
         return <div>Error</div>
     }
     return (
-        <div className='flex flex-col gap-2 w-fit'>
-            <h1 className='font-semibold'>Messages</h1>
+        <div className='flex flex-col gap-2 w-full'>
             <div className={' bg-white rounded-lg p-2 gap-2 flex flex-col'}>
                 <div
                     ref={msgCont}
-                    className={` flex flex-col h-72 max-w-sm overflow-y-scroll gap-1`}>
+                    className={` flex flex-col h-96 overflow-y-scroll gap-1`}>
                     <>{renderMessages()}</>
                 </div>
                 <div className='flex gap-2'>
