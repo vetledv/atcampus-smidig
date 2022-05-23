@@ -25,6 +25,7 @@ export default async function handler(
             members: {
                 userId: userToAdd.userId,
                 userName: userToAdd.userName,
+                picture: userToAdd.picture,
             },
         },
     }
@@ -34,6 +35,7 @@ export default async function handler(
             pendingMembers: {
                 userId: userToAdd.userId,
                 userName: userToAdd.userName,
+                picture: userToAdd.picture,
             },
         },
     }
@@ -54,7 +56,6 @@ export default async function handler(
                 })
                 .catch((err: Error) => {
                     res.status(400).json({
-                        message: 'error',
                         error: err,
                     })
                 })
@@ -68,7 +69,6 @@ export default async function handler(
                 })
                 .catch((err: Error) => {
                     res.status(400).json({
-                        message: 'error',
                         error: err,
                     })
                 })

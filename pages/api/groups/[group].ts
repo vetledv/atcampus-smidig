@@ -8,6 +8,7 @@ export default async function handler(
 ) {
     const { db } = await connectToDB()
     const { group } = req.query
+    console.log(req.query)
     await db
         .collection('atcampus-groups')
         .findOne({ groupName: group })

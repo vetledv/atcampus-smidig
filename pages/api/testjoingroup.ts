@@ -2,7 +2,7 @@ import { connectToDB } from 'lib/mongodb'
 import { ObjectId } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handlera(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {

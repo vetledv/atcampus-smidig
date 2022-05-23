@@ -99,10 +99,24 @@ const TestPageJoinGroup = () => {
                                         Invite pending
                                     </div>
                                 ) : (
-                                    <FlatButton
-                                        onClick={() => handleJoin(group)}>
-                                        {ozuisdrg(group)}
-                                    </FlatButton>
+                                    <>
+                                        {group.members.find(
+                                            (member) =>
+                                                session?.data?.user?.id ===
+                                                member.userId
+                                        ) ? (
+                                            <div className='bg-pink-400 p-2'>
+                                                In Group
+                                            </div>
+                                        ) : (
+                                            <FlatButton
+                                                onClick={() =>
+                                                    handleJoin(group)
+                                                }>
+                                                {ozuisdrg(group)}
+                                            </FlatButton>
+                                        )}
+                                    </>
                                 )}
                             </li>
                         ))}
