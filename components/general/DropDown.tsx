@@ -21,7 +21,7 @@ function DropDown({ title = undefined, items, dropDownTitle }) {
                     <div className='font-semibold text-lg text-purple-1 '>
                         {dropDownTitle}
                     </div>
-                    <ChevronDownIcon className='h-12 w-12' />
+                    <ChevronDownIcon className='h-12 w-12 fill-gray-800' />
                 </div>
             </div>
             {open && (

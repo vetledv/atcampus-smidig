@@ -19,7 +19,7 @@ export default function FlatButton({
             onClick={onClick}
             className={classNames(
                 className ? className : '',
-                'px-4 py-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:bg-purple-2 hover:shadow-purple-2/50 active:bg-purple-1/70 cursor-pointer'
+                'px-5 py-2 text-md font-bold text-center rounded-standard text-white bg-purple-1 hover:bg-purple-2 hover:shadow-purple-2/50 active:bg-purple-1/70 cursor-pointer'
             )}>
             {children}
         </Component>

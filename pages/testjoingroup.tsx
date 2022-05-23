@@ -95,8 +95,8 @@ const TestPageJoinGroup = () => {
                                         member.userId ===
                                         session?.data?.user?.id
                                 ) ? (
-                                    <div className='bg-pink-400 p-2'>
-                                        Invite pending
+                                    <div className='bg-pink-400 p-2 rounded-md text-stone-100 text-[18px] font-semibold'>
+                                        Invite pending...
                                     </div>
                                 ) : (
                                     <>
@@ -105,7 +105,7 @@ const TestPageJoinGroup = () => {
                                                 session?.data?.user?.id ===
                                                 member.userId
                                         ) ? (
-                                            <div className='bg-pink-400 p-2'>
+                                            <div className='bg-purple-500 p-2 rounded-md text-stone-100 text-[18px] font-semibold'>
                                                 In Group
                                             </div>
                                         ) : (

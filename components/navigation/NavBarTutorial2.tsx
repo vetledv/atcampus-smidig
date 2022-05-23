@@ -26,24 +26,24 @@ const NavBarTut2 = () => {
                     <Image
                         src={'/atcampus-full-logo.svg'}
                         alt={'atcampus logo'}
-                        width={25}
+                        width={110}
                         height={25}></Image>
                 </div>
                 {/*Menu items*/}
                 <div className='hidden items-end space-x-12 md:flex'>
                     <a
                         href='#features'
-                        className='text-black font-medium hover:text-dark-2 focus:font-bold'>
+                        className='text-lg text-black font-medium hover:text-dark-2 hover:font-semibold focus:font-bold'>
                         Slik virker det
                     </a>
                     <a
                         href='#pricing'
-                        className='text-black font-medium hover:text-dark-2 focus:font-bold'>
+                        className='text-lg text-black font-medium hover:text-dark-2 hover:font-semibold focus:font-bold'>
                         Priser
                     </a>
                     <a
                         href='#faq'
-                        className='text-black font-medium hover:text-dark-2 focus:font-bold'>
+                        className='text-lg text-black font-medium hover:text-dark-2 hover:font-semibold focus:font-bold'>
                         FAQ
                     </a>
                 </div>
