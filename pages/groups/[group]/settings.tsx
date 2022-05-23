@@ -23,18 +23,18 @@ const Settings = () => {
     return (
         <>
             {group.data && (
-                <div className='flex flex-row justify-start bg-dark-6 py-8'>
-                    <div className='px-8'>
+                <div className='flex flex-row justify-start bg-dark-6 py-8 md:flex-wrap sm:flex-wrap '>
+                    <div className='px-8 md:mt-8 sm:mt-8'>
                         <EditTagCard
                             groupName={group.data.groupName}
                             groupDescription={group.data.description}
                             groupMaxMembers={group.data.maxMembers}
                         />
                     </div>
-                    <div className='px-8'>
+                    <div className='px-8 md:mt-8 sm:mt-8'>
                         <AddTag tags={group.data.tags} />
                     </div>
-                    <div className='px-8'>
+                    <div className='px-8 md:mt-8 sm:mt-8'>
                         <MembersSettings
                             members={group.data.members}
                             key={group.data.members.length}
