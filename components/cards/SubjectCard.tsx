@@ -1,5 +1,5 @@
 import FlatButton from 'components/buttons/FlatButton'
-import { GroupMembers } from 'components/General/Lib'
+import { GroupMembers } from 'components/general/Lib'
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
