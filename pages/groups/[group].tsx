@@ -11,6 +11,8 @@ import { dehydrate, QueryClient, useMutation } from 'react-query'
 import Image from 'next/image'
 import type { Group, Member } from 'types/groups'
 import GroupNav from 'components/groups/GroupNav'
+import Head from 'next/head'
+import GroupCalendar from 'components/groups/Calendar'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -94,16 +96,34 @@ const GroupPage = () => {
             </div>
         )
     }, [group.data?.pendingMembers, handlePendingMember, isAdmin])
+    const head = (
+        <Head>
+            <title>
+                {group.data ? 'Grupper - ' + group.data?.groupName : 'Grupper'}
+            </title>
+        </Head>
+    )
 
     if (group.isLoading || adminMutatePending.isLoading) {
-        return <div>Loading...</div>
+        return (
+            <>
+                {head}
+                <div>Loading...</div>
+            </>
+        )
     }
     if (group.isError) {
-        return <div>Error: {group.error.message}</div>
+        return (
+            <>
+                {head}
+                <div>Error: {group.error.message}</div>
+            </>
+        )
     }
 
     return (
         <>
+            {head}
             {group.data && (
                 <>
                     <GroupHeader
@@ -115,10 +135,9 @@ const GroupPage = () => {
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
-
                     <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
-                        {activeTab === 0 && (
-                            <div className='col-span-1 lg:col-span-3'>
+                        <div className='col-span-1 lg:col-span-3'>
+                            {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
                                     <p>{group.data.description}</p>
                                     <h1>Tags:</h1>
@@ -140,51 +159,51 @@ const GroupPage = () => {
                                     )}
                                     {renderAdminPanel()}
                                 </div>
-                            </div>
-                        )}
-                        {activeTab === 1 && (
-                            <div className='flex flex-col gap-2 bg-red-300'>
-                                {group.data.members?.map((member) => (
-                                    <div
-                                        key={member.userId.toString()}
-                                        className='flex flex-row gap-2'>
-                                        <Image
-                                            src={member.picture}
-                                            alt=''
-                                            width={48}
-                                            height={48}
-                                            className='rounded-full'
-                                        />
-                                        <div className='flex flex-col'>
-                                            <div className='font-semibold'>
-                                                {member.userName}
+                            )}
+                            {activeTab === 1 && (
+                                <div className='flex flex-col gap-2 bg-red-300'>
+                                    {group.data.members?.map((member) => (
+                                        <div
+                                            key={member.userId.toString()}
+                                            className='flex flex-row gap-2'>
+                                            <Image
+                                                src={member.picture}
+                                                alt=''
+                                                width={48}
+                                                height={48}
+                                                className='rounded-full'
+                                            />
+                                            <div className='flex flex-col'>
+                                                <div className='font-semibold'>
+                                                    {member.userName}
+                                                </div>
+                                                {member.userId ===
+                                                group.data.admin?.userId ? (
+                                                    <div className='italic'>
+                                                        Admin
+                                                    </div>
+                                                ) : (
+                                                    <div className='italic'>
+                                                        Gruppemedlem
+                                                    </div>
+                                                )}
                                             </div>
-                                            {member.userId ===
-                                            group.data.admin?.userId ? (
-                                                <div className='italic'>
-                                                    Admin
-                                                </div>
-                                            ) : (
-                                                <div className='italic'>
-                                                    Gruppemedlem
-                                                </div>
-                                            )}
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                        {activeTab === 2 && (
-                            <div className='col-span-1 lg:col-span-3'>
-                                <MessageComponent
-                                    groupId={group.data._id}
-                                    groupName={group.data.groupName}
-                                    groupMembers={group.data.members}
-                                    setActiveMembers={setActiveMembers}
-                                />
-                            </div>
-                        )}
-                        {activeTab === 3 && <>Not Implemented yet.</>}
+                                    ))}
+                                </div>
+                            )}
+                            {activeTab === 2 && (
+                                <div className='col-span-1 lg:col-span-3'>
+                                    <MessageComponent
+                                        groupId={group.data._id}
+                                        groupName={group.data.groupName}
+                                        groupMembers={group.data.members}
+                                        setActiveMembers={setActiveMembers}
+                                    />
+                                </div>
+                            )}
+                            {activeTab === 3 && <GroupCalendar />}
+                        </div>
                     </div>
                 </>
             )}

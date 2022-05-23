@@ -2,8 +2,8 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useGroup } from 'hooks/useGroups'
-import EditTagCard from 'components/groups/movedTempCauseErrors/EditGroupCard'
-import AddTag from 'components/groups/movedTempCauseErrors/AddTag'
+import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
+import AddTag from 'components/groups/groupsettings/AddTag'
 import MembersSettings from 'components/groups/groupsettings/MembersSettings'
 
 const Settings = () => {
