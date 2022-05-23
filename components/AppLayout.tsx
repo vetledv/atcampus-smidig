@@ -13,7 +13,7 @@ const AppLayout = ({ children }) => {
                     <div className='my-8'>
                         <Header />
                     </div>
-                    {children}
+                    <div className='w-full min-h-[320px]'>{children}</div>
                     <Footer />
                 </div>
             </div>

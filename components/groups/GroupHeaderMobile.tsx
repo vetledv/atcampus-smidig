@@ -2,6 +2,8 @@ import { CogIcon } from '@heroicons/react/solid'
 import FlatButton from 'components/buttons/Button'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
+import { Dispatch, MutableRefObject, SetStateAction, useEffect } from 'react'
+import { Socket } from 'socket.io-client'
 import { Group } from 'types/groups'
 
 const GroupHeader = ({

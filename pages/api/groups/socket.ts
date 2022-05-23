@@ -26,44 +26,34 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             socket.on('create', async (room) => {
                 socket.join(room)
                 console.log('SOCKET: joined', room)
-                getActiveMembers()
+                broadcastActiveMembers(room)
             })
             socket.on('active', async (room) => {
-                broadcastActiveMembers()
-                //all active sockets in room
+                broadcastActiveMembers(room)
             })
-            socket.on(`typing ${room}`, (data, user) => {
+            socket.on(`typing`, (data, user) => {
                 console.log('SOCKET_TYPING: ', data, 'user: ', user)
-                socket.broadcast.to(room).emit(`typing ${room}`, data, user)
-                //emit stopped typing after 5 seconds of inactivity
+                socket.broadcast.to(room).emit(`typing`, data, user)
             })
-            socket.on(`stopped-typing ${room}`, (data, user) => {
+            socket.on(`stopped-typing`, (data, user) => {
                 console.log('SOCKET_STOPPED_TYPING: ', data, 'user: ', user)
-                socket.broadcast
-                    .to(room)
-                    .emit(`stopped-typing ${room}`, data, user)
+                socket.broadcast.to(room).emit(`stopped-typing`, data, user)
             })
             socket.on('leave', async (room) => {
                 console.log('SOCKET_LEAVE: ', room)
                 socket.leave(room)
+                broadcastActiveMembers(room)
             })
 
-            function broadcastActiveMembers() {
-                io.in(req.query.room)
+            function broadcastActiveMembers(room: string) {
+                io.in(room)
                     .allSockets()
                     .then((sockets) => {
-                        console.log('SOCKET_ACTIVE_SIZE_: ', sockets.size)
-                        socket.broadcast
-                            .to(room)
-                            .emit('active-members', sockets.size - 1)
+                        io.in(room).emit('active-members', sockets.size - 1)
+                        console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
                     })
-            }
-            function getActiveMembers() {
-                io.in(req.query.room)
-                    .allSockets()
-                    .then((sockets) => {
-                        console.log('SOCKET_ACTIVE_SIZE_: ', sockets.size)
-                        socket.to(room).emit('active-members', sockets.size - 1)
+                    .catch(() => {
+                        console.log('error')
                     })
             }
         })

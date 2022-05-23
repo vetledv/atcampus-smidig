@@ -6,13 +6,14 @@ import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import Image from 'next/image'
-import type { Group, Member } from 'types/groups'
+import { Group, Member } from 'types/groups'
 import GroupNav from 'components/groups/GroupNav'
 import Head from 'next/head'
 import GroupCalendar from 'components/groups/Calendar'
+import SocketIOClient, { Socket } from 'socket.io-client'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -25,10 +26,66 @@ const GroupPage = () => {
     const router = useRouter()
     const routerQuery = router.query
     const session = useSession()
-
     const group = useGroup(routerQuery.group as string)
+
     const [activeMembers, setActiveMembers] = useState<number>(0)
     const [activeTab, setActiveTab] = useState(0)
+    const [connected, setConnected] = useState<boolean>(false)
+    const [userTyping, setUserTyping] = useState<string>('')
+    const [connectedUsers, setConnectedUsers] = useState<string[]>([])
+
+    const socket = useRef<Socket>(null)
+    //initialize socket
+    useEffect(() => {
+        if (!routerQuery.group) return
+        socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
+            path: '/api/groups/socket',
+            query: {
+                room: routerQuery.group as string,
+            },
+        })
+        socket.current.on('connect', () => {
+            console.log('socket connected, id:', socket.current.id)
+            //join a room
+            socket.current.emit('create', routerQuery.group)
+            setConnected(true)
+            console.log('joined room')
+            console.log(socket.current)
+        })
+        const currSocket = socket.current
+        currSocket.connect()
+        return () => {
+            currSocket.emit('leave', routerQuery.group)
+            currSocket.close()
+        }
+    }, [routerQuery.group])
+
+    //socket events
+    useEffect(() => {
+        if (socket.current === null) return
+        socket.current.on('active-members', (data) => {
+            console.log('active:', data)
+            setActiveMembers(data)
+        })
+        socket.current.on(
+            `message ${routerQuery.group as string}`,
+            (message) => {
+                console.log('message received:', message)
+            }
+        )
+        socket.current.on(`typing`, (data, user: string) => {
+            console.log('typing group.tsx:', data, 'user: ', user)
+        })
+        socket.current.on(`stopped-typing`, (data, user) => {
+            console.log('stopped typing group.tsx:', data, 'user: ', user)
+        })
+        socket.current.on('disconnect', () => {
+            socket.current.emit('leave', routerQuery.group)
+            socket.current.emit('active', routerQuery.group)
+            console.log('socket disconnected MessageComponent')
+            setConnected(false)
+        })
+    }, [routerQuery.group])
 
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
@@ -60,7 +117,7 @@ const GroupPage = () => {
     )
 
     const isAdmin = useCallback(() => {
-        if (!session.data.user || !group.data) return false
+        if (!session?.data?.user || !group.data) return false
         return session?.data?.user?.id === group.data?.admin.userId?.toString()
     }, [group, session])
 
@@ -96,6 +153,7 @@ const GroupPage = () => {
             </div>
         )
     }, [group.data?.pendingMembers, handlePendingMember, isAdmin])
+
     const head = (
         <Head>
             <title>
@@ -198,7 +256,11 @@ const GroupPage = () => {
                                         groupId={group.data._id}
                                         groupName={group.data.groupName}
                                         groupMembers={group.data.members}
-                                        setActiveMembers={setActiveMembers}
+                                        connected={connected}
+                                        socket={socket}
+                                        activeTab={activeTab}
+                                        userTyping={userTyping}
+                                        setUserTyping={setUserTyping}
                                     />
                                 </div>
                             )}

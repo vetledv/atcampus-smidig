@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import {
     Dispatch,
+    MutableRefObject,
     SetStateAction,
     useCallback,
     useEffect,
@@ -13,7 +14,7 @@ import {
     useState,
 } from 'react'
 import { useQuery } from 'react-query'
-import SocketIOClient, { Socket } from 'socket.io-client'
+import { Socket } from 'socket.io-client'
 import type { GroupMessages, Member, Message, SendMessage } from 'types/groups'
 
 interface ByDayMessage {
@@ -22,15 +23,23 @@ interface ByDayMessage {
 }
 
 const MessageComponent = ({
-    groupName,
     groupId,
-    setActiveMembers,
+    groupName,
     groupMembers,
+    connected,
+    socket,
+    activeTab,
+    userTyping,
+    setUserTyping,
 }: {
     groupId: ObjectId
     groupName: string
     groupMembers: Member[]
-    setActiveMembers: Dispatch<SetStateAction<number>>
+    connected: boolean
+    socket: MutableRefObject<Socket>
+    activeTab: number
+    userTyping: string
+    setUserTyping: Dispatch<SetStateAction<string>>
 }) => {
     const session = useSession()
     const messages = useQuery<GroupMessages, Error>(
@@ -38,10 +47,7 @@ const MessageComponent = ({
         fetchReactQuery(`groups/${groupId}/messages`)
     )
     const [msg, setMsg] = useState<string>('')
-    const [connected, setConnected] = useState<boolean>(false)
-    const [userTyping, setUserTyping] = useState<string>('')
 
-    const socket = useRef<Socket>()
     const msgCont = useRef<HTMLDivElement>(null)
     const timeout: { current: NodeJS.Timeout | null } = useRef(null)
 
@@ -54,67 +60,20 @@ const MessageComponent = ({
     const refetch = useCallback(() => {
         messages.refetch()
     }, [messages])
-
-    //initialize socket
     useEffect(() => {
-        socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
-            path: '/api/groups/socket',
-            query: {
-                room: groupId,
-            },
-        })
-        socket.current.on('connect', () => {
-            console.log('socket connected, id:', socket.current.id)
-            //join a room
-            socket.current.emit('create', groupId)
-            socket.current.emit('active', groupId)
-            console.log('joined room')
-            setConnected(true)
-        })
-        const currSocket = socket.current
-        return () => {
-            currSocket.emit('leave', groupId)
-            socket.current.emit('active', groupId)
-            currSocket.close()
-            setConnected(false)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    //socket events
-    useEffect(() => {
-        if (!socket.current) return
-        socket.current.on('active-members', (data) => {
-            console.log('active:', data)
-            setActiveMembers(data)
-        })
         socket.current.on(`message ${groupId.toString()}`, (message) => {
             console.log('message received:', message)
-            socket.current.emit('active', groupId)
             refetch()
         })
-        socket.current.on(
-            `typing ${groupId.toString()}`,
-            (data, user: string) => {
-                console.log('typing:', data, 'user: ', user)
-                setUserTyping(user)
-            }
-        )
-        socket.current.on(
-            `stopped-typing ${groupId.toString()}`,
-            (data, user) => {
-                console.log('stopped typing:', data, 'user: ', user)
-                setUserTyping('')
-            }
-        )
-        socket.current.on('disconnect', () => {
-            socket.current.emit('leave', groupId)
-            socket.current.emit('active', groupId)
-            console.log('socket disconnected')
-            setConnected(false)
+        socket.current.on(`typing`, (data, user: string) => {
+            console.log('typing:', data, 'user: ', user)
+            setUserTyping(user)
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        socket.current.on(`stopped-typing`, (data, user) => {
+            console.log('stopped typing:', data, 'user: ', user)
+            setUserTyping('')
+        })
+    })
 
     useEffect(() => {
         scrollToBottom()
@@ -125,19 +84,15 @@ const MessageComponent = ({
 
         const typingTimeout = setTimeout(() => {
             socket.current.emit(
-                `stopped-typing ${groupId}`,
+                `stopped-typing`,
                 groupId,
                 session?.data.user?.name
             )
         }, 4000)
-        socket.current.emit(
-            `typing ${groupId}`,
-            groupId,
-            session?.data.user?.name
-        )
+        socket.current.emit(`typing`, groupId, session?.data.user?.name)
         timeout.current && clearTimeout(timeout.current as NodeJS.Timeout)
         timeout.current = typingTimeout as NodeJS.Timeout
-    }, [groupId, session?.data.user?.name])
+    }, [groupId, session?.data.user?.name, socket])
 
     const sendMessage = useCallback(
         (message: string) => {
@@ -170,6 +125,7 @@ const MessageComponent = ({
             session.data.user.id,
             session.data.user.name,
             session.status,
+            socket,
         ]
     )
 

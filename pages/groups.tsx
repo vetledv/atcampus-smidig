@@ -1,6 +1,7 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import { useGroups } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
+import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 import { dehydrate, QueryClient } from 'react-query'
 import type { Group } from 'types/groups'
@@ -72,8 +73,7 @@ export async function getServerSideProps() {
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group[], Error>('groups', async () => {
         const res = await fetch(`${baseUrl}/api/groups`)
-        const data = await res.json()
-        return data
+        return res.json()
     })
     return {
         props: {
