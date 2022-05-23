@@ -36,7 +36,7 @@ const MessageComponent = ({
     const session = useSession()
     const messages = useQuery<GroupMessages, Error>(
         ['messages', groupId],
-        fetchReactQuery(`groups/messages/${groupId}`)
+        fetchReactQuery(`groups/${groupId}/messages`)
     )
     const [msg, setMsg] = useState<string>('')
     const [connected, setConnected] = useState<boolean>(false)

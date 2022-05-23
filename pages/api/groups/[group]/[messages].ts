@@ -3,14 +3,14 @@ import { ObjectId } from 'mongodb'
 import { NextApiRequest } from 'next'
 import nextConnect from 'next-connect'
 import { NextApiResponseServerIO } from 'types/socket'
-import { SendMessage } from './../../../../types/groups'
+import { SendMessage } from '../../../../types/groups'
 
 const messagesHandler = nextConnect()
 
 messagesHandler.get(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
-        const { messages: groupId } = req.query
+        const { group: groupId } = req.query
         await db
             .collection('group-messages')
             .findOne({ groupId: new ObjectId(groupId as string) })

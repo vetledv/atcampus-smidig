@@ -26,6 +26,7 @@ const SubjectCard = ({
 }: SubjectCardProps) => {
     const router = useRouter()
     const imageSize = compact ? 64 : 128
+    console.log(groupId)
 
     return (
         <div

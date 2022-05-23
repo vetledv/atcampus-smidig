@@ -1,4 +1,5 @@
 import { connectToDB } from 'lib/mongodb'
+import { ObjectId } from 'mongodb'
 import { NextApiRequest } from 'next'
 import { NextApiResponse } from 'next'
 
@@ -7,11 +8,10 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { db } = await connectToDB()
-    const { groupId } = req.query
-    console.log(req.query)
+    const { group } = req.query
     await db
         .collection('atcampus-groups')
-        .findOne({ groupId })
+        .findOne({ _id: new ObjectId(group as string) })
         .then((group) => {
             res.status(200).json(group)
         })
