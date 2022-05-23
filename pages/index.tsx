@@ -6,8 +6,6 @@ import BigCheckbox from 'components/general/BigCheckbox'
 import Checkbox from 'components/general/Checkbox'
 import DropDown from 'components/general/DropDown'
 import TextInputField from 'components/general/TextInputField'
-import AddTag from 'components/groups/groupsettings/AddTag'
-import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
 import { NextPage } from 'next'
 import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -145,32 +143,6 @@ const HomePage: NextPage = () => {
                         value={undefined}
                         className={undefined}
                         onChange={undefined}
-                    />
-                </div>
-
-                <div className='mt-8'>
-                    <h2 className='text-lg lg:text-xl'>Card</h2>
-                    <SubjectCard
-                        groupImage={
-                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                        }
-                        groupName={'Matematikk'}
-                        groupId={null}
-                        subjectCode={'PG2341'}
-                        compact={true}
-                    />
-                    <div className='py-3'></div>
-
-                    <SubjectCard
-                        groupImage={
-                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                        }
-                        groupName={'Matematikk'}
-                        subjectCode={'PG2341'}
-                        members={7}
-                        totalMembers={12}
-                        compact={false}
-                        groupId={null}
                     />
                 </div>
 

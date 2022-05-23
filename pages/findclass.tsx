@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import FlatButton from 'components/buttons/FlatButton'
-import FindGroupsHeaderTest from 'components/findgroups/FindGroupHeaderTest'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = (props) => {

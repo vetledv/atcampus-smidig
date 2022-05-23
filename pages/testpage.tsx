@@ -1,8 +1,6 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
 import { GroupMembers } from 'components/general/Lib'
 import GroupMain from 'components/groups/GroupMain'
-import AddTag from 'components/groups/groupsettings/AddTag'
-import EditTagCard from 'components/groups/groupsettings/EditGroupCard'
 import GroupNav from 'components/groups/GroupNav'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import { useState } from 'react'
@@ -15,14 +13,6 @@ const TestPage = () => {
                 <NavBarTut2 />
             </div>
             <div className='bg-red-800'>
-                <div className='py-2'>
-                    <AddTag tags={undefined} />
-                </div>
-                <EditTagCard
-                    groupName={undefined}
-                    groupDescription={undefined}
-                    groupMaxMembers={undefined}
-                />
                 <div className='p-4'>
                     <TwoOptionsButtons />
                 </div>
