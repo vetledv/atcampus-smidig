@@ -8,7 +8,6 @@ import DropDown from 'components/general/DropDown'
 import TextInputField from 'components/general/TextInputField'
 import AddTag from 'components/groups/movedTempCauseErrors/AddTag'
 import EditTagCard from 'components/groups/movedTempCauseErrors/EditGroupCard'
-import { ObjectId } from 'mongodb'
 import { NextPage } from 'next'
 import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -156,7 +155,7 @@ const HomePage: NextPage = () => {
                             'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                         }
                         groupName={'Matematikk'}
-                        groupId={new ObjectId()}
+                        groupId={null}
                         subjectCode={'PG2341'}
                         compact={true}
                     />
@@ -171,7 +170,7 @@ const HomePage: NextPage = () => {
                         members={7}
                         totalMembers={12}
                         compact={false}
-                        groupId={new ObjectId()}
+                        groupId={null}
                     />
                 </div>
 
