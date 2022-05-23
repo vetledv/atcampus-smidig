@@ -4,6 +4,7 @@ import FlatButton from 'components/buttons/Button'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 import { Group } from 'types/groups'
+import { ObjectId } from 'mongoose'
 
 const GroupHeader = ({
     group,
@@ -48,7 +49,7 @@ const GroupHeader = ({
                         </div>
                     </div>
                     <div>
-                        <Link href={'/group/settings'}>
+                        <Link href={`/groups/${group.groupName}/settings`}>
                             <CogIcon
                                 className={
                                     'w-9 h-9 text-purple-1 m-3 cursor-pointer'
