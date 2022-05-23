@@ -57,6 +57,39 @@ const GroupPage = () => {
         return session?.data?.user?.id === group.data?.admin.userId?.toString()
     }, [group, session])
 
+    const renderAdminPanel = useCallback(() => {
+        if (!isAdmin()) return null
+        return (
+            <div className='flex flex-col gap-2'>
+                <h1>Pending members:</h1>
+                {group.data.pendingMembers.map((pendingMember) => (
+                    <div
+                        key={pendingMember.userId.toString()}
+                        className='flex flex-row gap-2'>
+                        <div>{pendingMember.userName}</div>
+                        <div className='flex gap-2'>
+                            <FlatButton
+                                onClick={() => {
+                                    handlePendingMember(pendingMember, 'ADD')
+                                }}>
+                                Add to group
+                            </FlatButton>
+                            <FlatButton
+                                onClick={() => {
+                                    handlePendingMember(pendingMember, 'REMOVE')
+                                }}>
+                                Decline
+                            </FlatButton>
+                        </div>
+                    </div>
+                ))}
+                {group.data.pendingMembers.length === 0 && (
+                    <div>No pending members</div>
+                )}
+            </div>
+        )
+    }, [group.data?.pendingMembers, handlePendingMember, isAdmin])
+
     if (group.isLoading || adminMutatePending.isLoading) {
         return <div>Loading...</div>
     }
@@ -102,44 +135,7 @@ const GroupPage = () => {
                                         {group.data.admin.userName}
                                     </div>
                                 )}
-                                {isAdmin() && (
-                                    <div className='flex flex-col gap-2'>
-                                        <h1>Pending members:</h1>
-                                        {group.data.pendingMembers.map(
-                                            (pendingMember) => (
-                                                <div
-                                                    key={pendingMember.userId.toString()}
-                                                    className='flex flex-row gap-2'>
-                                                    <div>
-                                                        {pendingMember.userName}
-                                                    </div>
-                                                    <div className='flex gap-2'>
-                                                        <FlatButton
-                                                            onClick={() => {
-                                                                handlePendingMember(
-                                                                    pendingMember,
-                                                                    'ADD'
-                                                                )
-                                                            }}>
-                                                            Add to group
-                                                        </FlatButton>
-                                                        <FlatButton
-                                                            onClick={() => {
-                                                                handlePendingMember(
-                                                                    pendingMember,
-                                                                    'REMOVE'
-                                                                )
-                                                            }}>
-                                                            Decline
-                                                        </FlatButton>
-                                                    </div>
-                                                </div>
-                                            )
-                                        )}
-                                        {group.data.pendingMembers.length ===
-                                            0 && <div>No pending members</div>}
-                                    </div>
-                                )}
+                                {renderAdminPanel()}
                             </div>
                         </div>
 
