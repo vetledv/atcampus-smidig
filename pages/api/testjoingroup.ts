@@ -38,25 +38,43 @@ export default async function handlera(
             picture,
         }
         if (isPrivate) {
+            //check if user is already in pendingMembers
             await db
                 .collection('atcampus-groups')
-                .updateOne(filter, {
-                    $addToSet: {
-                        pendingMembers: members,
+                .findOne({
+                    ...filter,
+                    pendingMembers: {
+                        $elemMatch: {
+                            userId,
+                        },
                     },
                 })
-                .then((updateResult) => {
-                    console.log(groupId)
-                    res.status(200).json({
-                        message: 'success',
-                        private: true,
-                    })
-                })
-                .catch((err) => {
-                    res.status(500).json({
-                        message: 'error',
-                        error: err,
-                    })
+                .then((group) => {
+                    if (group) {
+                        res.status(200).json({
+                            message: 'Already pending invite',
+                            private: true,
+                        })
+                    } else {
+                        //add user to pendingMembers
+                        db.collection('atcampus-groups')
+                            .updateOne(filter, {
+                                $push: {
+                                    pendingMembers: members,
+                                },
+                            })
+                            .then(() => {
+                                res.status(200).json({
+                                    message: 'Await approval from group owner',
+                                    private: true,
+                                })
+                            })
+                            .catch((err) => {
+                                res.status(500).json({
+                                    message: err.message,
+                                })
+                            })
+                    }
                 })
         } else {
             await db
@@ -75,8 +93,7 @@ export default async function handlera(
                 })
                 .catch((err) => {
                     res.status(500).json({
-                        message: 'error',
-                        error: err,
+                        message: err.message,
                     })
                 })
         }

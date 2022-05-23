@@ -13,12 +13,14 @@ import { Group } from 'types/groups'
 import { fetchReactQuery, postJSON, postReactQuery } from '../hooks/useGroups'
 
 interface MutateResponse {
-    success: string
+    message: string
     private: boolean
 }
 
 interface MutateError {
-    error: string
+    error: {
+        message: string
+    }
     message: string
 }
 
@@ -110,7 +112,7 @@ const TestPageJoinGroup = () => {
             {mutate.isSuccess && (
                 <div>
                     {mutateRes.private ? (
-                        <h1>Request sent!</h1>
+                        <h1>{mutateRes.message}</h1>
                     ) : (
                         <h1>Joined</h1>
                     )}
