@@ -49,7 +49,7 @@ const GroupHeader = ({
                         </div>
                     </div>
                     <div>
-                        <Link href={`/groups/${group.groupName}/settings`}>
+                        <Link href={`/groups/${group._id}/settings`}>
                             <CogIcon
                                 className={
                                     'w-9 h-9 text-purple-1 m-3 cursor-pointer'

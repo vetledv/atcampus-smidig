@@ -22,14 +22,14 @@ export default NextAuth({
         GoogleProvider({
             clientId: google_client_id,
             clientSecret: google_client_secret,
-            authorization: {
-                params: {
-                    prompt: 'consent',
-                    access_type: 'offline',
-                    response_type: 'code',
-                    scope: 'openid profile email',
-                },
-            },
+            // authorization: {
+            //     params: {
+            //         prompt: 'consent',
+            //         access_type: 'offline',
+            //         response_type: 'code',
+            //         scope: 'openid profile email',
+            //     },
+            // },
             profile(profile) {
                 console.log('profile: ', profile.sub)
                 return {

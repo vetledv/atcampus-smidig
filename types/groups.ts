@@ -1,4 +1,4 @@
-import { ObjectId, Timestamp } from 'mongodb'
+import { ObjectId } from 'mongodb'
 
 export interface Member {
     userId: string

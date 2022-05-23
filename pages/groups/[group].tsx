@@ -28,7 +28,7 @@ const GroupPage = () => {
     const [activeMembers, setActiveMembers] = useState<number>(0)
     const [activeTab, setActiveTab] = useState(0)
 
-    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat']
+    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
     const adminMutatePending = useMutation(
         (object: AddMutateObj) =>
@@ -143,7 +143,7 @@ const GroupPage = () => {
                             </div>
                         )}
                         {activeTab === 1 && (
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-2 bg-red-300'>
                                 {group.data.members?.map((member) => (
                                     <div
                                         key={member.userId.toString()}
@@ -184,6 +184,7 @@ const GroupPage = () => {
                                 />
                             </div>
                         )}
+                        {activeTab === 3 && <>Not Implemented yet.</>}
                     </div>
                 </>
             )}
