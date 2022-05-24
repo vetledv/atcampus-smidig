@@ -54,7 +54,7 @@ const FindClassPage = (props) => {
         <div>
             <div className='flex flex-wrap h-96'>
                 {classes.map((subject) => (
-                    <div key={subject.id} className='p-8'>
+                    <div key={subject.id} className='p-8 hover:cursor-default'>
                         <SubjectCardCompact
                             subjectCode={subject.classCode}
                             subjectImage={subject.image}

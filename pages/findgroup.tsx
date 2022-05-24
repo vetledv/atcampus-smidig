@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import StepProgressBar from 'react-step-progress'
 import FindClassPage from '../components/findgroups/findclass'
 import SelectGoals from '../components/findgroups/selectgoals'
+import ChooseGroup from '../components/findgroups/ChooseGroup'
 // Contents of this file will be moved. This page will serve the find group functionality.
 // TODO: add steps to create a group
 
@@ -28,6 +29,11 @@ const FindGroupPage = () => {
             setStepTitle('Velg Mål')
             console.log(step)
         }
+        if (step === 2) {
+            setStep(step + 1)
+            setStepTitle('Gruppeforslag')
+            console.log(step)
+        }
     }
 
     return (
@@ -43,10 +49,22 @@ const FindGroupPage = () => {
                         {
                             step === 2 && <SelectGoals /> //TODO: Add SelectGoal
                         }
+                        {
+                            step === 3 && <ChooseGroup /> //TODO: Add SelectGoal
+                        }
                         <div className='p-16'>
-                            <FlatButton onClick={handleStep}>
-                                Gå videre
-                            </FlatButton>
+                            {
+                                step === 2 && (
+                                    <FlatButton onClick={handleStep}>
+                                        Finn Gruppe
+                                    </FlatButton>
+                                ) //TODO: Add SelectSubject
+                            }
+                            {step! < 2 && (
+                                <FlatButton onClick={handleStep}>
+                                    Gå videre
+                                </FlatButton>
+                            )}
                         </div>
                     </div>
                 </div>

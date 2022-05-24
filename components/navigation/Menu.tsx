@@ -12,12 +12,6 @@ export default function Menu() {
             current: router.asPath === '/',
         },
         {
-            name: 'Grupper',
-            icon: DocumentTextIcon,
-            href: '/groupsOld',
-            current: router.asPath === '/groupsOld',
-        },
-        {
             name: 'Kollokviegrupper',
             icon: DocumentTextIcon,
             href: '/groups',
@@ -34,12 +28,6 @@ export default function Menu() {
             icon: DocumentTextIcon,
             href: '/findgroup',
             current: router.asPath === '/findgroup',
-        },
-        {
-            name: 'Velg Mål',
-            icon: DocumentTextIcon,
-            href: '/choosegoal',
-            current: router.asPath === '/choosegoal',
         },
         {
             name: 'testjoingroup',
