@@ -7,11 +7,36 @@ import { useSession } from 'next-auth/react'
 import { useGroups } from 'hooks/useGroups'
 import FlatButton from 'components/buttons/FlatButton'
 import { ObjectId } from 'mongodb'
+import { baseUrl } from 'lib/constants'
+import {
+    dehydrate,
+    QueryClient,
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from 'react-query'
+import { Group } from 'types/groups'
+import { fetchReactQuery, postJSON, postReactQuery } from 'hooks/useGroups'
+
+interface MutateResponse {
+    message: string
+    private: boolean
+}
+
+interface MutateError {
+    error: {
+        message: string
+    }
+    message: string
+}
 
 const ChooseGroup = () => {
     const [selectedGroup, setSelectedGroup] = useState('')
 
-    const groups = useGroups()
+    const groups = useQuery<Group[], Error>(
+        'groupstest',
+        fetchReactQuery('testjoingroup')
+    )
 
     if (groups.isLoading) {
         return <div>Loading...</div>
@@ -24,15 +49,15 @@ const ChooseGroup = () => {
 
     return (
         <>
-            <div className='m-4'>
+            <div className='m-4 text-dark-1'>
                 <div className='text-xl font-semibold'>
-                    Trykk for å bli med i en gruppe
+                    Trykk for å bli å bli tatt til en gruppe
                 </div>
                 <div className='text-sm'>
                     Noen grupper må gruppemedlemmer godkjennes
                 </div>
             </div>
-            <div>
+            <div className='flex flex-wrap'>
                 {groups.data.map(
                     (group: {
                         groupName: React.Key
@@ -41,7 +66,7 @@ const ChooseGroup = () => {
                         members: string | any[]
                         maxMembers: number
                     }) => (
-                        <li key={group._id} className={'m-8 list-none flex'}>
+                        <li key={group._id} className={'m-6 list-none flex'}>
                             <SubjectCard
                                 groupName={group.groupName.toString()}
                                 groupId={group._id}

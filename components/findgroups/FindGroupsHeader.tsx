@@ -18,6 +18,11 @@ const FindGroupsHeader = ({ stepTitle }) => {
                             Kollokviegrupper / Velg Skole / Velg Fag /{' '}
                             <b>{stepTitle}</b>
                         </div>
+                    ) : stepTitle === 'Gruppeforslag' ? (
+                        <div>
+                            Kollokviegrupper / Velg Skole / Velg Fag / Velg Mål
+                            / <b>{stepTitle}</b>
+                        </div>
                     ) : (
                         <div>
                             Kollokviegrupper / <b>{stepTitle}</b>
