@@ -1,21 +1,19 @@
 import FlatButton from 'components/buttons/FlatButton'
+import GroupCalendar from 'components/groups/Calendar'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
+import GroupNav from 'components/groups/GroupNav'
 import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
-import Image from 'next/image'
-import { Group, GroupMessages, Member } from 'types/groups'
-import GroupNav from 'components/groups/GroupNav'
-import Head from 'next/head'
-import GroupCalendar from 'components/groups/Calendar'
 import SocketIOClient, { Socket } from 'socket.io-client'
-import { GetServerSideProps } from 'next'
-import { ParsedUrlQuery } from 'querystring'
+import { Group, GroupMessages, Member } from 'types/groups'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -36,8 +34,9 @@ const GroupPage = () => {
     const [userTyping, setUserTyping] = useState<string>('')
     const socket = useRef<Socket>(null)
 
-    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
+    const [image, setImage] = useState(null)
 
+    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
     //initialize socket
     useEffect(() => {
         if (!routerQuery.group) return
@@ -138,6 +137,17 @@ const GroupPage = () => {
         return session?.data?.user?.id === group.data?.admin.userId?.toString()
     }, [group, session])
 
+    const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const file = e.target.files[0]
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                setImage(e.target.result)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
+
     const renderAdminPanel = useCallback(() => {
         if (!isAdmin()) return null
         return (
@@ -171,12 +181,30 @@ const GroupPage = () => {
                 {group.data.pendingMembers.length === 0 && (
                     <div>No pending members</div>
                 )}
+                {image !== null && (
+                    <>
+                        <div>
+                            <Image
+                                src={image}
+                                alt=''
+                                width={200}
+                                height={200}></Image>
+                        </div>
+                        <FlatButton disabled={true}>Upload</FlatButton>
+                    </>
+                )}
+                <form>
+                    <input
+                        type={'file'}
+                        onChange={(e) => onImageChange(e)}></input>
+                </form>
             </div>
         )
     }, [
         adminMutatePending.isLoading,
         group.data.pendingMembers,
         handlePendingMember,
+        image,
         isAdmin,
     ])
 
@@ -232,6 +260,7 @@ const GroupPage = () => {
                                             {group.data.admin.userName}
                                         </div>
                                     )}
+
                                     {renderAdminPanel()}
                                 </div>
                             )}
@@ -294,14 +323,6 @@ export const getServerSideProps = async (
     context: GetSessionParams & { query: { group: string } }
 ) => {
     const session = await getSession(context)
-    if (!session) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: '/auth/login',
-            },
-        }
-    }
     const { group } = context.query
 
     const queryClient = new QueryClient()
