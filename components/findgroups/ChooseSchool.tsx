@@ -7,10 +7,9 @@ interface State {
     stepTitle: String
 }
 
-const ChooseSchool = ({ school }) => {
+const ChooseSchool = () => {
     const [selectedSchool, setSelectedSchool] = useState('')
 
-    school = selectedSchool
     console.log('selectedSchool', selectedSchool)
 
     const schools = [
