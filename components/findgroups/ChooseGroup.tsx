@@ -66,7 +66,9 @@ const ChooseGroup = () => {
                         members: string | any[]
                         maxMembers: number
                     }) => (
-                        <li key={group._id} className={'m-6 list-none flex'}>
+                        <li
+                            key={group._id.toString()}
+                            className={'m-6 list-none flex'}>
                             <SubjectCard
                                 groupName={group.groupName.toString()}
                                 groupId={group._id}

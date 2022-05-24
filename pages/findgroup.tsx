@@ -18,7 +18,6 @@ const FindGroupPage = () => {
     const [stepTitle, setStepTitle] = useState('Velg Skole')
 
     const handleStep = () => {
-        //TODO: Handle last step
         if (step === 0) {
             setStep(step + 1)
             setStepTitle('Velg Fag')
@@ -36,33 +35,50 @@ const FindGroupPage = () => {
         }
     }
 
+    const handleStepback = () => {
+        if (step === 1) {
+            setStep(0)
+            setStepTitle('Velg Skole')
+            console.log(step)
+        }
+        if (step === 2) {
+            setStep(1)
+            setStepTitle('Velg Fag')
+            console.log(step)
+        }
+        if (step === 3) {
+            setStep(2)
+            setStepTitle('Velg Mål')
+            console.log(step)
+        }
+    }
+
     return (
         <>
             <div className='bg-dark-6 w-full'>
                 <FindGroupsHeader stepTitle={stepTitle} />
                 <div className='flex justify-center'>
                     <div className='bg-white input-shadow h-full min-w-min max-w-7xl w-full my-16'>
-                        {step === 0 && <ChooseSchool />}
-                        {
-                            step === 1 && <FindClassPage /> //TODO: Add SelectSubject
-                        }
-                        {
-                            step === 2 && <SelectGoals /> //TODO: Add SelectGoal
-                        }
-                        {
-                            step === 3 && <ChooseGroup /> //TODO: Add SelectGoal
-                        }
+                        {step === 0 && <ChooseSchool school />}
+                        {step === 1 && <FindClassPage />}
+                        {step === 2 && <SelectGoals />}
+                        {step === 3 && <ChooseGroup />}
                         <div className='p-16'>
-                            {
-                                step === 2 && (
-                                    <FlatButton onClick={handleStep}>
-                                        Finn Gruppe
-                                    </FlatButton>
-                                ) //TODO: Add SelectSubject
-                            }
+                            {step === 2 && (
+                                <FlatButton onClick={handleStep}>
+                                    Finn Gruppe
+                                </FlatButton>
+                            )}
                             {step! < 2 && (
                                 <FlatButton onClick={handleStep}>
                                     Gå videre
+                                </FlatButton>
+                            )}
+                            {step != 0 && (
+                                <FlatButton
+                                    className={'ml-8'}
+                                    onClick={handleStepback}>
+                                    Tilbake
                                 </FlatButton>
                             )}
                         </div>

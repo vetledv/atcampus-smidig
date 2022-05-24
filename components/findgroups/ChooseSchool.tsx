@@ -2,11 +2,15 @@ import { useState } from 'react'
 import { FindGroupsFilter } from './FindGroupsFilter'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
-const ChooseSchool = () => {
-    const [selectedSchool, setSelectedSchool] = useState('')
-    const [selectedSubject, setSelectedSubject] = useState('')
-    const [selectedGrade, setSelectedGrade] = useState('')
+interface State {
+    step: Number
+    stepTitle: String
+}
 
+const ChooseSchool = ({ school }) => {
+    const [selectedSchool, setSelectedSchool] = useState('')
+
+    school = selectedSchool
     console.log('selectedSchool', selectedSchool)
 
     const schools = [
