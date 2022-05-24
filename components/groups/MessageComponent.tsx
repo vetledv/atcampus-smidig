@@ -67,11 +67,15 @@ const MessageComponent = ({
         })
         socket.current.on(`typing`, (data, user: string) => {
             console.log('typing:', data, 'user: ', user)
-            setUserTyping(user)
+            if (activeTab === 2) {
+                setUserTyping(user)
+            }
         })
         socket.current.on(`stopped-typing`, (data, user) => {
             console.log('stopped typing:', data, 'user: ', user)
-            setUserTyping('')
+            if (activeTab === 2) {
+                setUserTyping('')
+            }
         })
     })
 

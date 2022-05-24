@@ -22,6 +22,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             var query = socket.handshake.query
             var room = query.room
             console.log('ROOM: ', room)
+            let typing = false
 
             socket.on('create', async (room) => {
                 socket.join(room)
@@ -33,15 +34,24 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             })
             socket.on(`typing`, (data, user) => {
                 console.log('SOCKET_TYPING: ', data, 'user: ', user)
+                typing = true
+                console.log(typing)
                 socket.broadcast.to(room).emit(`typing`, data, user)
             })
             socket.on(`stopped-typing`, (data, user) => {
                 console.log('SOCKET_STOPPED_TYPING: ', data, 'user: ', user)
+                typing = false
+                console.log(typing)
                 socket.broadcast.to(room).emit(`stopped-typing`, data, user)
             })
             socket.on('leave', async (room) => {
                 console.log('SOCKET_LEAVE: ', room)
                 socket.leave(room)
+                console.log(typing)
+                if (typing) {
+                    console.log('emitting stopped to room on leave')
+                    socket.to(room).emit(`stopped-typing`, {}, {})
+                }
                 broadcastActiveMembers(room)
             })
 

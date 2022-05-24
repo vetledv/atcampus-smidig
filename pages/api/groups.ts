@@ -1,6 +1,5 @@
 import { secret_key } from 'lib/constants'
 import { connectToDB } from 'lib/mongodb'
-import { ObjectId } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
 import nextConnect from 'next-connect'

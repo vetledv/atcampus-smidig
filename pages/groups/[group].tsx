@@ -1,19 +1,23 @@
 import FlatButton from 'components/buttons/FlatButton'
-import GroupCalendar from 'components/groups/Calendar'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
 import GroupNav from 'components/groups/GroupNav'
-import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
-import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import { getSession, GetSessionParams } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
+import { Session } from 'next-auth'
 import { Group, GroupMessages, Member } from 'types/groups'
+import dynamic from 'next/dynamic'
+const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
+const MessageComponent = dynamic(
+    () => import('../../components/groups/MessageComponent')
+)
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -22,10 +26,9 @@ interface AddMutateObj {
     action: 'ADD' | 'REMOVE'
 }
 
-const GroupPage = () => {
+const GroupPage = ({ session }: { session: Session }) => {
     const router = useRouter()
     const routerQuery = router.query
-    const session = useSession()
     const group = useGroup(routerQuery.group as string)
 
     const [activeMembers, setActiveMembers] = useState<number>(0)
@@ -58,7 +61,7 @@ const GroupPage = () => {
         currSocket.connect()
         return () => {
             currSocket.emit('leave', routerQuery.group)
-            currSocket.close()
+            currSocket.disconnect()
         }
     }, [routerQuery.group])
 
@@ -80,6 +83,9 @@ const GroupPage = () => {
         })
         socket.current.on(`stopped-typing`, (data, user) => {
             console.log('stopped typing group.tsx:', data, 'user: ', user)
+            if (activeTab !== 2) {
+                setUserTyping('')
+            }
         })
         socket.current.on('disconnect', () => {
             socket.current.emit('leave', routerQuery.group)
@@ -87,7 +93,7 @@ const GroupPage = () => {
             console.log('socket disconnected MessageComponent')
             setConnected(false)
         })
-    }, [routerQuery.group])
+    }, [activeTab, routerQuery.group])
 
     const { mutateAsync: leaveGroupAsync } = useMutation(
         (userId: string) =>
@@ -98,9 +104,9 @@ const GroupPage = () => {
             },
         }
     )
-    const leaveGroup = useCallback(() => {
+    const handleLeaveGroup = useCallback(() => {
         if (!session) return
-        leaveGroupAsync(session.data.user.id)
+        leaveGroupAsync(session.user.id)
     }, [leaveGroupAsync, session])
 
     const adminMutatePending = useMutation(
@@ -133,8 +139,8 @@ const GroupPage = () => {
     )
 
     const isAdmin = useCallback(() => {
-        if (!session?.data?.user || !group.data) return false
-        return session?.data?.user?.id === group.data?.admin.userId?.toString()
+        if (!session?.user || !group.data) return false
+        return session?.user?.id === group.data?.admin.userId?.toString()
     }, [group, session])
 
     const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,7 +235,7 @@ const GroupPage = () => {
             {group.data && (
                 <>
                     <GroupHeader
-                        leave={leaveGroup}
+                        leave={handleLeaveGroup}
                         group={group.data}
                         activeMembers={activeMembers}
                     />
@@ -325,6 +331,14 @@ export const getServerSideProps = async (
     const session = await getSession(context)
     const { group } = context.query
 
+    if (!session) {
+        return {
+            props: {
+                redirect: '/login',
+            },
+        }
+    }
+
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group, Error>(
         ['group', group],
@@ -346,6 +360,7 @@ export const getServerSideProps = async (
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
+            session,
         },
     }
 }
