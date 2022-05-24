@@ -29,7 +29,7 @@ const FindGroupsHeader = ({ stepTitle, step }) => {
                             Kollokviegrupper / <b>{stepTitle}</b>
                         </div>
                     )}
-                <ProgressBarTest step={step} />
+                    <ProgressBarTest step={step} />
                     <div className='text-2xl'>{stepTitle}</div>
                 </div>
 

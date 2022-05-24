@@ -2,14 +2,14 @@ import { CogIcon } from '@heroicons/react/solid'
 import FlatButton from 'components/buttons/Button'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
-import { Dispatch, MutableRefObject, SetStateAction, useEffect } from 'react'
-import { Socket } from 'socket.io-client'
 import { Group } from 'types/groups'
 
 const GroupHeader = ({
     group,
     activeMembers,
+    leave,
 }: {
+    leave: () => void
     group: Group | null
     activeMembers: number
 }) => {
@@ -28,10 +28,11 @@ const GroupHeader = ({
                                 {groupName}
                             </div>
                             <FlatButton
+                                onClick={() => leave()}
                                 className={
                                     'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white cursor-default'
                                 }>
-                                Følger Gruppe
+                                Forlat Gruppe
                             </FlatButton>
                         </div>
                         <div className=''>

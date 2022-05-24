@@ -170,34 +170,57 @@ const MessageComponent = ({
                         <div
                             key={j}
                             className='flex bg-slate-50 p-2 rounded gap-2'>
-                            {groupMembers.find(
-                                (member) =>
-                                    member.userId === message.from.userId
-                            )?.picture ? (
-                                <div className='border-2 rounded-full w-12 h-12'>
-                                    <Image
-                                        src={
-                                            groupMembers.find(
-                                                (member) =>
-                                                    member.userId ===
-                                                    message.from.userId
-                                            )?.picture
-                                        }
-                                        alt=''
-                                        width={48}
-                                        height={48}
-                                        className='rounded-full '
-                                    />
-                                </div>
-                            ) : (
-                                <div></div>
-                            )}
-                            <div className='flex flex-col'>
-                                <div className='flex flex-row gap-2'>
-                                    <div className='font-semibold'>
-                                        {message.from.userName}
+                            <div className='w-14'>
+                                {groupMembers.find(
+                                    (member) =>
+                                        member.userId === message.from.userId
+                                )?.picture ? (
+                                    <div className='border-2 rounded-full w-12 h-12'>
+                                        <Image
+                                            src={
+                                                groupMembers.find(
+                                                    (member) =>
+                                                        member.userId ===
+                                                        message.from.userId
+                                                )?.picture
+                                            }
+                                            alt=''
+                                            width={48}
+                                            height={48}
+                                            className='rounded-full '
+                                        />
                                     </div>
-                                    <div className='italic text-dark-4 flex flex-row-reverse'>
+                                ) : (
+                                    <div className='h-12 w-12 rounded-full border-2 bg-white items-center flex justify-center font-semibold'>
+                                        {message.from.userName.charAt(0)}
+                                    </div>
+                                )}
+                            </div>
+                            <div className='flex flex-col w-2/3'>
+                                <div className='flex flex-row gap-2'>
+                                    {groupMembers.filter(
+                                        (m) => m.userId === message.from.userId
+                                    ).length > 0 ? (
+                                        <div className='font-semibold'>
+                                            {
+                                                groupMembers.filter(
+                                                    (m) =>
+                                                        m.userId ===
+                                                        message.from.userId
+                                                )[0].userName
+                                            }
+                                        </div>
+                                    ) : (
+                                        <div className='flex gap-2 '>
+                                            <div className=' text-dark-3 flex gap-2 font-semibold'>
+                                                {message.from.userName}
+                                            </div>
+                                            <div className='italic text-sm text-dark-3 mt-auto'>
+                                                Left
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className='italic text-dark-4 flex flex-grow'>
                                         {new Date(
                                             message.timestamp
                                         ).toLocaleTimeString('no-NO', {

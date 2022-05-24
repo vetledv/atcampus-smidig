@@ -22,7 +22,7 @@ const GroupNav = ({
                         onClick={() => setActiveTab(index)}>
                         <button
                             className={
-                                'h-full px-2 ' +
+                                'h-full px-2 hover:text-dark-1 ' +
                                 (activeTab === index
                                     ? 'text-dark-1 border-b-4  border-purple-1'
                                     : ' ' +

@@ -34,9 +34,10 @@ const GroupPage = () => {
     const [activeTab, setActiveTab] = useState(0)
     const [connected, setConnected] = useState<boolean>(false)
     const [userTyping, setUserTyping] = useState<string>('')
-    const [connectedUsers, setConnectedUsers] = useState<string[]>([])
-
     const socket = useRef<Socket>(null)
+
+    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
+
     //initialize socket
     useEffect(() => {
         if (!routerQuery.group) return
@@ -89,11 +90,26 @@ const GroupPage = () => {
         })
     }, [routerQuery.group])
 
-    const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
+    const { mutateAsync: leaveGroupAsync } = useMutation(
+        (userId: string) =>
+            postJSON(`/api/groups/${routerQuery.group}/leave`, userId),
+        {
+            onSuccess: () => {
+                router.push('/groups')
+            },
+        }
+    )
+    const leaveGroup = useCallback(() => {
+        if (!session) return
+        leaveGroupAsync(session.data.user.id)
+    }, [leaveGroupAsync, session])
 
     const adminMutatePending = useMutation(
         (object: AddMutateObj) =>
-            postJSON(`/api/groups/handlependingmembers`, object),
+            postJSON(
+                `/api/groups/${routerQuery.group}/handlependingmembers`,
+                object
+            ),
         {
             onSuccess: () => {
                 console.log('success')
@@ -104,7 +120,6 @@ const GroupPage = () => {
             },
         }
     )
-
     const handlePendingMember = useCallback(
         async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
             const addMutateObj: AddMutateObj = {
@@ -138,13 +153,17 @@ const GroupPage = () => {
                                 onClick={() => {
                                     handlePendingMember(pendingMember, 'ADD')
                                 }}>
-                                Add to group
+                                {adminMutatePending.isLoading
+                                    ? 'Loading...'
+                                    : 'Godkjenn'}
                             </FlatButton>
                             <FlatButton
                                 onClick={() => {
                                     handlePendingMember(pendingMember, 'REMOVE')
                                 }}>
-                                Decline
+                                {adminMutatePending.isLoading
+                                    ? 'Loading...'
+                                    : 'Avvis'}
                             </FlatButton>
                         </div>
                     </div>
@@ -154,7 +173,12 @@ const GroupPage = () => {
                 )}
             </div>
         )
-    }, [group.data?.pendingMembers, handlePendingMember, isAdmin])
+    }, [
+        adminMutatePending.isLoading,
+        group.data.pendingMembers,
+        handlePendingMember,
+        isAdmin,
+    ])
 
     const head = (
         <Head>
@@ -164,21 +188,11 @@ const GroupPage = () => {
         </Head>
     )
 
-    if (group.isLoading || adminMutatePending.isLoading) {
-        return (
-            <>
-                {head}
-                <div>Loading...</div>
-            </>
-        )
+    if (group.isLoading) {
+        return <div>Loading...</div>
     }
     if (group.isError) {
-        return (
-            <>
-                {head}
-                <div>Error: {group.error.message}</div>
-            </>
-        )
+        return <div>Error: {group.error.message}</div>
     }
 
     return (
@@ -187,6 +201,7 @@ const GroupPage = () => {
             {group.data && (
                 <>
                     <GroupHeader
+                        leave={leaveGroup}
                         group={group.data}
                         activeMembers={activeMembers}
                     />

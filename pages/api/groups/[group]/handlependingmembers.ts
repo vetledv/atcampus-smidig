@@ -4,11 +4,11 @@ import { ObjectId } from 'mongodb'
 import { NextApiResponse } from 'next'
 import { NextApiRequest } from 'next'
 import { getToken } from 'next-auth/jwt'
+import nextConnect from 'next-connect'
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+const handler = nextConnect()
+
+handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getToken({
         req,
         secret: secret_key,
@@ -79,4 +79,6 @@ export default async function handler(
             })
         }
     }
-}
+})
+
+export default handler
