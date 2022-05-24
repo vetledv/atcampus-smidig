@@ -4,16 +4,18 @@ import MessageComponent from 'components/groups/MessageComponent'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
-import { useSession } from 'next-auth/react'
+import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import Image from 'next/image'
-import { Group, Member } from 'types/groups'
+import { Group, GroupMessages, Member } from 'types/groups'
 import GroupNav from 'components/groups/GroupNav'
 import Head from 'next/head'
 import GroupCalendar from 'components/groups/Calendar'
 import SocketIOClient, { Socket } from 'socket.io-client'
+import { GetServerSideProps } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -273,20 +275,38 @@ const GroupPage = () => {
     )
 }
 
-export async function getServerSideProps(context: {
-    query: { group: string }
-}) {
+export const getServerSideProps = async (
+    context: GetSessionParams & { query: { group: string } }
+) => {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/auth/login',
+            },
+        }
+    }
     const { group } = context.query
-    console.log(group)
+
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group, Error>(
         ['group', group],
         async () => {
-            const res = await fetch(`${baseUrl}/api/groups`)
+            const res = await fetch(`${baseUrl}/api/groups/${group}`)
             const data = await res.json()
             return data
         }
     )
+    await queryClient.prefetchQuery<GroupMessages, Error>(
+        ['messages', group],
+        async () => {
+            const res = await fetch(`${baseUrl}/api/groups/${group}/messages}`)
+            const data = await res.json()
+            return data
+        }
+    )
+
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
