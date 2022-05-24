@@ -56,7 +56,7 @@ const FindGroupPage = () => {
     return (
         <>
             <div className='bg-dark-6 w-full'>
-                <FindGroupsHeader stepTitle={stepTitle} />
+                <FindGroupsHeader stepTitle={stepTitle} step={step} />
                 <div className='flex justify-center'>
                     <div className='bg-white input-shadow h-full min-w-min max-w-7xl w-full my-16'>
                         {step === 0 && <ChooseSchool />}

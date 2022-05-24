@@ -2,51 +2,52 @@ import React, { useState } from 'react'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = (props) => {
-    const [selectedSubject, setSelectedSubject] = useState('')
+    const [selectedSubject, setSelectedSubject] = useState(null)
+    const [isSelectedSubject, setIsSelectedSubject] = useState(false)
 
     const [classes, setSelectedClass] = useState([
         {
-            id: '1',
+            id: 1,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'mattematikk',
             classCode: '12333',
         },
         {
-            id: '2',
+            id: 2,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Prog',
             classCode: '12444',
         },
         {
-            id: '3',
+            id: 3,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Ebiss',
             classCode: '12555',
         },
         {
-            id: '4',
+            id: 4,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'mattematikk',
             classCode: '12666',
         },
         {
-            id: '5',
+            id: 5,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Prog',
             classCode: '12777',
         },
         {
-            id: '6',
+            id: 6,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
             className: 'Ebiss',
             classCode: '1234',
         },
     ])
 
-    const handleSelction = (props) => {
-        // setSelectedSubject('')
-        setSelectedSubject(props.classCode)
-    }
+    // const handleSelction = (props) => {
+    //     // setSelectedSubject('')
+    //     setSelectedSubject(props.classCode)
+    // }
 
     console.log(selectedSubject)
 
@@ -60,7 +61,10 @@ const FindClassPage = (props) => {
                             subjectImage={subject.image}
                             subjectName={subject.className}
                             subjectId={subject.id}
-                            onClick={handleSelction}
+                            selected={selectedSubject === subject.id}
+                            onClick={() => {
+                                setSelectedSubject(subject.id)
+                            }}
                         />
                     </div>
                 ))}

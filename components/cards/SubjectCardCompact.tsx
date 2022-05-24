@@ -6,6 +6,7 @@ const SubjectCardCompact = ({
     subjectName,
     subjectCode,
     subjectId,
+    selected,
     onClick,
 }) => {
     const classes =
@@ -23,11 +24,11 @@ const SubjectCardCompact = ({
             <div
                 //className={'flex p-3 input-shadow w-96 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50' }
                 className={
-                    isSelectedSubject
+                    selected
                         ? classes
                         : 'flex p-3 input-shadow w-96 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50'
                 }
-                onClick={handleSelection}>
+                onClick={onClick}>
                 <Image src={subjectImage} width={64} height={64} alt='' />
                 <div className={'px-6'}>
                     <div className='p-1'>
