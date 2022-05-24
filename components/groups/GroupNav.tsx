@@ -14,7 +14,7 @@ const GroupNav = ({
     const renderTabs = useCallback(() => {
         if (!tabs) return null
         return (
-            <ul className='flex flex-row justify-start px-6 space-x-12 items-end font-medium text-dark-3 border-b-2 w-full '>
+            <ul className='flex flex-row justify-start px-6 gap-6 items-end font-medium text-dark-3 border-b-2 w-full '>
                 {tabs.map((tab, index) => (
                     <div
                         className='h-full'
@@ -22,7 +22,7 @@ const GroupNav = ({
                         onClick={() => setActiveTab(index)}>
                         <button
                             className={
-                                'h-full ' +
+                                'h-full px-2 ' +
                                 (activeTab === index
                                     ? 'text-dark-1 border-b-4  border-purple-1'
                                     : ' ' +
