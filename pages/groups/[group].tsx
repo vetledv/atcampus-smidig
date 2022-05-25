@@ -4,7 +4,7 @@ import GroupNav from 'components/groups/GroupNav'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
-import { getSession, GetSessionParams } from 'next-auth/react'
+import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -21,12 +21,16 @@ const MessageComponent = dynamic(
 
 interface AddMutateObj {
     groupId: ObjectId
-    admin: Member
+    admin: {
+        userId: string
+        userName: string
+    }
     userToAdd: Member
     action: 'ADD' | 'REMOVE'
 }
 
-const GroupPage = ({ session }: { session: Session }) => {
+const GroupPage = () => {
+    const { data: session } = useSession()
     const router = useRouter()
     const routerQuery = router.query
     const group = useGroup(routerQuery.group as string)
@@ -38,7 +42,6 @@ const GroupPage = ({ session }: { session: Session }) => {
     const socket = useRef<Socket>(null)
 
     const [image, setImage] = useState(null)
-
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
     //initialize socket
     useEffect(() => {
@@ -238,6 +241,7 @@ const GroupPage = ({ session }: { session: Session }) => {
                         leave={handleLeaveGroup}
                         group={group.data}
                         activeMembers={activeMembers}
+                        isAdmin={isAdmin()}
                     />
                     <GroupNav
                         tabs={groupNavTabs}
@@ -249,8 +253,16 @@ const GroupPage = ({ session }: { session: Session }) => {
                             {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
                                     <p>{group.data.description}</p>
-                                    <h1>Tags:</h1>
-                                    {group.data.tags?.map((tag) => (
+                                    <h1>Skole</h1>
+                                    <div className='bg-pink-300 rounded-md w-fit px-4'>
+                                        {group.data.tags.school}
+                                    </div>
+                                    <h1>Fag</h1>
+                                    <div className='bg-pink-300 rounded-md w-fit px-4'>
+                                        {group.data.tags.course}
+                                    </div>
+                                    <h1>Goals</h1>
+                                    {group.data.tags.goals?.map((tag) => (
                                         <div
                                             className='bg-pink-300 rounded-md w-fit px-4'
                                             key={tag}>
@@ -328,8 +340,8 @@ const GroupPage = ({ session }: { session: Session }) => {
 export const getServerSideProps = async (
     context: GetSessionParams & { query: { group: string } }
 ) => {
-    const session = await getSession(context)
     const { group } = context.query
+    const session = await getSession(context)
 
     if (!session) {
         return {

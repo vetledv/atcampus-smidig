@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/outline'
 
-const ProgressBarTab = ({step, value, active, completed }) => {
+const ProgressBarTab = ({ step, value, active, completed }) => {
     const tab =
         'flex rounded-full bg-purple-4 w-7 h-7 justify-center items-center text-white'
     const activeTab =

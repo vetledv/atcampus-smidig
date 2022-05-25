@@ -43,7 +43,6 @@ const FindClassPage = (props) => {
         },
     ])
 
-
     console.log(selectedSubject)
 
     return (

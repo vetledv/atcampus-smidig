@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
+import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { useGroup } from 'hooks/useGroups'
 import AddTag from 'components/groups/settings/AddTag'
 import EditTagCard from 'components/groups/settings/EditGroupCard'
@@ -9,9 +9,15 @@ import MembersSettings from 'components/groups/settings/MembersSettings'
 const Settings = ({ handleLeaveGroup }) => {
     const router = useRouter()
     const routerQuery = router.query
-    const session = useSession()
 
     const group = useGroup(routerQuery.group as string)
+    const { data: session } = useSession()
+    //check if admin
+    const isAdmin = session?.user.id === group?.data?.admin?.userId
+
+    if (!isAdmin) {
+        return <div>Unauthorized</div>
+    }
 
     if (group.isLoading) {
         return <div>Loading...</div>
@@ -32,7 +38,8 @@ const Settings = ({ handleLeaveGroup }) => {
                         />
                     </div>
                     <div className='px-8 md:mt-8 sm:mt-8'>
-                        <AddTag tags={group.data.tags} />
+                        {/*TODO:Tags changed*/}
+                        {/* <AddTag tags={group.data.tags} /> */}
                     </div>
                     <div className='px-8 md:mt-8 sm:mt-8'>
                         <MembersSettings
@@ -46,6 +53,23 @@ const Settings = ({ handleLeaveGroup }) => {
             )}
         </>
     )
+}
+
+export const getServerSideProps = async (context: GetSessionParams) => {
+    const session = await getSession(context)
+
+    if (!session) {
+        return {
+            props: {
+                redirect: '/login',
+            },
+        }
+    }
+    return {
+        props: {
+            session,
+        },
+    }
 }
 
 export default Settings

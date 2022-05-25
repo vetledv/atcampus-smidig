@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
 import ProgressBar from 'components/general/ProgressBar'
 import ProgressBarTest from './ProgressBarTest'
 
-const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep}) => {
+const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep }) => {
     return (
         <div className='bg-white h-40 input-shadow text-dark-1'>
             <div className='flex items-center justify-between'>
@@ -31,13 +31,15 @@ const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep}) => {
                         </div>
                     )}
                     <div className='flex flex-row w-full justify-center items-center mt-2 cursor-pointer'>
-                    <ChevronLeftIcon className='h-7 text-purple-1 mr-2'
-                        onClick={stepBack}
-                    />
-                    <ProgressBarTest step={step} />
-                    <ChevronRightIcon className='h-7 text-purple-1 ml-2 cursor-pointer'
-                        onClick={nextStep}
-                    />
+                        <ChevronLeftIcon
+                            className='h-7 text-purple-1 mr-2'
+                            onClick={stepBack}
+                        />
+                        <ProgressBarTest step={step} />
+                        <ChevronRightIcon
+                            className='h-7 text-purple-1 ml-2 cursor-pointer'
+                            onClick={nextStep}
+                        />
                     </div>
                     <div className='text-2xl'>{stepTitle}</div>
                 </div>

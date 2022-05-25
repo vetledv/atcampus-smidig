@@ -1,24 +1,29 @@
 import { ObjectId } from 'mongodb'
 
-export interface Member {
-    userId: string
-    userName: string
-    picture: string
-}
 export interface MessageMember {
     userId: string
     userName: string
 }
+
+export interface Member extends MessageMember {
+    picture: string
+}
+
+export interface GroupAdmin extends MessageMember {}
 
 export interface Group {
     _id: ObjectId
     groupName: string
     members: Member[]
     maxMembers: number
-    tags: string[]
+    tags: {
+        school: string
+        course: string
+        goals: string[]
+    }
     description: string
     private: boolean
-    admin: Member | null
+    admin: GroupAdmin
     pendingMembers: Member[]
 }
 

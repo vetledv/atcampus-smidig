@@ -4,22 +4,22 @@ import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Group } from 'types/groups'
+import { Session } from 'next-auth'
 
 const GroupHeader = ({
     group,
     activeMembers,
     leave,
+    isAdmin,
 }: {
     leave: () => void
     group: Group | null
     activeMembers: number
+    isAdmin: boolean
 }) => {
-    // for testing
-    const membersAmount = group?.members?.length ?? 0
-    const maxMembers = group?.maxMembers ?? 12
     const groupName = group?.groupName ?? 'Group Name'
-
     const [showModal, setShowModal] = useState(false)
+
     const renderModal = () => {
         return (
             <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
@@ -80,42 +80,44 @@ const GroupHeader = ({
     return (
         <div className={'h-48 min-w-96 bg-dark-1 text-white'}>
             <div className='flex justify-between h-full'>
-                <div className='flex flex-col justify-evenly px-6'>
-                    <div className='pb-3'>
-                        <div className={'text-2xl font-bold pb-3'}>
-                            {groupName}
-                        </div>
-                        <FlatButton
-                            onClick={() => setShowModal(true)}
-                            className={
-                                'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white cursor-default'
-                            }>
-                            Forlat Gruppe
-                        </FlatButton>
-                        {showModal && renderModal()}
-                    </div>
-                    <div className=''>
+                <div className='flex flex-col justify-center px-6'>
+                    <div className={'text-2xl font-bold pb-3'}>{groupName}</div>
+                    {activeMembers > 0 && (
                         <div className='flex flex-row items-center'>
                             <div>Medlemmer Aktive: {activeMembers} </div>{' '}
-                            {activeMembers > 0 && (
-                                <div className='text-xs'>🟢</div>
-                            )}
+                            {<div className='text-xs'>🟢</div>}
                         </div>
-                        <GroupMembers
-                            members={membersAmount}
-                            totalMembers={maxMembers}
-                            color={'white'}
-                        />
-                    </div>
+                    )}
+
+                    <GroupMembers
+                        members={group?.members?.length}
+                        totalMembers={group?.maxMembers}
+                        color={'white'}
+                    />
                 </div>
                 <div>
-                    <Link href={`/groups/${group._id}/settings`}>
-                        <CogIcon
-                            className={
-                                'w-9 h-9 text-purple-1 m-3 cursor-pointer'
-                            }
-                        />
-                    </Link>
+                    {isAdmin ? (
+                        <Link href={`/groups/${group._id}/settings`}>
+                            <CogIcon
+                                className={
+                                    'w-9 h-9 text-purple-1 m-3 cursor-pointer'
+                                }
+                            />
+                        </Link>
+                    ) : (
+                        <>
+                            <FlatButton
+                                onClick={() => {
+                                    setShowModal(true)
+                                }}
+                                className={
+                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white cursor-default'
+                                }>
+                                {isAdmin ? 'Slett gruppe' : 'Forlat gruppe'}
+                            </FlatButton>
+                            {showModal && renderModal()}
+                        </>
+                    )}
                 </div>
             </div>
         </div>

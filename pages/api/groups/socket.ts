@@ -34,8 +34,8 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
             })
             socket.on(`typing`, (data, user) => {
                 console.log('SOCKET_TYPING: ', data, 'user: ', user)
-                typing = true
                 console.log(typing)
+                typing = true
                 socket.broadcast.to(room).emit(`typing`, data, user)
             })
             socket.on(`stopped-typing`, (data, user) => {
@@ -62,7 +62,11 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
                     console.log('emitting stopped to room on disconnect')
                     socket.to(room).emit(`stopped-typing`, {}, {})
                 }
-                broadcastActiveMembers(room as string)
+                //wait in case the user reconnects
+                setTimeout(() => {
+                    broadcastActiveMembers(room as string)
+                    console.log('timeout')
+                }, 15 * 1000)
             })
 
             function broadcastActiveMembers(room: string) {

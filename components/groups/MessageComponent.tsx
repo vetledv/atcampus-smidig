@@ -251,42 +251,40 @@ const MessageComponent = ({
         return <div>Error</div>
     }
     return (
-        <div className='flex flex-col gap-2 w-full'>
-            <div className={' bg-white rounded-lg p-2 gap-2 flex flex-col'}>
-                <div
-                    ref={msgCont}
-                    className={` flex flex-col h-[500px] overflow-y-scroll gap-1`}>
-                    <>{renderMessages()}</>
-                </div>
-                <div className='flex gap-2'>
-                    <input
-                        value={msg}
-                        placeholder={
-                            connected ? 'Type a message...' : 'Connecting...'
-                        }
-                        disabled={!connected}
-                        className='px-4 border-[1px] border-gray-300 rounded w-full'
-                        onChange={(e) => {
-                            setMsg(e.target.value)
-                        }}
-                        onKeyUp={(e) => {
-                            if (e.key === 'Enter') {
-                                sendMessage(msg)
-                            }
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key !== 'Enter') {
-                                handleUserTyping()
-                            }
-                        }}></input>
-                    <FlatButton
-                        disabled={!connected}
-                        onClick={() => sendMessage(msg)}>
-                        Send
-                    </FlatButton>
-                </div>
-                {userTyping && <div>{userTyping} is typing...</div>}
+        <div className=' bg-white rounded-lg p-2 gap-2 flex flex-col border'>
+            <div
+                ref={msgCont}
+                className=' flex flex-col h-[500px] overflow-y-auto gap-1'>
+                <>{renderMessages()}</>
             </div>
+            <div className='flex gap-2'>
+                <input
+                    value={msg}
+                    placeholder={
+                        connected ? 'Type a message...' : 'Connecting...'
+                    }
+                    disabled={!connected}
+                    className='px-4 border-[1px] border-gray-300 rounded w-full'
+                    onChange={(e) => {
+                        setMsg(e.target.value)
+                    }}
+                    onKeyUp={(e) => {
+                        if (e.key === 'Enter') {
+                            sendMessage(msg)
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key !== 'Enter') {
+                            handleUserTyping()
+                        }
+                    }}></input>
+                <FlatButton
+                    disabled={!connected}
+                    onClick={() => sendMessage(msg)}>
+                    Send
+                </FlatButton>
+            </div>
+            {userTyping && <div>{userTyping} is typing...</div>}
         </div>
     )
 }

@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
 import ProgressBarTab from './ProgressBarTab'
 
-
-const ProgressBarTest = ({ step}) => {
+const ProgressBarTest = ({ step }) => {
     const steps = [1, 2, 3, 4]
     console.log('step: ' + step)
     return (

@@ -7,7 +7,7 @@ const AppLayout = ({ children }) => {
         <div className='flex flex-col h-full'>
             <div className='h-full flex flex-row'>
                 <Menu />
-                <div className='w-full'>
+                <div className='w-full lg:pl-[18rem]'>
                     <Header />
                     <div className='w-full min-h-[320px]'>{children}</div>
                     <Footer />
