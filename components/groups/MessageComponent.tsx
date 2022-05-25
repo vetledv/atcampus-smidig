@@ -191,7 +191,7 @@ const MessageComponent = ({
                                             alt=''
                                             width={48}
                                             height={48}
-                                            className='rounded-full '
+                                            className='rounded-full'
                                         />
                                     </div>
                                 ) : (
