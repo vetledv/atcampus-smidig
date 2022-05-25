@@ -3,7 +3,6 @@ import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = (props) => {
     const [selectedSubject, setSelectedSubject] = useState(null)
-    const [isSelectedSubject, setIsSelectedSubject] = useState(false)
 
     const [classes, setSelectedClass] = useState([
         {
@@ -44,18 +43,14 @@ const FindClassPage = (props) => {
         },
     ])
 
-    // const handleSelction = (props) => {
-    //     // setSelectedSubject('')
-    //     setSelectedSubject(props.classCode)
-    // }
 
     console.log(selectedSubject)
 
     return (
         <div>
-            <div className='flex flex-wrap h-96'>
+            <div className='flex flex-wrap lg:h-96 '>
                 {classes.map((subject) => (
-                    <div key={subject.id} className='p-8 hover:cursor-default'>
+                    <div key={subject.id} className='p-6 hover:cursor-default'>
                         <SubjectCardCompact
                             subjectCode={subject.classCode}
                             subjectImage={subject.image}

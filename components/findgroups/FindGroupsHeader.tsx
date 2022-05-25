@@ -30,12 +30,12 @@ const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep}) => {
                             Kollokviegrupper / <b>{stepTitle}</b>
                         </div>
                     )}
-                    <div className='flex flex-row w-full justify-center items-center mt-2'>
+                    <div className='flex flex-row w-full justify-center items-center mt-2 cursor-pointer'>
                     <ChevronLeftIcon className='h-7 text-purple-1 mr-2'
                         onClick={stepBack}
                     />
                     <ProgressBarTest step={step} />
-                    <ChevronRightIcon className='h-7 text-purple-1 ml-2'
+                    <ChevronRightIcon className='h-7 text-purple-1 ml-2 cursor-pointer'
                         onClick={nextStep}
                     />
                     </div>
