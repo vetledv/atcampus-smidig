@@ -48,6 +48,7 @@ const GroupPage = ({ session }: { session: Session }) => {
             query: {
                 room: routerQuery.group as string,
             },
+            closeOnBeforeunload: true,
         })
         socket.current.on('connect', () => {
             console.log('socket connected, id:', socket.current.id)
@@ -60,7 +61,6 @@ const GroupPage = ({ session }: { session: Session }) => {
         const currSocket = socket.current
         currSocket.connect()
         return () => {
-            currSocket.emit('leave', routerQuery.group)
             currSocket.disconnect()
         }
     }, [routerQuery.group])
@@ -351,7 +351,9 @@ export const getServerSideProps = async (
     await queryClient.prefetchQuery<GroupMessages, Error>(
         ['messages', group],
         async () => {
-            const res = await fetch(`${baseUrl}/api/groups/${group}/messages}`)
+            const res = await fetch(
+                `${baseUrl}/api/groups/${group}/messages?offset=2&limit=5`
+            )
             const data = await res.json()
             return data
         }

@@ -1,9 +1,9 @@
 import { connectToDB } from 'lib/mongodb'
-import { ObjectId } from 'mongodb'
+import { ObjectId, WithId } from 'mongodb'
 import { NextApiRequest } from 'next'
 import nextConnect from 'next-connect'
 import { NextApiResponseServerIO } from 'types/socket'
-import { SendMessage } from '../../../../types/groups'
+import { GroupMessages, Message, SendMessage } from '../../../../types/groups'
 
 const messagesHandler = nextConnect()
 
@@ -11,10 +11,17 @@ messagesHandler.get(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
         const { group: groupId } = req.query
+        //TODO: limit and offset
+        const limit = parseInt(req.query.limit as string) || 10
+        const offset = parseInt(req.query.offset as string) || 0
         await db
             .collection('group-messages')
             .findOne({ groupId: new ObjectId(groupId as string) })
-            .then((messages) => {
+            .then((messages: WithId<GroupMessages>) => {
+                const slicedMessages = messages.messages.slice(
+                    offset,
+                    offset + limit
+                )
                 // if (!messages) {
                 //     const newMessages = {
                 //         groupId: groupId,

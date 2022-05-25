@@ -54,6 +54,16 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
                 }
                 broadcastActiveMembers(room)
             })
+            socket.on('disconnect', async () => {
+                console.log('SOCKET_DISCONNECT: ', room)
+                socket.leave(room as string)
+                console.log(typing)
+                if (typing) {
+                    console.log('emitting stopped to room on disconnect')
+                    socket.to(room).emit(`stopped-typing`, {}, {})
+                }
+                broadcastActiveMembers(room as string)
+            })
 
             function broadcastActiveMembers(room: string) {
                 io.in(room)
