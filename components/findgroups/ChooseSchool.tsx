@@ -31,7 +31,7 @@ const ChooseSchool = () => {
             <div className='h-96'>
                 <FindGroupsFilter items={schools} />
                 <div>
-                    <div className='font-semibold text-xl text-dark-1 p-4'>
+                    <div className='ml-7 font-semibold text-xl text-dark-1 p-4'>
                         Populære institusjoner
                     </div>
                     {schools.map((school) => (

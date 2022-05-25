@@ -69,20 +69,21 @@ const FindGroupPage = () => {
                         {step === 1 && <FindClassPage />}
                         {step === 2 && <SelectGoals />}
                         {step === 3 && <ChooseGroup />}
-                        <div className='p-16 flex flex-row-reverse justify-between'>
+                        <div className='p-10 m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
                                 <FlatButton onClick={handleStep}>
                                     Finn Gruppe
                                 </FlatButton>
                             )}
                             {step! < 2 && (
-                                <FlatButton onClick={handleStep}>
+                                <FlatButton onClick={handleStep}
+                                className={'hover:transition-all hover:animate-bounce'}>
                                     Gå videre
                                 </FlatButton>
                             )}
                             {step != 0 && (
                                 <FlatButton
-                                    className={'ml-8'}
+                                    className={'ml-6'}
                                     onClick={handleStepback}>
                                     Tilbake
                                 </FlatButton>
