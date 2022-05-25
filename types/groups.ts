@@ -11,16 +11,18 @@ export interface Member extends MessageMember {
 
 export interface GroupAdmin extends MessageMember {}
 
+export interface Tags {
+    school: string
+    course: string
+    goals: string[]
+}
+
 export interface Group {
     _id: ObjectId
     groupName: string
     members: Member[]
     maxMembers: number
-    tags: {
-        school: string
-        course: string
-        goals: string[]
-    }
+    tags: Tags
     description: string
     private: boolean
     admin: GroupAdmin

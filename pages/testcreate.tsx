@@ -1,5 +1,6 @@
 import FlatButton from 'components/buttons/FlatButton'
 import Checkbox from 'components/general/Checkbox'
+import { postReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import {
@@ -11,7 +12,8 @@ import {
     useEffect,
     useState,
 } from 'react'
-import { GroupAdmin, Member } from 'types/groups'
+import { useMutation, useQuery } from 'react-query'
+import { Group, GroupAdmin, Member, Tags } from 'types/groups'
 
 interface GroupSubmit {
     groupName: string
@@ -40,6 +42,27 @@ const TestCreateGroup = () => {
     const [isPrivate, setIsPrivate] = useState(false)
     const [errorText, setErrorText] = useState('')
     const [createdGroupId, setCreatedGroupId] = useState<string | null>(null)
+
+    const searchMutate = useMutation(
+        (object: Tags) => postReactQuery('/api/groups/search', object),
+        {
+            onSuccess: (result: Group[]) => {
+                //queryClient.setQueryData('search', result)
+                console.log('onSuccess', result)
+                console.log('onSuccess', searchMutate.data)
+                searchMutate.data = result
+                console.log('onSuccess2', searchMutate.data)
+            },
+            onSettled: (result: Group[]) => {
+                console.log('onSettled', result)
+            },
+        }
+    )
+
+    //search data once searchMutate is successful
+    const search = useQuery<Group[], Error>('search', () => searchMutate.data, {
+        enabled: searchMutate.isSuccess,
+    })
 
     useEffect(() => {
         if (createdGroupId) {
@@ -81,6 +104,7 @@ const TestCreateGroup = () => {
         return maxMem
     }
 
+    //make sure every field is filled when creating group
     const isValid = useCallback(() => {
         if (groupName.length === 0) {
             setErrorText('Group name is required')
@@ -112,17 +136,16 @@ const TestCreateGroup = () => {
         goal.length,
     ])
 
+    //create a group
     const handleSubmitGroup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!session) {
-            console.log('no session')
-            return
-        }
         if (isValid()) {
+            //admin is the user who created the group
             const admin = {
                 userId: session.user.id,
                 userName: session.user.name,
             }
+            //properties of the group
             const GroupToSubmit: GroupSubmit = {
                 groupName,
                 description,
@@ -143,12 +166,14 @@ const TestCreateGroup = () => {
                     goals: goal,
                 },
             }
+            //send group to server
             await fetch(`/api/groups/create`, {
                 method: 'POST',
                 body: JSON.stringify(GroupToSubmit),
             }).then((r) => {
                 r.json().then((res) => {
                     console.log(res)
+                    //server returns the id of the group, set it to state
                     setCreatedGroupId(res.groupId)
                 })
                 console.log(r)
@@ -181,6 +206,25 @@ const TestCreateGroup = () => {
             </button>
         )
     }
+    //search for groups with tags
+    const handleSearchForGroupByTags = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
+        e.preventDefault()
+
+        if (school.length === 0 || course.length === 0 || goal.length === 0) {
+            //TODO:set error text if one of the tags is not filled
+            return
+        }
+        const tags = {
+            school,
+            course,
+            goals: goal,
+        }
+        //send tags to server
+        searchMutate.mutateAsync(tags)
+    }
+
     return (
         <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
             <div className='col-span-1 lg:col-span-3 flex flex-col gap-2'>
@@ -254,6 +298,12 @@ const TestCreateGroup = () => {
                     Lag gruppe
                 </FlatButton>
                 {errorText && <div>{errorText}</div>}
+                <FlatButton
+                    onClick={(e: FormEvent<HTMLFormElement>) =>
+                        handleSearchForGroupByTags(e)
+                    }>
+                    Søk
+                </FlatButton>
             </div>
         </div>
     )
@@ -261,7 +311,6 @@ const TestCreateGroup = () => {
 
 export const getServerSideProps = async (context: GetSessionParams) => {
     const session = await getSession(context)
-
     if (!session) {
         return {
             props: {

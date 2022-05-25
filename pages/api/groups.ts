@@ -28,10 +28,9 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(200).json([])
             }
         })
-        .catch((err) => {
+        .catch((error: Error) => {
             res.status(500).json({
-                message: 'error',
-                error: err,
+                error,
             })
         })
 })

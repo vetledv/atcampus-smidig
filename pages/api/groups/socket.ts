@@ -64,17 +64,23 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
                 }
                 //wait in case the user reconnects
                 setTimeout(() => {
-                    broadcastActiveMembers(room as string)
-                    console.log('timeout')
+                    broadcastActiveMembers(room as string, true)
                 }, 15 * 1000)
             })
 
-            function broadcastActiveMembers(room: string) {
+            function broadcastActiveMembers(room: string, timeout?: boolean) {
                 io.in(room)
                     .allSockets()
                     .then((sockets) => {
                         io.in(room).emit('active-members', sockets.size - 1)
-                        console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
+                        if (timeout) {
+                            console.log(
+                                'SOCKET_ACTIVE_SIZE_LEAVE: ',
+                                sockets.size
+                            )
+                        } else {
+                            console.log('SOCKET_ACTIVE_SIZE: ', sockets.size)
+                        }
                     })
                     .catch(() => {
                         console.log('error')

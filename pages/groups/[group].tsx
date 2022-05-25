@@ -43,6 +43,33 @@ const GroupPage = () => {
 
     const [image, setImage] = useState(null)
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
+
+    const { mutateAsync: leaveGroupAsync } = useMutation(
+        (userId: string) =>
+            postJSON(`/api/groups/${routerQuery.group}/leave`, userId),
+        {
+            onSuccess: () => {
+                router.push('/groups')
+            },
+        }
+    )
+    const adminMutatePending = useMutation(
+        (object: AddMutateObj) =>
+            postJSON(
+                `/api/groups/${routerQuery.group}/handlependingmembers`,
+                object
+            ),
+        {
+            onSuccess: () => {
+                console.log('success')
+                group.refetch()
+            },
+            onError: (err) => {
+                console.log(err)
+            },
+        }
+    )
+
     //initialize socket
     useEffect(() => {
         if (!routerQuery.group) return
@@ -98,36 +125,11 @@ const GroupPage = () => {
         })
     }, [activeTab, routerQuery.group])
 
-    const { mutateAsync: leaveGroupAsync } = useMutation(
-        (userId: string) =>
-            postJSON(`/api/groups/${routerQuery.group}/leave`, userId),
-        {
-            onSuccess: () => {
-                router.push('/groups')
-            },
-        }
-    )
     const handleLeaveGroup = useCallback(() => {
         if (!session) return
         leaveGroupAsync(session.user.id)
     }, [leaveGroupAsync, session])
 
-    const adminMutatePending = useMutation(
-        (object: AddMutateObj) =>
-            postJSON(
-                `/api/groups/${routerQuery.group}/handlependingmembers`,
-                object
-            ),
-        {
-            onSuccess: () => {
-                console.log('success')
-                group.refetch()
-            },
-            onError: (err) => {
-                console.log(err)
-            },
-        }
-    )
     const handlePendingMember = useCallback(
         async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
             const addMutateObj: AddMutateObj = {
