@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/outline'
 
-const ProgressBarTab = ({ onClick, step, value, active, completed }) => {
+const ProgressBarTab = ({step, value, active, completed }) => {
     const tab =
         'flex rounded-full bg-purple-4 w-7 h-7 justify-center items-center text-white'
     const activeTab =
@@ -11,8 +11,7 @@ const ProgressBarTab = ({ onClick, step, value, active, completed }) => {
     return (
         <div className='flex items-center'>
             <div
-                className={active ? activeTab : completed ? completedTab : tab}
-                onClick={onClick}>
+                className={active ? activeTab : completed ? completedTab : tab}>
                 <span className={value > step + 1 ? 'invisible' : ''}>
                     {value === 4 ? <CheckIcon className='w-7 h-7' /> : value}
                 </span>

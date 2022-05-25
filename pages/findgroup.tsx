@@ -13,6 +13,7 @@ interface State {
     step: Number
     stepTitle: String
 }
+
 const FindGroupPage = () => {
     const [step, setStep] = useState(0)
     const [stepTitle, setStepTitle] = useState('Velg Skole')
@@ -56,14 +57,19 @@ const FindGroupPage = () => {
     return (
         <>
             <div className='bg-dark-6 w-full'>
-                <FindGroupsHeader stepTitle={stepTitle} step={step} />
+                <FindGroupsHeader
+                    stepTitle={stepTitle}
+                    step={step}
+                    stepBack={handleStepback}
+                    nextStep={handleStep}
+                />
                 <div className='flex justify-center'>
                     <div className='bg-white input-shadow h-full min-w-min max-w-7xl w-full my-16'>
                         {step === 0 && <ChooseSchool />}
                         {step === 1 && <FindClassPage />}
                         {step === 2 && <SelectGoals />}
                         {step === 3 && <ChooseGroup />}
-                        <div className='p-16'>
+                        <div className='p-16 flex flex-row-reverse justify-between'>
                             {step === 2 && (
                                 <FlatButton onClick={handleStep}>
                                     Finn Gruppe
