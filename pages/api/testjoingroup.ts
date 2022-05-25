@@ -22,9 +22,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
 })
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { groupId, userId, userName, picture, isPrivate } = JSON.parse(
-        req.body
-    )
+    const { groupId, userId, userName, picture } = JSON.parse(req.body)
     const { db } = await connectToDB()
     const filter = {
         _id: new ObjectId(groupId),
@@ -57,11 +55,11 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
                     })
                 }
                 res.status(200).json({
-                    message: 'user added to group',
+                    message: 'Lagt til i gruppen',
                 })
             } else {
                 res.status(400).json({
-                    message: 'group is full',
+                    message: 'Gruppen er full',
                 })
             }
         })
@@ -132,3 +130,4 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     //             })
     //     }
 })
+export default handler

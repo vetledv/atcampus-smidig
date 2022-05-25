@@ -1,14 +1,12 @@
 import FlatButton from 'components/buttons/Button'
 import { baseUrl } from 'lib/constants'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
 import { Group } from 'types/groups'
 import { fetchReactQuery, postReactQuery } from '../hooks/useGroups'
 
 interface MutateResponse {
     message: string
-    private: boolean
 }
 
 const TestPageJoinGroup = () => {
@@ -17,19 +15,14 @@ const TestPageJoinGroup = () => {
         'groupstest',
         fetchReactQuery('testjoingroup')
     )
-    const [mutateRes, setMutateRes] = useState<MutateResponse>()
     const mutate = useMutation(
         (userInfo: any) => postReactQuery(`/api/testjoingroup`, userInfo),
         {
-            onSuccess: async (data: MutateResponse, vars, ctx) => {
+            onSuccess: async (data: MutateResponse) => {
                 groups.refetch()
             },
-            onSettled: (data: MutateResponse, error, vars, ctx) => {
-                setMutateRes(data)
-            },
-            onError: (error, vars, ctx) => {
-                console.log('error')
-                console.log(error, vars, ctx)
+            onSettled: (data: MutateResponse) => {
+                mutate.data = data
             },
         }
     )
@@ -39,7 +32,6 @@ const TestPageJoinGroup = () => {
             userId: session?.data?.user?.id,
             userName: session?.data?.user?.name,
             picture: session?.data?.user?.image,
-            isPrivate: group.private,
         })
     }
 
@@ -104,15 +96,7 @@ const TestPageJoinGroup = () => {
                     </ul>
                 </div>
             )}
-            {mutate.isSuccess && (
-                <div>
-                    {mutateRes.private ? (
-                        <h1>{mutateRes.message}</h1>
-                    ) : (
-                        <h1>Joined</h1>
-                    )}
-                </div>
-            )}
+            {mutate.isSuccess && <div>{mutate?.data?.message}</div>}
         </>
     )
 }
