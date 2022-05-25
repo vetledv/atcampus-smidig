@@ -173,7 +173,7 @@ const MessageComponent = ({
                     {day.messages.map((message: Message, j) => (
                         <div
                             key={j}
-                            className='flex bg-slate-50 p-2 rounded gap-2'>
+                            className='flex bg-dark-6 p-2 rounded gap-2'>
                             <div className='w-14'>
                                 {groupMembers.find(
                                     (member) =>
@@ -205,7 +205,7 @@ const MessageComponent = ({
                                     {groupMembers.filter(
                                         (m) => m.userId === message.from.userId
                                     ).length > 0 ? (
-                                        <div className='font-semibold'>
+                                        <div className='font-semibold text-dark-1'>
                                             {
                                                 groupMembers.filter(
                                                     (m) =>
@@ -215,7 +215,7 @@ const MessageComponent = ({
                                             }
                                         </div>
                                     ) : (
-                                        <div className='flex gap-2 '>
+                                        <div className='flex gap-2  '>
                                             <div className=' text-dark-3 flex gap-2 font-semibold'>
                                                 {message.from.userName}
                                             </div>
@@ -233,7 +233,9 @@ const MessageComponent = ({
                                         })}
                                     </div>
                                 </div>
-                                <div>{message.message}</div>
+                                <div className='text-dark-1 text-md'>
+                                    {message.message}
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -253,7 +255,7 @@ const MessageComponent = ({
             <div className={' bg-white rounded-lg p-2 gap-2 flex flex-col'}>
                 <div
                     ref={msgCont}
-                    className={` flex flex-col h-96 overflow-y-scroll gap-1`}>
+                    className={` flex flex-col h-[500px] overflow-y-scroll gap-1`}>
                     <>{renderMessages()}</>
                 </div>
                 <div className='flex gap-2'>
