@@ -29,10 +29,10 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
             },
         })
         .toArray()
-        .then((groups) => {
+        .then((groups: Group[]) => {
             //if length is 0, search without goals
             if (groups.length === 0) {
-                noGoalFind.then((noGoalGroups) => {
+                noGoalFind.then((noGoalGroups: Group[]) => {
                     console.log('creategroupapi:', noGoalGroups)
                     res.status(200).json(noGoalGroups)
                 })

@@ -9,7 +9,9 @@ const AppLayout = ({ children }) => {
                 <Menu />
                 <div className='w-full lg:pl-[18rem]'>
                     <Header />
-                    <div className='w-full min-h-[320px]'>{children}</div>
+                    <div className='w-full min-h-[320px] lg:mt-[98px]'>
+                        {children}
+                    </div>
                     <Footer />
                 </div>
             </div>

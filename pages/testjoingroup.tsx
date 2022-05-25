@@ -2,26 +2,13 @@ import FlatButton from 'components/buttons/Button'
 import { baseUrl } from 'lib/constants'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import {
-    dehydrate,
-    QueryClient,
-    useMutation,
-    useQuery,
-    useQueryClient,
-} from 'react-query'
+import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
 import { Group } from 'types/groups'
-import { fetchReactQuery, postJSON, postReactQuery } from '../hooks/useGroups'
+import { fetchReactQuery, postReactQuery } from '../hooks/useGroups'
 
 interface MutateResponse {
     message: string
     private: boolean
-}
-
-interface MutateError {
-    error: {
-        message: string
-    }
-    message: string
 }
 
 const TestPageJoinGroup = () => {
@@ -35,16 +22,10 @@ const TestPageJoinGroup = () => {
         (userInfo: any) => postReactQuery(`/api/testjoingroup`, userInfo),
         {
             onSuccess: async (data: MutateResponse, vars, ctx) => {
-                console.log('success')
-                console.log(data, vars, ctx)
-                console.log(data)
                 groups.refetch()
             },
             onSettled: (data: MutateResponse, error, vars, ctx) => {
-                console.log('settled')
-                console.log(data, error, vars, ctx)
                 setMutateRes(data)
-                console.log('mutateRes', mutateRes)
             },
             onError: (error, vars, ctx) => {
                 console.log('error')
