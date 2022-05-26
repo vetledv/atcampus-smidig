@@ -5,15 +5,14 @@ import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
-import { Session } from 'next-auth'
 import { Group, GroupMessages, Member } from 'types/groups'
-import dynamic from 'next/dynamic'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const MessageComponent = dynamic(
     () => import('../../components/groups/MessageComponent')

@@ -76,8 +76,11 @@ const FindGroupPage = () => {
                                 </FlatButton>
                             )}
                             {step! < 2 && (
-                                <FlatButton onClick={handleStep}
-                                className={'hover:transition-all hover:animate-bounce'}>
+                                <FlatButton
+                                    onClick={handleStep}
+                                    className={
+                                        'hover:transition-all hover:animate-bounce'
+                                    }>
                                     Gå videre
                                 </FlatButton>
                             )}

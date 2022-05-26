@@ -30,7 +30,7 @@ const SubjectCard = ({
     return (
         <div
             onClick={() => router.push(`/groups/${groupId}`)}
-            className='cursor-pointer flex p-3 input-shadow max-w-sm items-center bg-white rounded-standard text-dark-1'>
+            className='cursor-pointer flex p-3 h-fit input-shadow max-w-sm items-center bg-white rounded-standard text-dark-1'>
             <Image
                 src={groupImage}
                 width={imageSize}

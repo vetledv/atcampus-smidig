@@ -33,7 +33,13 @@ export default function Menu() {
             name: 'testjoingroup',
             icon: DocumentTextIcon,
             href: '/testjoingroup',
-            current: router.asPath === '/choosegoal',
+            current: router.asPath === '/testjoingroup',
+        },
+        {
+            name: 'testcreategroup',
+            icon: DocumentTextIcon,
+            href: '/testcreate',
+            current: router.asPath === '/testcreate',
         },
     ]
 
