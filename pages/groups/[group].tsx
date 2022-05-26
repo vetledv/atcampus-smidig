@@ -252,31 +252,31 @@ const GroupPage = () => {
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
-                    <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4 bg-white'>
+                    <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4'>
                         <div className='col-span-1 lg:col-span-3'>
                             {activeTab === 0 && (
-                                <div className='flex flex-col gap-2 '>
-                                    <p className='font-regular text-dark-1 p-4'>
+                                <div className='flex flex-col gap-2 bg-white p-4'>
+                                    <p className='font-regular text-dark-1'>
                                         {group.data.description}
                                     </p>
-                                    <h1 className='text-dark-1 font-semibold pl-4  pt-4 '>
+                                    <h1 className='text-dark-1 font-semibold'>
                                         Skole
                                     </h1>
-                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm m-1'>
+                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
                                         {group.data.tags.school}
                                     </div>
-                                    <h1 className='text-dark-1 font-semibold  pl-4  pt-4 '>
+                                    <h1 className='text-dark-1 font-semibold'>
                                         Fag
                                     </h1>
-                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm m-1'>
+                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
                                         {group.data.tags.course}
                                     </div>
-                                    <h1 className='text-dark-1 font-semibold pl-4  pt-4 '>
+                                    <h1 className='text-dark-1 font-semibold'>
                                         Goals
                                     </h1>
                                     {group.data.tags.goals?.map((tag) => (
                                         <div
-                                            className=' bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm m-1'
+                                            className=' bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'
                                             key={tag}>
                                             {tag}
                                         </div>
@@ -284,10 +284,10 @@ const GroupPage = () => {
 
                                     {group.data.admin?.userId && (
                                         <>
-                                            <h1 className='text-dark-1 font-semibold pl-4  pt-4 '>
+                                            <h1 className='text-dark-1 font-semibold'>
                                                 Admin
                                             </h1>
-                                            <div className='bg-purple-4 text-dark-1 p-2 font-regular  w-fit rounded-md'>
+                                            <div className='text-dark-1 font-regular w-fit'>
                                                 {group.data.admin.userName}
                                             </div>
                                         </>

@@ -80,7 +80,9 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
-            <hr />
+            <div className='pt-8 pb-4 px-12'>
+                <hr />
+            </div>
             <div className='image flex justify-center mt-3'>
                 <Image
                     tabIndex={0}
