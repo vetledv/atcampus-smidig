@@ -1,12 +1,9 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
 import GroupNav from 'components/groups/GroupNav'
-import { useGroups } from 'hooks/useGroups'
-import { baseUrl } from 'lib/constants'
 import Head from 'next/head'
 import { useState } from 'react'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
-import type { Group } from 'types/groups'
+import { useQuery } from 'react-query'
 
 const Groups = () => {
     const [page, setPage] = useState(1)
@@ -15,14 +12,31 @@ const Groups = () => {
     const groups = useQuery<any, Error>(
         ['groups', page],
         () => fetchProjects(page),
-        {
-            keepPreviousData: true,
-        }
+        { keepPreviousData: true }
     )
-    // check if groups.data.totalPages is greater than page
+
     const hasNextPage = groups.data?.totalPages > page
     const [activeTab, setActiveTab] = useState(0)
     const tabs = ['Mine grupper', 'Finn ny gruppe']
+
+    const renderPagination = () => {
+        const pages = []
+        for (let i = 1; i <= groups.data?.totalPages; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    className={
+                        ' h-fit px-4 py-2 border border-gray-300 rounded-lg ' +
+                        (i === page ? ' bg-pink-300' : 'bg-white')
+                    }
+                    onClick={() => setPage(i)}>
+                    {i}
+                </button>
+            )
+        }
+        return pages
+    }
+
     if (groups.isLoading) {
         return (
             <>
@@ -60,62 +74,65 @@ const Groups = () => {
                     setActiveTab={setActiveTab}
                     tabs={tabs}></GroupNav>
             </div>
-            <div className='pl-6'>
+            <div className='pl-6 grid grid-cols-1 lg:grid-cols-4'>
                 {activeTab === 0 && groups.data && (
-                    <ul className='flex flex-wrap gap-4'>
+                    <div className=' col-span-1 lg:col-span-3'>
                         {groups.data.length === 0 ? (
                             <div>
                                 <p>Not in any groups.</p>
                             </div>
                         ) : (
-                            <>
+                            <div className='flex flex-wrap gap-2 min-h-[328px]'>
                                 {groups.data.groups.map((group) => (
-                                    <li key={group.groupName}>
-                                        <SubjectCard
-                                            groupName={group.groupName}
-                                            groupId={group._id}
-                                            groupImage={
-                                                'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                                            }
-                                            compact={true}
-                                            subjectCode={'PG63'}
-                                            members={group.members.length}
-                                            totalMembers={group.members.length}
-                                        />
-                                    </li>
+                                    <SubjectCard
+                                        key={group.groupName}
+                                        groupName={group.groupName}
+                                        groupId={group._id}
+                                        groupImage={
+                                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                        }
+                                        compact={true}
+                                        subjectCode={'PG63'}
+                                        members={group.members.length}
+                                        totalMembers={group.members.length}
+                                    />
                                 ))}
-                            </>
+                            </div>
                         )}
-                        <span>Current Page: {page}</span>
-                        <button
-                            onClick={() =>
-                                setPage((old) => Math.max(old - 1, 0))
-                            }
-                            disabled={page === 1}>
-                            Previous Page
-                        </button>{' '}
-                        <button
-                            onClick={() => {
-                                if (!groups.isPreviousData && hasNextPage) {
-                                    setPage((old) => old + 1)
+                        <div className='flex gap-2'>
+                            <button
+                                onClick={() =>
+                                    setPage((old) => Math.max(old - 1, 0))
                                 }
-                            }}
-                            disabled={groups.isPreviousData || !hasNextPage}>
-                            Next Page
-                        </button>
-                        {groups.isFetching ? <span> Loading...</span> : null}{' '}
-                    </ul>
+                                disabled={page === 1}>
+                                Previous Page
+                            </button>
+                            {renderPagination()}
+                            <button
+                                onClick={() => {
+                                    if (!groups.isPreviousData && hasNextPage) {
+                                        setPage((old) => old + 1)
+                                    }
+                                }}
+                                disabled={
+                                    groups.isPreviousData || !hasNextPage
+                                }>
+                                Next Page
+                            </button>
+                        </div>
+                        {/* {groups.isFetching ? <span> Loading...</span> : null} */}
+                        <div className='flex gap-1 pt-12'>
+                            <div>Mangler gruppen din?</div>
+                            <div>Lag en ny gruppe helt anonymt!</div>
+                        </div>
+                    </div>
                 )}
                 {activeTab === 1 && (
-                    <div className='flex flex-row gap-4'>
+                    <div className='col-span-1 lg:col-span-3 flex flex-row gap-4'>
                         <FindOrCreateBtn>Finn ny Gruppe</FindOrCreateBtn>
                         <FindOrCreateBtn>Lag ny Gruppe</FindOrCreateBtn>
                     </div>
                 )}
-                <div className='flex gap-1 pt-12'>
-                    <div>Mangler gruppen din?</div>
-                    <div>Lag en ny gruppe helt anonymt!</div>
-                </div>
             </div>
         </div>
     )

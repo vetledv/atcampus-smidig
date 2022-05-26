@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import {
     Dispatch,
+    KeyboardEvent,
     MutableRefObject,
     SetStateAction,
     useCallback,
@@ -15,7 +16,7 @@ import {
 } from 'react'
 import { useQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
-import type { GroupMessages, Member, Message, SendMessage } from 'types/groups'
+import { GroupMessages, Member, Message, SendMessage } from 'types/groups'
 
 interface ByDayMessage {
     day: string
@@ -83,20 +84,37 @@ const MessageComponent = ({
         scrollToBottom()
     }, [messages.data, scrollToBottom])
 
-    const handleUserTyping = useCallback(() => {
-        if (!socket.current) return
-
-        const typingTimeout = setTimeout(() => {
-            socket.current.emit(
-                `stopped-typing`,
-                groupId,
-                session?.data.user?.name
-            )
-        }, 4000)
-        socket.current.emit(`typing`, groupId, session?.data.user?.name)
-        timeout.current && clearTimeout(timeout.current as NodeJS.Timeout)
-        timeout.current = typingTimeout as NodeJS.Timeout
-    }, [groupId, session?.data.user?.name, socket])
+    const handleUserTyping = useCallback(
+        (e: KeyboardEvent<HTMLInputElement>) => {
+            if (!socket.current) return
+            if (
+                e.key === 'Enter' ||
+                e.key === 'Backspace' ||
+                e.key === 'Delete' ||
+                e.key === 'ArrowUp' ||
+                e.key === 'ArrowDown' ||
+                e.key === 'ArrowLeft' ||
+                e.key === 'ArrowRight' ||
+                e.key === 'Tab' ||
+                e.key === 'Control' ||
+                e.key === 'Shift' ||
+                e.key === 'Alt'
+            ) {
+                return
+            }
+            const typingTimeout = setTimeout(() => {
+                socket.current.emit(
+                    `stopped-typing`,
+                    groupId,
+                    session?.data.user?.name
+                )
+            }, 4000)
+            socket.current.emit(`typing`, groupId, session?.data.user?.name)
+            timeout.current && clearTimeout(timeout.current as NodeJS.Timeout)
+            timeout.current = typingTimeout as NodeJS.Timeout
+        },
+        [groupId, session?.data.user?.name, socket]
+    )
 
     const sendMessage = useCallback(
         (message: string) => {
@@ -274,9 +292,7 @@ const MessageComponent = ({
                         }
                     }}
                     onKeyDown={(e) => {
-                        if (e.key !== 'Enter') {
-                            handleUserTyping()
-                        }
+                        handleUserTyping(e)
                     }}></input>
                 <FlatButton
                     disabled={!connected}
