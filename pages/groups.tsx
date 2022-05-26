@@ -91,7 +91,7 @@ const Groups = () => {
                 <div className='px-4 md:px-6 grid grid-cols-1 lg:grid-cols-4 h-full flex-grow'>
                     {activeTab === 0 && groups.data && (
                         <div className=' col-span-1 lg:col-span-3 flex flex-col gap-4  min-h-[500px] justify-between  h-full '>
-                            <div>
+                            <div className='max-w-[909px]'>
                                 {groups.data.groups.length === 0 ? (
                                     <div>
                                         <p>Not in any groups.</p>
