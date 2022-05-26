@@ -22,7 +22,7 @@ export const SchoolMap = ({ setSelectedSchool }) => {
         <>
             {schools.map((school: { id: Key | ObjectId; value: any }) => (
                 <div
-                    key={school.id}
+                    key={school.id.toString()}
                     onClick={() => {
                         setSelectedSchool(school.value)
                     }}>

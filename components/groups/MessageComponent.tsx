@@ -191,7 +191,7 @@ const MessageComponent = ({
                     {day.messages.map((message: Message, j) => (
                         <div
                             key={j}
-                            className='flex bg-dark-6 p-2 rounded gap-2'>
+                            className='flex bg-purple-5 p-2 rounded gap-2'>
                             <div className='w-14'>
                                 {groupMembers.find(
                                     (member) =>
