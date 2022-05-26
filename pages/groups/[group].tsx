@@ -1,6 +1,7 @@
 import FlatButton from 'components/buttons/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
-import GroupNav from 'components/groups/GroupNav'
+import Tabs from 'components/groups/Tabs'
+import TopNav from 'components/groups/TopNav'
 import { postJSON, useGroup } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
@@ -218,14 +219,6 @@ const GroupPage = () => {
         isAdmin,
     ])
 
-    const head = (
-        <Head>
-            <title>
-                {group.data ? 'Grupper - ' + group.data?.groupName : 'Grupper'}
-            </title>
-        </Head>
-    )
-
     if (group.isLoading) {
         return <div>Loading...</div>
     }
@@ -235,16 +228,26 @@ const GroupPage = () => {
 
     return (
         <>
-            {head}
+            <Head>
+                <title>
+                    {group.data
+                        ? 'Grupper - ' + group.data?.groupName
+                        : 'Grupper'}
+                </title>
+            </Head>
             {group.data && (
                 <>
+                    <TopNav
+                        groupId={group.data._id.toString()}
+                        groupName={group.data.groupName}
+                    />
                     <GroupHeader
                         leave={handleLeaveGroup}
                         group={group.data}
                         activeMembers={activeMembers}
                         isAdmin={isAdmin()}
                     />
-                    <GroupNav
+                    <Tabs
                         tabs={groupNavTabs}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}

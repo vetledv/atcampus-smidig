@@ -10,6 +10,7 @@ export default function TextInputField({
     label = null,
     icon = null,
     button = null,
+    maxLength = null,
     register = (any?: any) => {},
     value,
     className,
@@ -48,6 +49,7 @@ export default function TextInputField({
                         className={classes}
                         disabled={disabled}
                         onChange={onChange}
+                        maxLength={maxLength}
                     />
                 </div>
                 <div className='-ml-px relative'>{button}</div>

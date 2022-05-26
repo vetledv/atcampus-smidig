@@ -5,6 +5,8 @@ import { useGroup } from 'hooks/useGroups'
 import AddTag from 'components/groups/settings/AddTag'
 import EditTagCard from 'components/groups/settings/EditGroupCard'
 import MembersSettings from 'components/groups/settings/MembersSettings'
+import GroupHeader from 'components/groups/GroupHeaderMobile'
+import TopNav from 'components/groups/TopNav'
 
 const Settings = ({ handleLeaveGroup }) => {
     const router = useRouter()
@@ -28,6 +30,17 @@ const Settings = ({ handleLeaveGroup }) => {
 
     return (
         <>
+            <TopNav
+                groupId={group.data._id.toString()}
+                groupName={group.data.groupName}
+                settings={true}
+            />
+            <GroupHeader
+                leave={handleLeaveGroup}
+                group={group.data}
+                activeMembers={0}
+                isAdmin={isAdmin}
+            />
             {group.data && (
                 <div className='flex flex-row justify-start bg-dark-6 py-8 md:flex-wrap sm:flex-wrap '>
                     <div className='px-8 md:mt-8 sm:mt-8'>

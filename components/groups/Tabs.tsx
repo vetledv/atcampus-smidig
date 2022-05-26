@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback } from 'react'
 
-const GroupNav = ({
+const Tabs = ({
     activeTab,
     setActiveTab,
     tabs,
@@ -43,4 +43,4 @@ const GroupNav = ({
     )
 }
 
-export default GroupNav
+export default Tabs

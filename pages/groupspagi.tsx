@@ -1,6 +1,6 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
-import GroupNav from 'components/groups/GroupNav'
+import Tabs from 'components/groups/Tabs'
 import Head from 'next/head'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -69,10 +69,10 @@ const Groups = () => {
                         Beta
                     </div>
                 </div>
-                <GroupNav
+                <Tabs
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
-                    tabs={tabs}></GroupNav>
+                    tabs={tabs}></Tabs>
             </div>
             <div className='pl-6 grid grid-cols-1 lg:grid-cols-4'>
                 {activeTab === 0 && groups.data && (

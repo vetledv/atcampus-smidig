@@ -1,7 +1,7 @@
 import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
 import { GroupMembers } from 'components/general/Lib'
 import GroupMain from 'components/groups/GroupMain'
-import GroupNav from 'components/groups/GroupNav'
+import Tabs from 'components/groups/Tabs'
 import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import { useState } from 'react'
 
@@ -23,7 +23,7 @@ const TestPage = () => {
                         color={undefined}
                     />
                 </div>
-                <GroupNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
                 <div className='py-2'>
                     <GroupMain />
                 </div>

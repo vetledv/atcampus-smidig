@@ -105,18 +105,18 @@ const GroupHeader = ({
                             />
                         </Link>
                     ) : (
-                        <>
+                        <div className='h-full px-4 pt-6'>
                             <FlatButton
                                 onClick={() => {
                                     setShowModal(true)
                                 }}
                                 className={
-                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white cursor-default'
+                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white'
                                 }>
                                 {isAdmin ? 'Slett gruppe' : 'Forlat gruppe'}
                             </FlatButton>
                             {showModal && renderModal()}
-                        </>
+                        </div>
                     )}
                 </div>
             </div>

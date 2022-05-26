@@ -1,6 +1,6 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
-import GroupNav from 'components/groups/GroupNav'
+import Tabs from 'components/groups/Tabs'
 import { useGroups } from 'hooks/useGroups'
 import { baseUrl } from 'lib/constants'
 import Head from 'next/head'
@@ -44,10 +44,10 @@ const Groups = () => {
                         Beta
                     </div>
                 </div>
-                <GroupNav
+                <Tabs
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
-                    tabs={tabs}></GroupNav>
+                    tabs={tabs}></Tabs>
             </div>
             <div className='pl-6'>
                 {activeTab === 0 && groups.data && (
