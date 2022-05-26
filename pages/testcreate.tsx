@@ -211,11 +211,6 @@ const TestCreateGroup = () => {
         e: React.FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault()
-
-        if (school.length === 0 || course.length === 0 || goal.length === 0) {
-            //TODO:set error text if one of the tags is not filled
-            return
-        }
         const tags = {
             school,
             course,

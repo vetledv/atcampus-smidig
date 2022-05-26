@@ -6,38 +6,26 @@ const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
         {
             id: 1,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'mattematikk',
+            className: 'Bedriftsøkonomi',
             classCode: '12333',
         },
         {
             id: 2,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'Prog',
+            className: 'Digital markedsføring',
             classCode: '12444',
         },
         {
             id: 3,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'Ebiss',
+            className: 'Programmering',
             classCode: '12555',
         },
         {
             id: 4,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'mattematikk',
+            className: 'Marked, samfunn og globalisering',
             classCode: '12666',
-        },
-        {
-            id: 5,
-            image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'Prog',
-            classCode: '12777',
-        },
-        {
-            id: 6,
-            image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
-            className: 'Ebiss',
-            classCode: '1234',
         },
     ])
 
@@ -53,7 +41,7 @@ const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
                             subjectId={subject.id}
                             selected={selectedSubject === subject.id}
                             onClick={() => {
-                                setSelectedSubject(subject.id)
+                                setSelectedSubject(subject.className)
                             }}
                         />
                     </div>
