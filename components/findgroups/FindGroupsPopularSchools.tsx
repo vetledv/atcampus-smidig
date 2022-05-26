@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 
 const FindGroupsPopularSchools = ({ schoolName }) => {
     return (

@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import { useState } from 'react'
 import InputItem from './InputItem'
 

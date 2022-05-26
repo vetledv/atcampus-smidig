@@ -2,16 +2,12 @@ import TwoOptionsButtons from 'components/findgroups/TwoOptionsButtons'
 import { GroupMembers } from 'components/general/Lib'
 import GroupMain from 'components/groups/GroupMain'
 import Tabs from 'components/groups/Tabs'
-import NavBarTut2 from 'components/navigation/NavBarTutorial2'
 import { useState } from 'react'
 
 const TestPage = () => {
     const [activeTab, setActiveTab] = useState(0)
     return (
         <div className='h-screen w-screen'>
-            <div className='py-2'>
-                <NavBarTut2 />
-            </div>
             <div className='bg-red-800'>
                 <div className='p-4'>
                     <TwoOptionsButtons />

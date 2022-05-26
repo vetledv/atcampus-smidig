@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import Image from 'next/image'
 import { useRouter } from 'next/router'

@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import { fetchReactQuery, postJSON } from 'hooks/useGroups'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'

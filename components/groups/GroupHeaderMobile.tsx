@@ -1,10 +1,9 @@
 import { CogIcon } from '@heroicons/react/solid'
-import FlatButton from 'components/buttons/Button'
+import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Group } from 'types/groups'
-import { Session } from 'next-auth'
 
 const GroupHeader = ({
     group,

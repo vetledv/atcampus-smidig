@@ -1,6 +1,6 @@
 import React from 'react'
 import TopSearch from 'components/general/TopSearch'
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 
 const Header = () => {
     return (

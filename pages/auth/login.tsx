@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import { GetServerSideProps } from 'next'
 import { getProviders, signIn } from 'next-auth/react'
 import Image from 'next/image'

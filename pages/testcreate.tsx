@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import Checkbox from 'components/general/Checkbox'
 import { postReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'

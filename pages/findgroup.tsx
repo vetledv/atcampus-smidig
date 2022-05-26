@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
 import { postReactQuery } from 'hooks/useGroups'

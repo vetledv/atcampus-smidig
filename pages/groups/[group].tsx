@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/FlatButton'
+import FlatButton from 'components/general/FlatButton'
 import GroupHeader from 'components/groups/GroupHeaderMobile'
 import Tabs from 'components/groups/Tabs'
 import TopNav from 'components/groups/TopNav'

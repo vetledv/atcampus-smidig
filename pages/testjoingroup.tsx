@@ -1,4 +1,4 @@
-import FlatButton from 'components/buttons/Button'
+import FlatButton from 'components/general/FlatButton'
 import { baseUrl } from 'lib/constants'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'

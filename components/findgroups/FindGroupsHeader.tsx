@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import ProgressBar from 'components/general/ProgressBar'
-import ProgressBarTest from './ProgressBarTest'
+import ProgressBar from '../general/ProgressBar'
 
 const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep }) => {
     return (
@@ -35,7 +34,7 @@ const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep }) => {
                             className='h-7 text-purple-1 mr-2'
                             onClick={stepBack}
                         />
-                        <ProgressBarTest step={step} />
+                        <ProgressBar step={step} />
                         <ChevronRightIcon
                             className='h-7 text-purple-1 ml-2 cursor-pointer'
                             onClick={nextStep}
