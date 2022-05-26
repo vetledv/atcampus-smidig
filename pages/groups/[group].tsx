@@ -253,9 +253,9 @@ const GroupPage = () => {
                         setActiveTab={setActiveTab}
                     />
                     <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4'>
-                        <div className='col-span-1 lg:col-span-3'>
+                        <div className='col-span-1 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit'>
                             {activeTab === 0 && (
-                                <div className='flex flex-col gap-2 bg-white p-4'>
+                                <div className='flex flex-col gap-2'>
                                     <p className='font-regular text-dark-1'>
                                         {group.data.description}
                                     </p>

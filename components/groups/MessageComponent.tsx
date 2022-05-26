@@ -269,7 +269,7 @@ const MessageComponent = ({
         return <div>Error</div>
     }
     return (
-        <div className=' bg-white rounded-lg p-2 gap-2 flex flex-col border'>
+        <div className='  gap-2 flex flex-col'>
             <div
                 ref={msgCont}
                 className=' flex flex-col h-[500px] overflow-y-auto gap-1'>

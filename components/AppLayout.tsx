@@ -8,7 +8,7 @@ const AppLayout = ({ children }) => {
             <Menu />
             <div className='lg:pl-[18rem] bg-gray-50'>
                 <Header />
-                <div className='w-full min-h-[400px] lg:mt-[91px]'>
+                <div className='w-full min-h-screen lg:mt-[91px] flex flex-col'>
                     {children}
                 </div>
                 <Footer />

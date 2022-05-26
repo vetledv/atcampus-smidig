@@ -32,8 +32,10 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 const total = groups.length
                 const totalPages = Math.ceil(total / limit)
                 const pagedGroups = groups.slice(offset, offset + limit)
+
                 res.status(200).json({
                     totalPages,
+                    totalGroups: total,
                     groups: pagedGroups,
                 })
             } else {
