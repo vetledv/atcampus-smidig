@@ -1,8 +1,7 @@
 import BigCheckbox from 'components/general/BigCheckbox'
 import { useState } from 'react'
 
-const SelectPreferances = () => {
-    const [selectedPreferances, setSelectedPreferances] = useState([])
+const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
     const preferances = [
         'Stille spørsmål',
         'Hjelpe andre',

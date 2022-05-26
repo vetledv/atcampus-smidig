@@ -1,11 +1,11 @@
 import FlatButton from 'components/buttons/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
-import React, { useState } from 'react'
-import StepProgressBar from 'react-step-progress'
+import React, { Key, useState } from 'react'
 import FindClassPage from '../components/findgroups/findclass'
 import SelectGoals from '../components/findgroups/selectgoals'
 import ChooseGroup from '../components/findgroups/ChooseGroup'
+
 // Contents of this file will be moved. This page will serve the find group functionality.
 // TODO: add steps to create a group
 
@@ -18,10 +18,21 @@ const FindGroupPage = () => {
     const [step, setStep] = useState(0)
     const [stepTitle, setStepTitle] = useState('Velg Skole')
 
+    const [selectedSchool, setSelectedSchool] = useState('')
+    const [selectedSubject, setSelectedSubject] = useState('')
+    const [selectedGoal, setSelectedGoal] = useState([])
+    const [selectedPreferances, setSelectedPreferances] = useState([])
+
+    console.log('Selected School: ' + selectedSchool)
+    console.log('Selected Subject: ' + selectedSubject)
+    console.log('Selected Goal: ' + selectedGoal)
+    console.log('Selected Preferances: ' + selectedPreferances)
+
     const handleStep = () => {
         if (step === 0) {
             setStep(step + 1)
             setStepTitle('Velg Fag')
+
             console.log(step)
         }
         if (step === 1) {
@@ -65,9 +76,25 @@ const FindGroupPage = () => {
                 />
                 <div className='flex justify-center'>
                     <div className='bg-white input-shadow h-full min-w-min max-w-7xl w-full my-16'>
-                        {step === 0 && <ChooseSchool />}
-                        {step === 1 && <FindClassPage />}
-                        {step === 2 && <SelectGoals />}
+                        {step === 0 && (
+                            <ChooseSchool
+                                setSelectedSchool={setSelectedSchool}
+                            />
+                        )}
+                        {step === 1 && (
+                            <FindClassPage
+                                setSelectedSubject={setSelectedSubject}
+                                selectedSubject={selectedSubject}
+                            />
+                        )}
+                        {step === 2 && (
+                            <SelectGoals
+                                setSelectedGoal={setSelectedGoal}
+                                selectedGoal={selectedGoal}
+                                setSelectedPreferances={setSelectedPreferances}
+                                selectedPreferences={selectedPreferances}
+                            />
+                        )}
                         {step === 3 && <ChooseGroup />}
                         <div className='p-10 m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
@@ -76,8 +103,11 @@ const FindGroupPage = () => {
                                 </FlatButton>
                             )}
                             {step! < 2 && (
-                                <FlatButton onClick={handleStep}
-                                className={'hover:transition-all hover:animate-bounce'}>
+                                <FlatButton
+                                    onClick={handleStep}
+                                    className={
+                                        'hover:transition-all hover:animate-bounce'
+                                    }>
                                     Gå videre
                                 </FlatButton>
                             )}

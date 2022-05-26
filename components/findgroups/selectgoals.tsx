@@ -1,12 +1,23 @@
 import SelectGoal from 'components/findgroups/SelectGoal'
 import SelectPreferances from 'components/findgroups/SelectPreferances'
 
-const SelectGoals = () => {
+const SelectGoals = ({
+    setSelectedGoal,
+    selectedGoal,
+    selectedPreferences,
+    setSelectedPreferances,
+}) => {
     return (
         <div className='bg-white w-full h-96'>
             <div className='flex flex-col justify-center p-4'>
-                <SelectGoal />
-                <SelectPreferances />
+                <SelectGoal
+                    selectedGoal={selectedGoal}
+                    setSelectedGoal={setSelectedGoal}
+                />
+                <SelectPreferances
+                    setSelectedPreferances={setSelectedPreferances}
+                    selectedPreferances={selectedPreferences}
+                />
             </div>
         </div>
     )

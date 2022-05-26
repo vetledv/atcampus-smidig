@@ -5,9 +5,7 @@ interface State {
     selectedGoal: Array<String>
 }
 
-const SelectGoal = () => {
-    const [selectedGoal, setSelectedGoal] = useState([])
-
+const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
     const goals = [
         {
             id: 1,

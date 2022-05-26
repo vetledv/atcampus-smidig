@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { ObjectId } from 'mongodb'
+import { SchoolMap } from './SchoolMap'
+import { Key, useState } from 'react'
 import { FindGroupsFilter } from './FindGroupsFilter'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
@@ -7,25 +9,22 @@ interface State {
     stepTitle: String
 }
 
-const ChooseSchool = () => {
-    const [selectedSchool, setSelectedSchool] = useState('')
+const schools = [
+    {
+        id: 1,
+        value: 'Høyskolen Kristiania',
+    },
+    {
+        id: 2,
+        value: 'Oslo Met',
+    },
+    {
+        id: 3,
+        value: 'Handelshøyskolen BI',
+    },
+]
 
-    console.log('selectedSchool', selectedSchool)
-
-    const schools = [
-        {
-            id: 1,
-            value: 'Høyskolen Kristiania',
-        },
-        {
-            id: 2,
-            value: 'Oslo Met',
-        },
-        {
-            id: 3,
-            value: 'Handelshøyskolen BI',
-        },
-    ]
+const ChooseSchool = ({ setSelectedSchool }) => {
     return (
         <>
             <div className='h-96'>
@@ -34,17 +33,7 @@ const ChooseSchool = () => {
                     <div className='ml-7 font-semibold text-xl text-dark-1 p-4'>
                         Populære institusjoner
                     </div>
-                    {schools.map((school) => (
-                        <div
-                            key={school.id}
-                            onClick={() => {
-                                setSelectedSchool(school.value)
-                            }}>
-                            <FindGroupsPopularSchools
-                                schoolName={school.value}
-                            />
-                        </div>
-                    ))}
+                    <SchoolMap setSelectedSchool={setSelectedSchool} />
                 </div>
             </div>
         </>

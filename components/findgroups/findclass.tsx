@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
-const FindClassPage = (props) => {
-    const [selectedSubject, setSelectedSubject] = useState(null)
-
+const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
     const [classes, setSelectedClass] = useState([
         {
             id: 1,
@@ -42,8 +40,6 @@ const FindClassPage = (props) => {
             classCode: '1234',
         },
     ])
-
-    console.log(selectedSubject)
 
     return (
         <div>
