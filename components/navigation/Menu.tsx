@@ -48,7 +48,7 @@ export default function Menu() {
     }
 
     return (
-        <div className='fixed top-0 left-0 flex-1 lg:flex flex-col min-h-screen bg-purple-5 lg:min-w-[18rem] hidden'>
+        <div className='fixed top-0 left-0 flex-1 xl:flex flex-col min-h-screen bg-purple-5 xl:min-w-[18rem] hidden'>
             <div className='flex-1 flex flex-col pt-4 pb-4 overflow-y-auto'>
                 <div className='flex items-center flex-shrink-0 px-4'>
                     <Image

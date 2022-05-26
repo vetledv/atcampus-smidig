@@ -5,10 +5,10 @@ export const FindGroupsFilter = ({ items }) => {
     return (
         <div className='flex flex-col items-center'>
             <div className='flex justify-center py-8'>
-                <div className='w-96 hover:input-shadow'>
+                <div className='w-40 md:w-80 lg:w-96 hover:input-shadow'>
                     <TopSearch title='Søk etter skole...' />
                 </div>
-                <div className='w-96 ml-8 hover:input-shadow'>
+                <div className='w-40 md:w-80 lg:w-96 ml-8 hover:input-shadow'>
                     <DropDown
                         title={'Velg Skole'}
                         items={items}

@@ -42,7 +42,7 @@ const ChooseGroup = ({ search }) => {
                         Noen grupper må gruppemedlemmer godkjennes
                     </div>
                 </div>
-                <div className='flex flex-wrap'>
+                <div className='w-fit grid grid-cols-1 lg:grid-cols-2'>
                     {search.data.map(
                         (group: {
                             groupName: React.Key
@@ -53,7 +53,7 @@ const ChooseGroup = ({ search }) => {
                         }) => (
                             <li
                                 key={group._id.toString()}
-                                className={'m-6 list-none flex'}>
+                                className={'my-4 mx-8 list-none'}>
                                 <SubjectCard
                                     groupName={group.groupName.toString()}
                                     groupId={group._id}

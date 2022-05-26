@@ -3,10 +3,10 @@ import FlatButton from 'components/buttons/FlatButton'
 const FindGroupsPopularSchools = ({ schoolName }) => {
     return (
         <>
-            <div className='flex flex-col py-4 px-48'>
+            <div className='flex flex-col py-4 px-48 md:w-full'>
                 <FlatButton
                     className={
-                        'text-[24px] bg-slate-200 text-purple-1 border-solid border-purple-1 hover:bg-purple-3 hover:text-slate-100 hover:shadow-md text' //text size somehow doesn't work properly
+                        'md:text-[24px] sm:text-md text-sm bg-slate-100 text-purple-1 border-solid border-dark-5 border-2 hover:bg-dark-1 hover:text-white hover:shadow-md' //text size somehow doesn't work properly
                     }>
                     {schoolName}
                 </FlatButton>

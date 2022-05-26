@@ -31,7 +31,7 @@ const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
 
     return (
         <div>
-            <div className='flex flex-wrap lg:h-96 '>
+            <div className='grid lg:grid-cols-2 grid-cols-1 lg:h-96 '>
                 {classes.map((subject) => (
                     <div key={subject.id} className='p-6 hover:cursor-default'>
                         <SubjectCardCompact
