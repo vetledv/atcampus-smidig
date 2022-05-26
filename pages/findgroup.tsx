@@ -1,17 +1,41 @@
 import FlatButton from 'components/buttons/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
-import React, { Key, useEffect, useState } from 'react'
+import { postReactQuery } from 'hooks/useGroups'
+import React, { FormEvent, useEffect, useState } from 'react'
+import { useMutation, useQuery } from 'react-query'
+import { Group, Tags } from 'types/groups'
+import ChooseGroup from '../components/findgroups/ChooseGroup'
 import FindClassPage from '../components/findgroups/findclass'
 import SelectGoals from '../components/findgroups/selectgoals'
-import ChooseGroup from '../components/findgroups/ChooseGroup'
 
 interface State {
     step: Number
     stepTitle: String
 }
 
-const FindGroupPage = () => {
+const FindGroupPage = ({ selectedTagss }) => {
+    const searchMutate = useMutation(
+        (object: Tags) => postReactQuery('/api/groups/search', object),
+        {
+            onSuccess: (result: Group[]) => {
+                //queryClient.setQueryData('search', result)
+                console.log('onSuccess', result)
+                console.log('onSuccess', searchMutate.data)
+                searchMutate.data = result
+                console.log('onSuccess2', searchMutate.data)
+            },
+            onSettled: (result: Group[]) => {
+                console.log('onSettled', result)
+            },
+        }
+    )
+
+    //search data once searchMutate is successful
+    const search = useQuery<Group[], Error>('search', () => searchMutate.data, {
+        enabled: searchMutate.isSuccess,
+    })
+
     const [step, setStep] = useState(0)
     const [stepTitle, setStepTitle] = useState('Velg Skole')
 
@@ -20,17 +44,15 @@ const FindGroupPage = () => {
     const [selectedGoal, setSelectedGoal] = useState([])
     const [selectedPreferances, setSelectedPreferances] = useState([])
 
-    const [selectedTags, setSelectedTags] = useState([])
+    const [goalsTags, setGoalsTags] = useState([])
 
     useEffect(() => {
-        setSelectedTags([
-            selectedSchool,
-            selectedSubject,
-            selectedGoal,
-            selectedPreferances,
-        ])
-    }, [selectedSchool, selectedSubject, selectedGoal, selectedPreferances])
-    console.log('selected Tags: ' + selectedTags)
+        setGoalsTags([selectedGoal, selectedPreferances])
+    }, [selectedGoal, selectedPreferances])
+
+    console.log('School:    ' + selectedSchool)
+    console.log('Subject:    ' + selectedSubject)
+    console.log('goals:    ' + goalsTags)
 
     const handleStep = () => {
         if (step === 0) {
@@ -58,11 +80,22 @@ const FindGroupPage = () => {
         }
     }
 
-    const handleFindGroup = () => {
+    //search for groups with tags
+    const handleSearchForGroupByTags = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
         if (step === 2) {
             setStep(step + 1)
             setStepTitle('Gruppeforslag')
         }
+        e.preventDefault()
+        const tags = {
+            school: selectedSchool,
+            course: selectedSubject,
+            goals: goalsTags,
+        }
+        //send tags to server
+        searchMutate.mutateAsync(tags)
     }
 
     return (
@@ -95,10 +128,13 @@ const FindGroupPage = () => {
                                 selectedPreferences={selectedPreferances}
                             />
                         )}
-                        {step === 3 && <ChooseGroup />}
+                        {step === 3 && <ChooseGroup search={search} />}
                         <div className='p-10 m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
-                                <FlatButton onClick={handleFindGroup}>
+                                <FlatButton
+                                    onClick={(e: FormEvent<HTMLFormElement>) =>
+                                        handleSearchForGroupByTags(e)
+                                    }>
                                     Finn Gruppe
                                 </FlatButton>
                             )}
