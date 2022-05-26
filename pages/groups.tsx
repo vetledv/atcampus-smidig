@@ -99,7 +99,7 @@ const Groups = () => {
                                 <div className='flex flex-wrap'>
                                     {groups.data.groups.map((group) => (
                                         <div
-                                            className='md:basis-1/2 w-full'
+                                            className='md:basis-1/2 w-full 2xl:basis-1/3'
                                             key={group._id.toString()}>
                                             <div className='pr-2 pb-2 h-full'>
                                                 <SubjectCard

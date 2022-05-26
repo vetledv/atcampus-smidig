@@ -26,7 +26,10 @@ const Tabs = ({
                                 (activeTab === index
                                     ? 'text-dark-1 border-b-4  border-purple-1'
                                     : ' ' +
-                                      ' text-dark-3 border-b-4 border-white ')
+                                      ' text-dark-3 border-b-4 border-white ') +
+                                (activeTab !== index
+                                    ? ' hover:border-b-4 hover:border-dark-2 '
+                                    : '')
                             }>
                             {tab}
                         </button>
