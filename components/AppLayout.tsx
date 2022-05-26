@@ -4,8 +4,8 @@ import Header from './navigation/Header'
 
 const AppLayout = ({ children }) => {
     return (
-        <div className='flex flex-col h-full'>
-            <div className='h-full flex flex-row'>
+        <div className='flex flex-col h-full w-full'>
+            <div className='h-full flex flex-row w-full '>
                 <Menu />
                 <div className='w-full lg:pl-[18rem]'>
                     <Header />

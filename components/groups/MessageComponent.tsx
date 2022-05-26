@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import {
     Dispatch,
+    KeyboardEvent,
     MutableRefObject,
     SetStateAction,
     useCallback,
@@ -15,7 +16,7 @@ import {
 } from 'react'
 import { useQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
-import type { GroupMessages, Member, Message, SendMessage } from 'types/groups'
+import { GroupMessages, Member, Message, SendMessage } from 'types/groups'
 
 interface ByDayMessage {
     day: string
@@ -84,7 +85,7 @@ const MessageComponent = ({
     }, [messages.data, scrollToBottom])
 
     const handleUserTyping = useCallback(
-        (e) => {
+        (e: KeyboardEvent<HTMLInputElement>) => {
             if (!socket.current) return
             if (
                 e.key === 'Enter' ||
