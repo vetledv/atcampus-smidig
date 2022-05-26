@@ -62,6 +62,7 @@ const MessageComponent = ({
         messages.refetch()
     }, [messages])
     useEffect(() => {
+        if (!socket.current) return
         socket.current.on(`message ${groupId.toString()}`, (message) => {
             console.log('message received:', message)
             refetch()
@@ -78,7 +79,7 @@ const MessageComponent = ({
                 setUserTyping('')
             }
         })
-    })
+    }, [activeTab, groupId, refetch, setUserTyping, socket])
 
     useEffect(() => {
         scrollToBottom()
@@ -189,9 +190,7 @@ const MessageComponent = ({
                         <div className='bg-dark-5 w-full h-[1px]'></div>
                     </div>
                     {day.messages.map((message: Message, j) => (
-                        <div
-                            key={j}
-                            className='flex bg-purple-5 p-2 rounded gap-2'>
+                        <div key={j} className='flex p-2 rounded gap-2'>
                             <div className='w-14'>
                                 {groupMembers.find(
                                     (member) =>

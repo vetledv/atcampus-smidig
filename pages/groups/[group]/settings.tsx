@@ -73,8 +73,9 @@ export const getServerSideProps = async (context: GetSessionParams) => {
 
     if (!session) {
         return {
-            props: {
-                redirect: '/login',
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
             },
         }
     }

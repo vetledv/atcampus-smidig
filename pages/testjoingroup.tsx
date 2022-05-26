@@ -1,6 +1,6 @@
 import FlatButton from 'components/buttons/Button'
 import { baseUrl } from 'lib/constants'
-import { useSession } from 'next-auth/react'
+import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { dehydrate, QueryClient, useMutation, useQuery } from 'react-query'
 import { Group } from 'types/groups'
 import { fetchReactQuery, postReactQuery } from '../hooks/useGroups'
@@ -29,9 +29,9 @@ const TestPageJoinGroup = () => {
     const handleJoin = async (group: Group) => {
         mutate.mutateAsync({
             groupId: group._id,
-            userId: session?.data?.user?.id,
-            userName: session?.data?.user?.name,
-            picture: session?.data?.user?.image,
+            userId: session.data.user.id,
+            userName: session.data.user.name,
+            picture: session.data.user.image,
         })
     }
 
@@ -103,7 +103,16 @@ const TestPageJoinGroup = () => {
 
 export default TestPageJoinGroup
 
-export async function getServerSideProps() {
+export const getServerSideProps = async (context: GetSessionParams) => {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            },
+        }
+    }
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery('groupstest', async () => {
         const res = await fetch(`${baseUrl}/api/testjoingroup`)

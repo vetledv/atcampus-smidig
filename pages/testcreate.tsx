@@ -308,8 +308,9 @@ export const getServerSideProps = async (context: GetSessionParams) => {
     const session = await getSession(context)
     if (!session) {
         return {
-            props: {
-                redirect: '/login',
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
             },
         }
     }

@@ -10,12 +10,24 @@ import { Group } from 'types/groups'
 const handler = nextConnect()
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDB()
+    const session = await getToken({
+        req,
+        secret: secret_key,
+    })
     const { group } = req.query
     await db
         .collection('atcampus-groups')
         .findOne({ _id: new ObjectId(group as string) })
-        .then((group) => {
-            res.status(200).json(group)
+        .then((group: Group) => {
+            if (group.members.find((member) => member.userId === session.sub)) {
+                //TODO: this causes an error before returning the group
+                res.status(200).json(group)
+            } else {
+                console.log('user not in group')
+                res.status(400).json({
+                    error: 'user not in group',
+                })
+            }
         })
         .catch((err) => {
             res.status(500).json({

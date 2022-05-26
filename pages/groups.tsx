@@ -90,46 +90,42 @@ const Groups = () => {
                 </div>
                 <div className='px-4 md:px-6 grid grid-cols-1 lg:grid-cols-4 h-full flex-grow'>
                     {activeTab === 0 && groups.data && (
-                        <div className=' col-span-1 lg:col-span-3 flex flex-col gap-4  min-h-[500px] justify-between  h-full '>
-                            <div className='max-w-[909px]'>
-                                {groups.data.groups.length === 0 ? (
-                                    <div>
-                                        <p>Not in any groups.</p>
-                                    </div>
-                                ) : (
-                                    <div className='flex flex-wrap'>
-                                        {groups.data.groups.map((group) => (
-                                            <div
-                                                className='md:basis-1/2 w-full'
-                                                key={group._id.toString()}>
-                                                <div className='pr-2 pb-2 h-full'>
-                                                    <SubjectCard
-                                                        key={group.groupName}
-                                                        groupName={
-                                                            group.groupName
-                                                        }
-                                                        groupId={group._id}
-                                                        groupImage={
-                                                            'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                                                        }
-                                                        compact={true}
-                                                        subjectCode={'PG63'}
-                                                        members={
-                                                            group.members.length
-                                                        }
-                                                        totalMembers={
-                                                            group.members.length
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}{' '}
-                                <div className='flex gap-1 pt-12'>
-                                    <div>Mangler gruppen din?</div>
-                                    <div>Lag en ny gruppe helt anonymt!</div>
+                        <div className=' col-span-1 lg:col-span-3 flex flex-col gap-4 min-h-[500px] justify-between  h-full '>
+                            {groups.data.groups.length === 0 ? (
+                                <div>
+                                    <p>Not in any groups.</p>
                                 </div>
+                            ) : (
+                                <div className='flex flex-wrap'>
+                                    {groups.data.groups.map((group) => (
+                                        <div
+                                            className='md:basis-1/2 w-full'
+                                            key={group._id.toString()}>
+                                            <div className='pr-2 pb-2 h-full'>
+                                                <SubjectCard
+                                                    key={group.groupName}
+                                                    groupName={group.groupName}
+                                                    groupId={group._id}
+                                                    groupImage={
+                                                        'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                                    }
+                                                    compact={true}
+                                                    subjectCode={'PG63'}
+                                                    members={
+                                                        group.members.length
+                                                    }
+                                                    totalMembers={
+                                                        group.members.length
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}{' '}
+                            <div className='flex gap-1 pt-12'>
+                                <div>Mangler gruppen din?</div>
+                                <div>Lag en ny gruppe helt anonymt!</div>
                             </div>
                             <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 justify-between shadow-sm shadow-purple-5 items-center'>
                                 <div className='flex gap-1 justify-end text-sm h-fit'>

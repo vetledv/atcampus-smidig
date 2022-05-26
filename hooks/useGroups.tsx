@@ -4,8 +4,10 @@ import { Group } from 'types/groups'
 export const fetchReactQuery = (query?: string) => {
     return async () => {
         const res = await fetch(`/api/${query}`)
-        const data = await res.json()
-        return data
+        if (!res.ok) {
+            throw new Error(res.statusText)
+        }
+        return res.json()
     }
 }
 
@@ -31,12 +33,19 @@ export const postReactQuery = async (url: RequestInfo, object: any) => {
 }
 
 export const useGroups = () => {
-    return useQuery<Group[], Error>('groups', fetchReactQuery('groups'))
+    return useQuery<Group[], Error>('groups', fetchReactQuery('groups'), {
+        retry: false,
+        useErrorBoundary: true,
+    })
 }
 
 export const useGroup = (groupId: string) => {
     return useQuery<Group, Error>(
         ['group', groupId],
-        fetchReactQuery(`groups/${groupId}`)
+        fetchReactQuery(`groups/${groupId}`),
+        {
+            useErrorBoundary: true,
+            retry: false,
+        }
     )
 }

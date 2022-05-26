@@ -72,7 +72,7 @@ const GroupPage = () => {
 
     //initialize socket
     useEffect(() => {
-        if (!routerQuery.group) return
+        if (!routerQuery.group || group?.data) return
         socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
             path: '/api/groups/socket',
             query: {
@@ -93,11 +93,13 @@ const GroupPage = () => {
         return () => {
             currSocket.disconnect()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routerQuery.group])
 
     //socket events
     useEffect(() => {
         if (socket.current === null) return
+        console.log('socket events')
         socket.current.on('active-members', (data) => {
             console.log('active:', data)
             setActiveMembers(data)
@@ -145,7 +147,7 @@ const GroupPage = () => {
 
     const isAdmin = useCallback(() => {
         if (!session?.user || !group.data) return false
-        return session?.user?.id === group.data?.admin.userId?.toString()
+        return session?.user?.id === group.data?.admin?.userId?.toString()
     }, [group, session])
 
     const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,12 +163,13 @@ const GroupPage = () => {
 
     const renderAdminPanel = useCallback(() => {
         if (!isAdmin()) return null
+        if (!group?.data) return null
         return (
             <div className='flex flex-col gap-2'>
                 <h1>Pending members:</h1>
                 {group.data.pendingMembers.map((pendingMember) => (
                     <div
-                        key={pendingMember.userId.toString()}
+                        key={pendingMember.userId?.toString()}
                         className='flex flex-row gap-2'>
                         <div>{pendingMember.userName}</div>
                         <div className='flex gap-2'>
@@ -213,7 +216,7 @@ const GroupPage = () => {
         )
     }, [
         adminMutatePending.isLoading,
-        group.data.pendingMembers,
+        group?.data,
         handlePendingMember,
         image,
         isAdmin,
@@ -223,7 +226,7 @@ const GroupPage = () => {
         return <div>Loading...</div>
     }
     if (group.isError) {
-        return <div>Error: {group.error.message}</div>
+        return <div>Error</div>
     }
 
     return (
@@ -238,7 +241,7 @@ const GroupPage = () => {
             {group.data && (
                 <>
                     <TopNav
-                        groupId={group.data._id.toString()}
+                        groupId={group.data._id?.toString()}
                         groupName={group.data.groupName}
                     />
                     <GroupHeader
@@ -257,24 +260,24 @@ const GroupPage = () => {
                             {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
                                     <p className='font-regular text-dark-1'>
-                                        {group.data.description}
+                                        {group.data?.description}
                                     </p>
                                     <h1 className='text-dark-1 font-semibold'>
                                         Skole
                                     </h1>
                                     <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
-                                        {group.data.tags.school}
+                                        {group.data?.tags?.school}
                                     </div>
                                     <h1 className='text-dark-1 font-semibold'>
                                         Fag
                                     </h1>
                                     <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
-                                        {group.data.tags.course}
+                                        {group.data?.tags?.course}
                                     </div>
                                     <h1 className='text-dark-1 font-semibold'>
                                         Goals
                                     </h1>
-                                    {group.data.tags.goals?.map((tag) => (
+                                    {group.data.tags?.goals?.map((tag) => (
                                         <div
                                             className=' bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'
                                             key={tag}>
@@ -298,12 +301,12 @@ const GroupPage = () => {
                             )}
                             {activeTab === 1 && (
                                 <div className='flex flex-col gap-2  '>
-                                    {group.data.members?.map((member) => (
+                                    {group.data.members.map((member, i) => (
                                         <div
                                             key={member.userId.toString()}
                                             className='flex flex-row gap-2 bg-purple-5  rounded-sm w-full  p-2 text-dark-1'>
                                             <Image
-                                                src={member.picture}
+                                                src={member?.picture}
                                                 alt=''
                                                 width={48}
                                                 height={48}
@@ -359,8 +362,9 @@ export const getServerSideProps = async (
 
     if (!session) {
         return {
-            props: {
-                redirect: '/login',
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
             },
         }
     }
@@ -370,8 +374,11 @@ export const getServerSideProps = async (
         ['group', group],
         async () => {
             const res = await fetch(`${baseUrl}/api/groups/${group}`)
-            const data = await res.json()
-            return data
+            if (!res.ok) {
+                throw new Error(res.statusText)
+            } else {
+                return res.json()
+            }
         }
     )
     await queryClient.prefetchQuery<GroupMessages, Error>(
@@ -380,15 +387,17 @@ export const getServerSideProps = async (
             const res = await fetch(
                 `${baseUrl}/api/groups/${group}/messages?offset=2&limit=5`
             )
-            const data = await res.json()
-            return data
+            if (!res.ok) {
+                throw new Error(res.statusText)
+            } else {
+                return res.json()
+            }
         }
     )
 
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
-            session,
         },
     }
 }
