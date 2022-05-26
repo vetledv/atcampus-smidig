@@ -3,7 +3,6 @@ import ProgressBarTab from './ProgressBarTab'
 
 const ProgressBarTest = ({ step }) => {
     const steps = [1, 2, 3, 4]
-    console.log('step: ' + step)
     return (
         <div className='flex flex-row'>
             {/* <ChevronLeftIcon className='h-7 text-purple-1 mr-2'

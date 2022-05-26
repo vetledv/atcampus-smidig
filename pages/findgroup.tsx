@@ -1,13 +1,10 @@
 import FlatButton from 'components/buttons/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
-import React, { Key, useState } from 'react'
+import React, { Key, useEffect, useState } from 'react'
 import FindClassPage from '../components/findgroups/findclass'
 import SelectGoals from '../components/findgroups/selectgoals'
 import ChooseGroup from '../components/findgroups/ChooseGroup'
-
-// Contents of this file will be moved. This page will serve the find group functionality.
-// TODO: add steps to create a group
 
 interface State {
     step: Number
@@ -23,27 +20,26 @@ const FindGroupPage = () => {
     const [selectedGoal, setSelectedGoal] = useState([])
     const [selectedPreferances, setSelectedPreferances] = useState([])
 
-    console.log('Selected School: ' + selectedSchool)
-    console.log('Selected Subject: ' + selectedSubject)
-    console.log('Selected Goal: ' + selectedGoal)
-    console.log('Selected Preferances: ' + selectedPreferances)
+    const [selectedTags, setSelectedTags] = useState([])
+
+    useEffect(() => {
+        setSelectedTags([
+            selectedSchool,
+            selectedSubject,
+            selectedGoal,
+            selectedPreferances,
+        ])
+    }, [selectedSchool, selectedSubject, selectedGoal, selectedPreferances])
+    console.log('selected Tags: ' + selectedTags)
 
     const handleStep = () => {
         if (step === 0) {
             setStep(step + 1)
             setStepTitle('Velg Fag')
-
-            console.log(step)
         }
         if (step === 1) {
             setStep(step + 1)
             setStepTitle('Velg Mål')
-            console.log(step)
-        }
-        if (step === 2) {
-            setStep(step + 1)
-            setStepTitle('Gruppeforslag')
-            console.log(step)
         }
     }
 
@@ -51,17 +47,21 @@ const FindGroupPage = () => {
         if (step === 1) {
             setStep(0)
             setStepTitle('Velg Skole')
-            console.log(step)
         }
         if (step === 2) {
             setStep(1)
             setStepTitle('Velg Fag')
-            console.log(step)
         }
         if (step === 3) {
             setStep(2)
             setStepTitle('Velg Mål')
-            console.log(step)
+        }
+    }
+
+    const handleFindGroup = () => {
+        if (step === 2) {
+            setStep(step + 1)
+            setStepTitle('Gruppeforslag')
         }
     }
 
@@ -98,7 +98,7 @@ const FindGroupPage = () => {
                         {step === 3 && <ChooseGroup />}
                         <div className='p-10 m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
-                                <FlatButton onClick={handleStep}>
+                                <FlatButton onClick={handleFindGroup}>
                                     Finn Gruppe
                                 </FlatButton>
                             )}

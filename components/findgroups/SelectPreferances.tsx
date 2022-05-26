@@ -10,18 +10,17 @@ const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
         'Ha det gøy',
     ]
 
-    const handleClick = (e) => {
+    const handleClick = (e: { target: { value: any } }) => {
         if (!selectedPreferances.includes(e.target.value)) {
             setSelectedPreferances([...selectedPreferances, e.target.value])
         } else {
             setSelectedPreferances(
-                selectedPreferances.filter(
-                    (preferance) => preferance !== e.target.value
-                )
+                selectedPreferances.filter((preferance: any) => {
+                    return preferance !== e.target.value
+                })
             )
         }
     }
-    console.log(selectedPreferances)
 
     return (
         <section>

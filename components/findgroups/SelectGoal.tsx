@@ -37,16 +37,15 @@ const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
         },
     ]
 
-    const handleClick = (e) => {
+    const handleClick = (e: { target: { value: any } }) => {
         if (!selectedGoal.includes(e.target.value)) {
             setSelectedGoal([...selectedGoal, e.target.value])
         } else {
             setSelectedGoal(
-                selectedGoal.filter((goal) => goal !== e.target.value)
+                selectedGoal.filter((goal: any) => goal !== e.target.value)
             )
         }
     }
-    console.log('selectedGoal', selectedGoal)
 
     return (
         <section>
