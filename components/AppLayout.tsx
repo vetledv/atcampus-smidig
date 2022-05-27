@@ -12,7 +12,7 @@ const AppLayout = ({ children }) => {
                     <Menu />
                     <div className='xl:pl-[18rem] bg-gray-50'>
                         <Header />
-                        <div className='w-full min-h-screen xl:mt-[91px] flex flex-col'>
+                        <div className='w-full mb-12 lg:mb-0 min-h-screen xl:mt-[91px] flex flex-col'>
                             {children}
                         </div>
                         <Footer />

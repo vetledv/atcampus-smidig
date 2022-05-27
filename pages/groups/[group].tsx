@@ -39,6 +39,8 @@ const GroupPage = () => {
     const [activeTab, setActiveTab] = useState(0)
     const [connected, setConnected] = useState<boolean>(false)
     const [userTyping, setUserTyping] = useState<string>('')
+
+    const [notImplementedError, setNotImplementedError] = useState<boolean>()
     const socket = useRef<Socket>(null)
 
     const [image, setImage] = useState(null)
@@ -153,11 +155,13 @@ const GroupPage = () => {
     const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const file = e.target.files[0]
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                setImage(e.target.result)
+            if (file.type === 'image/png' || file.type === 'image/jpeg') {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    setImage(e.target.result)
+                }
+                reader.readAsDataURL(file)
             }
-            reader.readAsDataURL(file)
         }
     }
 
@@ -204,7 +208,18 @@ const GroupPage = () => {
                                 width={200}
                                 height={200}></Image>
                         </div>
-                        <FlatButton disabled={true}>Upload</FlatButton>
+                        <FlatButton
+                            onClick={() => {
+                                setNotImplementedError(true)
+                            }}>
+                            Upload
+                        </FlatButton>
+                        {notImplementedError && (
+                            <div>
+                                Beklager, denne funksjonen er ikke implementert
+                                enda :)
+                            </div>
+                        )}
                     </>
                 )}
                 <form>
@@ -216,10 +231,11 @@ const GroupPage = () => {
         )
     }, [
         adminMutatePending.isLoading,
-        group?.data,
+        group.data,
         handlePendingMember,
         image,
         isAdmin,
+        notImplementedError,
     ])
 
     if (group.isLoading) {
