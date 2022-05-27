@@ -127,7 +127,7 @@ const Groups = () => {
                                 <div>Mangler gruppen din?</div>
                                 <div>Lag en ny gruppe helt anonymt!</div>
                             </div>
-                            <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 justify-between shadow-sm shadow-purple-5 items-center'>
+                            <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 mb-12 justify-between shadow-sm shadow-purple-5 items-center'>
                                 <div className='flex gap-1 justify-end text-sm h-fit'>
                                     Viser {(page - 1) * 5 + 1} til{' '}
                                     {groups.data.groups.length + (page - 1) * 5}{' '}
