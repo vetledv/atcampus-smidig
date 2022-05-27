@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev -p 9001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
     "p:check": "prettier --check **/*.{js,jsx,ts,tsx}",
     "p:format": "prettier --write **/*.{js,jsx,ts,tsx}",
