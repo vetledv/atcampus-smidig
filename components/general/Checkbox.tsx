@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import { useState } from 'react'
 
 const Checkbox = ({
     type = 'checkbox',
@@ -8,8 +7,8 @@ const Checkbox = ({
     name,
     className,
     onClick,
+    selected
 }) => {
-    const [isChecked, setIsChecked] = useState(false)
     const box =
         'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
     const checkedBox =
@@ -18,7 +17,7 @@ const Checkbox = ({
         'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
 
     let classes = classNames(
-        isChecked ? `${box} ${uncheckedBox}` : `${box} ${checkedBox}`,
+        selected.includes(name) ? `${box} ${uncheckedBox}` : `${box} ${checkedBox}`,
         className
     )
 
@@ -30,8 +29,8 @@ const Checkbox = ({
                 className='invisible absolute'
                 data-attribute={id}
                 type={type}
-                checked={isChecked}
-                onChange={(e) => setIsChecked(e.currentTarget.checked)}
+                checked={selected.filter((goal) => goal === name)}
+                onChange={(e) => e.currentTarget.checked}
                 onClick={onClick}
             />
             <span>{name}</span>

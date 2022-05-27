@@ -57,6 +57,7 @@ const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
                         name={goal.value}
                         value={goal.value}
                         id={goal.id}
+                        selected={selectedGoal}
                         className=''
                         onClick={handleClick}
                     />
