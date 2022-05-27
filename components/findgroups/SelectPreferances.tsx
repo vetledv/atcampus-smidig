@@ -1,5 +1,4 @@
 import BigCheckbox from 'components/general/BigCheckbox'
-import { useState } from 'react'
 
 const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
     const preferances = [
@@ -29,6 +28,7 @@ const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
                 {preferances.map((preferance) => (
                     <BigCheckbox
                         value={preferance}
+                        selected={selectedPreferances}
                         key={preferance}
                         name={preferance}
                         id={preferance}

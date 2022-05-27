@@ -1,6 +1,5 @@
 import { AcademicCapIcon } from '@heroicons/react/outline'
 import classNames from 'classnames'
-import { useState } from 'react'
 
 const BigCheckbox = ({
     type = 'checkbox',
@@ -9,8 +8,8 @@ const BigCheckbox = ({
     name,
     className,
     onClick,
+    selected
 }) => {
-    const [isChecked, setIsChecked] = useState(false)
     const box =
         'flex cursor-pointer w-64 text-md items-center h-20 text-center rounded-standard border-2 font-normal'
     const checkedBox =
@@ -19,7 +18,7 @@ const BigCheckbox = ({
         'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
 
     let classes = classNames(
-        isChecked ? `${box} ${checkedBox}` : `${box} ${uncheckedBox}`,
+        selected.includes(name) ? `${box} ${checkedBox}` : `${box} ${uncheckedBox}`,
         className
     )
 
@@ -34,8 +33,8 @@ const BigCheckbox = ({
                 className='invisible absolute'
                 data-attribute={id}
                 type={type}
-                checked={isChecked}
-                onChange={(e) => setIsChecked(e.currentTarget.checked)}
+                checked={selected.filter((preferance) => preferance === name)}
+                onChange={(e) => e.currentTarget.checked}
                 onClick={onClick}
             />
             <span className='w-full'>{name}</span>
