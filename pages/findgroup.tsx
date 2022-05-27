@@ -129,7 +129,7 @@ const FindGroupPage = ({ selectedTagss }) => {
                             />
                         )}
                         {step === 3 && <ChooseGroup search={search} />}
-                        <div className='p-10 m-6 flex flex-row-reverse justify-between'>
+                        <div className='m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
                                 <FlatButton
                                     onClick={(e: FormEvent<HTMLFormElement>) =>

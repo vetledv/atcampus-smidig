@@ -3,9 +3,9 @@ import ProgressBar from '../general/ProgressBar'
 
 const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep }) => {
     return (
-        <div className='bg-white h-40 input-shadow text-dark-1'>
+        <div className='bg-white lg:h-40 input-shadow text-dark-1'>
             <div className='flex items-center justify-between'>
-                <div className='h-40 flex flex-col justify-between py-6 px-6 w-full'>
+                <div className='lg:h-40 flex flex-col justify-between py-6 px-6 w-full'>
                     {stepTitle === 'Velg skole' ? (
                         <div>
                             Kollokviegrupper / <b>{stepTitle}</b>
@@ -29,9 +29,9 @@ const FindGroupsHeader = ({ stepTitle, step, stepBack, nextStep }) => {
                             Kollokviegrupper / <b>{stepTitle}</b>
                         </div>
                     )}
-                    <div className='flex flex-row w-full justify-center items-center mt-2 cursor-pointer'>
+                    <div className='flex flex-row w-full justify-center items-center mt-2'>
                         <ChevronLeftIcon
-                            className='h-7 text-purple-1 mr-2'
+                            className='h-7 text-purple-1 mr-2 cursor-pointer'
                             onClick={stepBack}
                         />
                         <ProgressBar step={step} />

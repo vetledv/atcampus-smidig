@@ -27,7 +27,7 @@ const schools = [
 const ChooseSchool = ({ setSelectedSchool }) => {
     return (
         <>
-            <div className='h-96'>
+            <div className=''>
                 <FindGroupsFilter items={schools} />
                 <div>
                     <div className='ml-7 font-semibold text-xl text-dark-1 p-4'>

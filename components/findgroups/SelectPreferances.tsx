@@ -25,14 +25,14 @@ const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
     return (
         <section>
             <h3>Hva er viktig for deg?</h3>
-            <div className='flex flex-wrap'>
+            <div className='flex flex-wrap justify-center grid-cols-6'>
                 {preferances.map((preferance) => (
                     <BigCheckbox
                         value={preferance}
                         key={preferance}
                         name={preferance}
                         id={preferance}
-                        className='m-1'
+                        className='m-2'
                         onClick={handleClick}
                     />
                 ))}
