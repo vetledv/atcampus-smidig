@@ -16,25 +16,37 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         secret: secret_key,
     })
     const { group } = req.query
-    await db
-        .collection('atcampus-groups')
-        .findOne({ _id: new ObjectId(group as string) })
-        .then((group: Group) => {
-            if (group.members.find((member) => member.userId === session.sub)) {
-                //TODO: this causes an error before returning the group, but doesn't seem to be a problem
-                res.status(200).json(group)
-            } else {
-                console.log('user not in group')
-                res.status(400).json({
-                    error: 'user not in group',
-                })
-            }
+    if (!session.sub) {
+        console.log(session.sub)
+        res.status(401).json({
+            error: 'You are not logged in',
         })
-        .catch((err) => {
-            res.status(500).json({
-                error: err,
+    } else {
+        console.log('IN ELSE')
+        await db
+            .collection('atcampus-groups')
+            .findOne({ _id: new ObjectId(group as string) })
+            .then((group: Group) => {
+                if (
+                    !group.members.find(
+                        (member) => member.userId === session.sub
+                    )
+                ) {
+                    console.log('user not in group')
+                    res.status(400).json({
+                        error: 'user not in group',
+                    })
+                } else {
+                    //TODO: this causes an error before returning the group, but doesn't seem to be a problem
+                    res.status(200).json(group)
+                }
             })
-        })
+            .catch((err) => {
+                res.status(500).json({
+                    error: err,
+                })
+            })
+    }
 })
 
 //update group details

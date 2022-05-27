@@ -72,7 +72,7 @@ const GroupPage = () => {
 
     //initialize socket
     useEffect(() => {
-        if (!routerQuery.group || group?.data) return
+        //if (!routerQuery.group || group?.data) return
         socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
             path: '/api/groups/socket',
             query: {
@@ -94,7 +94,7 @@ const GroupPage = () => {
             currSocket.disconnect()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [routerQuery.group])
+    }, [])
 
     //socket events
     useEffect(() => {

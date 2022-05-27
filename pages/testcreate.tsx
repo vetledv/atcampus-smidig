@@ -82,14 +82,7 @@ const TestCreateGroup = () => {
         'Programmering',
         'Marked, samfunn og globalisering',
     ]
-    const goalGradeTags = [
-        'Bestått',
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-    ]
+    const goalGradeTags = ['Bestått', 'A', 'B', 'C', 'D', 'E']
     const goalTags = [
         'Stille spørsmål',
         'Hjelpe andre',
@@ -276,8 +269,9 @@ const TestCreateGroup = () => {
                         <button
                             key={tag}
                             className={
-                                (goal.includes(tag) ? 'bg-pink-400' : 'bg-white') +
-                                ' px-4 py-2 rounded border'
+                                (goal.includes(tag)
+                                    ? 'bg-pink-400'
+                                    : 'bg-white') + ' px-4 py-2 rounded border'
                             }
                             onClick={() => {
                                 setGoal(
@@ -295,8 +289,9 @@ const TestCreateGroup = () => {
                         <button
                             key={tag}
                             className={
-                                (goal.includes(tag) ? 'bg-pink-400' : 'bg-white') +
-                                ' px-4 py-2 rounded border'
+                                (goal.includes(tag)
+                                    ? 'bg-pink-400'
+                                    : 'bg-white') + ' px-4 py-2 rounded border'
                             }
                             onClick={() => {
                                 setGoal(
