@@ -50,7 +50,7 @@ const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
     return (
         <section>
             <h3 className='mb-5'>Hva ønsker du å oppnå?</h3>
-            <div className='flex justify-center'>
+            <div className='flex justify-center flex-wrap'>
                 {goals.map((goal) => (
                     <Checkbox
                         key={goal.id}
