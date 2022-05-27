@@ -13,7 +13,7 @@ module.exports = {
                 'purple-3': '#B0B2DF',
                 'purple-4': '#D8D9EF',
                 'purple-5': '#F2F2FA',
-                'dark-1': '#363636',
+                'dark-1': '#363636', 
                 'dark-2': '#545454',
                 'dark-3': '#7A7A7A',
                 'dark-4': '#A0A0A0',

@@ -28,7 +28,7 @@ const Tabs = ({
                                     : ' ' +
                                       ' text-dark-3 border-b-4 border-white ') +
                                 (activeTab !== index
-                                    ? ' hover:border-b-4 hover:border-dark-2 '
+                                    ? ' hover:border-b-4 hover:border-dark-1 '
                                     : '')
                             }>
                             {tab}
