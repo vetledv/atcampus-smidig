@@ -8,7 +8,7 @@ const BigCheckbox = ({
     name,
     className,
     onClick,
-    selected
+    selected,
 }) => {
     const box =
         'flex cursor-pointer w-64 text-md items-center h-20 text-center rounded-standard border-2 font-normal'
@@ -18,7 +18,9 @@ const BigCheckbox = ({
         'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
 
     let classes = classNames(
-        selected.includes(name) ? `${box} ${checkedBox}` : `${box} ${uncheckedBox}`,
+        selected.includes(name)
+            ? `${box} ${checkedBox}`
+            : `${box} ${uncheckedBox}`,
         className
     )
 

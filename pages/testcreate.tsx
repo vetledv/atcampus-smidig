@@ -250,7 +250,8 @@ const TestCreateGroup = () => {
                     className={undefined}
                     onClick={(e: ChangeEvent<HTMLInputElement>) =>
                         setIsPrivate(e.target.checked)
-                    }></Checkbox>
+                    }
+                    selected={undefined}></Checkbox>
                 <div className='flex gap-2 items-center'>
                     <div>Maks medlemmer</div>
                     <select

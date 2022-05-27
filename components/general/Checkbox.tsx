@@ -7,7 +7,7 @@ const Checkbox = ({
     name,
     className,
     onClick,
-    selected
+    selected,
 }) => {
     const box =
         'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
@@ -17,7 +17,9 @@ const Checkbox = ({
         'text-white bg-purple-1 hover:shadow-md hover:shadow-purple-2/50 active:bg-purple-1/70'
 
     let classes = classNames(
-        selected.includes(name) ? `${box} ${uncheckedBox}` : `${box} ${checkedBox}`,
+        selected.includes(name)
+            ? `${box} ${uncheckedBox}`
+            : `${box} ${checkedBox}`,
         className
     )
 
