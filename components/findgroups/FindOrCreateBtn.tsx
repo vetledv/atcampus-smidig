@@ -10,10 +10,10 @@ const FindOrCreateBtn: FC<FindOrCreateProps> = ({ children, onClick }) => {
     return (
         <div
             onClick={() => onClick}
-            className='flex bg-white px-8 py-8 sm:px-32 sm:py-8 h-fit border-dark-5 rounded-md hover:shadow-md cursor-pointer'>
+            className='flex bg-white px-16 py-4 h-fit border-dark-5 rounded-md hover:shadow-md cursor-pointer'>
             <div className='flex flex-col items-center w-full'>
                 <PlusCircleIcon className='text-dark-3 w-8' />
-                <h1 className='text-5xl  text-dark-3 font-regular text-center'>
+                <h1 className='text-5xl  text-dark-3  whitespace-nowrap text-center'>
                     {children}
                 </h1>
             </div>

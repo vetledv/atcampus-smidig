@@ -88,9 +88,9 @@ const Groups = () => {
                         setActiveTab={setActiveTab}
                         tabs={tabs}></Tabs>
                 </div>
-                <div className='px-4 md:px-6 grid grid-cols-1 lg:grid-cols-4 h-full flex-grow'>
+                <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4 h-full flex-grow'>
                     {activeTab === 0 && groups.data && (
-                        <div className=' col-span-1 lg:col-span-3 flex flex-col gap-4 min-h-[500px] justify-between  h-full '>
+                        <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[500px] justify-between h-full max-w-5xl'>
                             {groups.data.groups.length === 0 ? (
                                 <div>
                                     <p>Not in any groups.</p>
@@ -99,7 +99,7 @@ const Groups = () => {
                                 <div className='flex flex-wrap'>
                                     {groups.data.groups.map((group) => (
                                         <div
-                                            className='md:basis-1/2 w-full 2xl:basis-1/3'
+                                            className='md:basis-1/2 sm:basis-1/2 w-full 2xl:basis-1/3 xs:basis-auto '
                                             key={group._id.toString()}>
                                             <div className='pr-2 pb-2 h-full'>
                                                 <SubjectCard
@@ -125,7 +125,9 @@ const Groups = () => {
                             )}{' '}
                             <div className='flex gap-1 pt-12'>
                                 <div>Mangler gruppen din?</div>
-                                <div>Lag en ny gruppe helt anonymt!</div>
+                                <div className='hover:text-purple-2 cursor-pointer'>
+                                    Lag en ny gruppe helt anonymt!
+                                </div>
                             </div>
                             <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 mb-12 justify-between shadow-sm shadow-purple-5 items-center'>
                                 <div className='flex gap-1 justify-end text-sm h-fit'>
@@ -177,7 +179,7 @@ const Groups = () => {
                         </div>
                     )}
                     {activeTab === 1 && (
-                        <div className='flex-wrap justify-center py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
+                        <div className='flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
                             <FindOrCreateBtn>Finn ny Gruppe</FindOrCreateBtn>
                             <FindOrCreateBtn>Lag ny Gruppe</FindOrCreateBtn>
                         </div>

@@ -30,7 +30,7 @@ const SubjectCard = ({
     return (
         <div
             onClick={() => router.push(`/groups/${groupId}`)}
-            className='cursor-pointer flex p-3 h-full input-shadow max-w-md items-center bg-white rounded-standard text-dark-1'>
+            className='group cursor-pointer flex p-3 h-full shadow-md shadow-purple-4 max-w-lg items-center bg-white rounded-standard text-dark-1'>
             <div className='w-max'>
                 <Image
                     src={groupImage}
@@ -40,7 +40,7 @@ const SubjectCard = ({
                 />
             </div>
             <div className={'px-6 w-3/4'}>
-                <div className='p-1'>
+                <div className='p-1 group-hover:text-purple-2'>
                     <div className={'text-lg font-semibold'}>{groupName}</div>
                     <div className='text-sm'>{subjectCode}</div>
                 </div>

@@ -27,7 +27,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
             //use limit and offset if exists to paginate
             if (page) {
                 const pPage = parseInt(page as string)
-                const limit = 5
+                const limit = 9
                 const offset = (pPage - 1) * limit
                 const total = groups.length
                 const totalPages = Math.ceil(total / limit)

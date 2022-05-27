@@ -8,6 +8,7 @@ import nextConnect from 'next-connect'
 import { Group } from 'types/groups'
 
 const handler = nextConnect()
+// get group by id
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDB()
     const session = await getToken({
@@ -20,7 +21,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         .findOne({ _id: new ObjectId(group as string) })
         .then((group: Group) => {
             if (group.members.find((member) => member.userId === session.sub)) {
-                //TODO: this causes an error before returning the group
+                //TODO: this causes an error before returning the group, but doesn't seem to be a problem
                 res.status(200).json(group)
             } else {
                 console.log('user not in group')
@@ -44,18 +45,18 @@ handler.put(async (req: NextApiRequest, res: NextApiResponse) => {
         secret: secret_key,
     })
     const { group: groupId } = req.query
-    const { groupName, description, maxMembers } = req.body
+    const { groupName, groupDescription, maxMembers } = JSON.parse(req.body)
 
     let whatToUpdate: any = {}
     if (groupName) whatToUpdate.groupName = groupName
-    if (description) whatToUpdate.description = description
+    if (groupDescription) whatToUpdate.description = groupDescription
     if (maxMembers) whatToUpdate.maxMembers = maxMembers
 
     await db
         .collection('atcampus-groups')
         .findOne({ _id: new ObjectId(groupId as string) })
         .then((group: Group) => {
-            if (group.members.find((member) => member.userId === session.sub)) {
+            if (group.admin.userId === session.sub) {
                 db.collection('atcampus-groups').updateOne(
                     { _id: new ObjectId(groupId as string) },
                     { $set: whatToUpdate },
@@ -72,9 +73,9 @@ handler.put(async (req: NextApiRequest, res: NextApiResponse) => {
                     }
                 )
             } else {
-                console.log('user not in group')
+                console.log('Unauthorized')
                 res.status(400).json({
-                    error: 'user not in group',
+                    error: 'Unauthorized',
                 })
             }
         })
@@ -85,9 +86,11 @@ handler.put(async (req: NextApiRequest, res: NextApiResponse) => {
         })
 })
 
+//delete group
 handler.delete(async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDB()
-    const { groupId } = req.query
+    const { group: groupId } = req.query
+    console.log('IN DELETE GROUP')
     const session = await getToken({
         req,
         secret: secret_key,
@@ -97,11 +100,13 @@ handler.delete(async (req: NextApiRequest, res: NextApiResponse) => {
             error: 'Unauthorized',
         })
     }
+    console.log(123)
     const messageCollection = db.collection('group-messages')
     const groupCollection = db.collection('atcampus-groups')
     await messageCollection
         .deleteOne({ groupId: new ObjectId(groupId as string) })
         .catch((err) => {
+            console.log('error deleting messages')
             res.status(500).json({
                 error: err,
             })
@@ -109,6 +114,7 @@ handler.delete(async (req: NextApiRequest, res: NextApiResponse) => {
     await groupCollection
         .deleteOne({ _id: new ObjectId(groupId as string) })
         .catch((err) => {
+            console.log('error deleting group')
             res.status(500).json({
                 error: err,
             })

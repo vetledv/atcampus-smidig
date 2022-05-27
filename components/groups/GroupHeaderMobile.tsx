@@ -2,6 +2,7 @@ import { CogIcon } from '@heroicons/react/solid'
 import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Group } from 'types/groups'
 
@@ -10,14 +11,17 @@ const GroupHeader = ({
     activeMembers,
     leave,
     isAdmin,
+    isInSettings,
 }: {
     leave: () => void
     group: Group | null
     activeMembers: number
     isAdmin: boolean
+    isInSettings?: boolean
 }) => {
     const groupName = group?.groupName ?? 'Group Name'
     const [showModal, setShowModal] = useState(false)
+    const router = useRouter()
 
     const renderModal = () => {
         return (
@@ -95,27 +99,43 @@ const GroupHeader = ({
                     />
                 </div>
                 <div>
-                    {isAdmin ? (
-                        <Link href={`/groups/${group._id}/settings`}>
-                            <CogIcon
-                                className={
-                                    'w-9 h-9 text-purple-1 m-3 cursor-pointer'
-                                }
-                            />
-                        </Link>
-                    ) : (
-                        <div className='h-full px-4 pt-6'>
-                            <FlatButton
+                    {isInSettings ? (
+                        <div className='h-fit px-4 pt-6'>
+                            <div
+                                className='cursor-pointer px-4 py-2 rounded-lg bg-purple-2 hover:bg-purple-1'
                                 onClick={() => {
-                                    setShowModal(true)
-                                }}
-                                className={
-                                    'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white'
-                                }>
-                                {isAdmin ? 'Slett gruppe' : 'Forlat gruppe'}
-                            </FlatButton>
-                            {showModal && renderModal()}
+                                    router.push(`/groups/${group._id}`)
+                                }}>
+                                Tilbake
+                            </div>
                         </div>
+                    ) : (
+                        <>
+                            {isAdmin ? (
+                                <Link href={`/groups/${group._id}/settings`}>
+                                    <CogIcon
+                                        className={
+                                            'w-9 h-9 text-purple-1 m-3 cursor-pointer'
+                                        }
+                                    />
+                                </Link>
+                            ) : (
+                                <div className='h-full px-4 pt-6'>
+                                    <FlatButton
+                                        onClick={() => {
+                                            setShowModal(true)
+                                        }}
+                                        className={
+                                            'bg-slate-100 text-purple-1 hover:bg-purple-1 hover:text-white'
+                                        }>
+                                        {isAdmin
+                                            ? 'Slett gruppe'
+                                            : 'Forlat gruppe'}
+                                    </FlatButton>
+                                    {showModal && renderModal()}
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

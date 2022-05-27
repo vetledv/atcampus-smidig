@@ -232,7 +232,7 @@ const MessageComponent = ({
                                             }
                                         </div>
                                     ) : (
-                                        <div className='flex gap-2  '>
+                                        <div className='flex gap-2'>
                                             <div className=' text-dark-3 flex gap-2 font-semibold'>
                                                 {message.from.userName}
                                             </div>
@@ -250,7 +250,7 @@ const MessageComponent = ({
                                         })}
                                     </div>
                                 </div>
-                                <div className='text-dark-1 text-md'>
+                                <div className='text-dark-1 text-md break-words'>
                                     {message.message}
                                 </div>
                             </div>
