@@ -67,7 +67,7 @@ export default function Menu() {
                                     item.current
                                         ? 'border-2 border-solid border-purple-1'
                                         : 'text-purple-1 hover:border-purple-2 hover:outline hover:outline-2',
-                                    'group flex items-center px-2 py-2 text-sm font-semibold rounded-md'
+                                    'group flex items-center px-2 py-2 text-sm font-semibold rounded-md '
                                 )}>
                                 <item.icon
                                     className='mr-3 flex-shrink-0 h-6 w-6 purple-1'

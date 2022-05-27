@@ -26,7 +26,7 @@ const SubjectCardCompact = ({
                 className={
                     selected
                         ? classes
-                        : 'flex p-3 input-shadow w-80 h-28 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50'
+                        : 'flex p-3 input-shadow w-80 h-28 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50 hover:transition-all duration-200 ease-in-out transform hover:scale-105'
                 }
                 onClick={onClick}>
                 <Image src={subjectImage} width={64} height={64} alt='' />

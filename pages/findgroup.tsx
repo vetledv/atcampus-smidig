@@ -132,6 +132,9 @@ const FindGroupPage = ({ selectedTagss }) => {
                         <div className='m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
                                 <FlatButton
+                                    className={
+                                        'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
+                                    }
                                     onClick={(e: FormEvent<HTMLFormElement>) =>
                                         handleSearchForGroupByTags(e)
                                     }>
@@ -142,14 +145,16 @@ const FindGroupPage = ({ selectedTagss }) => {
                                 <FlatButton
                                     onClick={handleStep}
                                     className={
-                                        'hover:transition-all hover:animate-bounce'
+                                        'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
                                     }>
                                     Gå videre
                                 </FlatButton>
                             )}
                             {step != 0 && (
                                 <FlatButton
-                                    className={'ml-6'}
+                                    className={
+                                        'ml-6 hover:transition-all duration-200 ease-in-out transform hover:scale-110'
+                                    }
                                     onClick={handleStepback}>
                                     Tilbake
                                 </FlatButton>

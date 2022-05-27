@@ -9,7 +9,7 @@ const Header = () => {
                 <div className='w-full xl:px-6 xl:align xl:w-9/12'>
                     <TopSearch title={'Søk'} />
                 </div>
-                <div className='hidden xl:block xl:px-6 xl:w-3/12'>
+                <div className='hidden xl:block xl:px-6 xl:w-3/12 hover:transition-all duration-200 ease-in-out transform hover:scale-105'>
                     <FlatButton>Still Spørsmål</FlatButton>
                 </div>
             </div>

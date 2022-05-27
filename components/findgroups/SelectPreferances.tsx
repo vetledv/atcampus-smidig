@@ -32,7 +32,7 @@ const SelectPreferances = ({ selectedPreferances, setSelectedPreferances }) => {
                         key={preferance}
                         name={preferance}
                         id={preferance}
-                        className='m-2'
+                        className='m-2 hover:transition-all duration-200 ease-in-out transform hover:scale-105'
                         onClick={handleClick}
                     />
                 ))}

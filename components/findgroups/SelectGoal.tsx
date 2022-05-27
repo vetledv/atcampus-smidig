@@ -58,7 +58,7 @@ const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
                         value={goal.value}
                         id={goal.id}
                         selected={selectedGoal}
-                        className=''
+                        className='hover:transition-all duration-200 ease-in-out transform hover:scale-105'
                         onClick={handleClick}
                     />
                 ))}

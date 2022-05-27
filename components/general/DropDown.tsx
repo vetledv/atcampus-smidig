@@ -21,8 +21,11 @@ function DropDown({
 
     return (
         /*May need to resize*/
-        <div className='rounded-standard border-2 border-solid border-dark-5 min-w-fit max-w-screen-lg md:w-1/3 xl:w-1/4 bg-white absolute'>
-            <div tabIndex={0} onClick={() => toggle()}>
+        <div className='rounded-standard border border-solid border-dark-5 min-w-fit max-w-screen-lg md:w-1/3 xl:w-1/4 bg-white absolute ease-in-out duration-200 sca'>
+            <div
+                tabIndex={0}
+                onPointerEnter={() => toggle()}
+                onClick={() => toggle()}>
                 <div className='flex justify-between px-6 cursor-pointer items-center'>
                     <div className='font-semibold text-lg text-purple-1 '>
                         {dropDownTitle}
@@ -31,7 +34,7 @@ function DropDown({
                 </div>
             </div>
             {open && (
-                <ul>
+                <ul onPointerLeave={() => toggle()}>
                     {items?.map((item) => (
                         <li className={'list-none'} key={item.id}>
                             <div
