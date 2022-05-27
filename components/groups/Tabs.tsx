@@ -14,7 +14,7 @@ const Tabs = ({
     const renderTabs = useCallback(() => {
         if (!tabs) return null
         return (
-            <ul className='flex flex-row justify-start px-6 gap-6 items-end font-medium text-dark-3 border-b-2 w-full '>
+            <ul className='flex flex-row justify-between md:justify-start px-3 md:px-6 md:gap-6 items-end font-medium text-dark-3 border-b-2 w-full '>
                 {tabs.map((tab, index) => (
                     <div
                         className='h-full'

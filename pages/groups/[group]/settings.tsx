@@ -127,77 +127,80 @@ const Settings = () => {
 
     const renderDeleteModal = () => {
         return (
-            <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50'>
-                <div className='flex p-6 w-full max-w-md h-full md:h-auto'>
-                    <div className='flex flex-col bg-white rounded-lg shadow '>
-                        <button
-                            type='button'
-                            onClick={() => setShowModal(false)}
-                            className=' text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center '>
-                            <svg
-                                className='w-5 h-5'
-                                fill='currentColor'
-                                viewBox='0 0 20 20'
-                                xmlns='http://www.w3.org/2000/svg'>
-                                <path
-                                    fillRule='evenodd'
-                                    d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                                    clipRule='evenodd'></path>
-                            </svg>
-                        </button>
-                        <div className='pb-4 px-6 text-center flex flex-col gap-4 items-center'>
-                            <svg
-                                className='mb-4 w-12 h-12 text-dark-3'
-                                fill='none'
-                                stroke='currentColor'
-                                viewBox='0 0 24 24'
-                                xmlns='http://www.w3.org/2000/svg'>
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    strokeWidth='2'
-                                    d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path>
-                            </svg>
-                            <h3 className='text-lg font-normal text-gray-500 '>
-                                Er du sikker på at du vil slette gruppen?
-                            </h3>
-                            <h3>
-                                Vennligst skriv inn &quot;
-                                {group.data.groupName}&quot; for å slette
-                            </h3>
-                            <input
-                                onChange={(e) =>
-                                    setConfirmDeleteText(e.target.value)
-                                }
-                                className='flex px-4 py-2 border w-full rounded-lg'></input>
-                            <div className='flex justify-center gap-2'>
-                                <button
-                                    onClick={() => setShowModal(false)}
-                                    className='text-dark-3 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900'>
-                                    Nei, gå tilbake
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setShowModal(false)
-                                        deleteGroupMutate.mutateAsync()
-                                    }}
-                                    disabled={
-                                        confirmDeleteText !==
-                                        group.data.groupName
+            <>
+                <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[999]'>
+                    <div className='flex p-6 w-full max-w-md h-full md:h-auto'>
+                        <div className='flex flex-col bg-white rounded-lg shadow '>
+                            <button
+                                type='button'
+                                onClick={() => setShowModal(false)}
+                                className=' text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center '>
+                                <svg
+                                    className='w-5 h-5'
+                                    fill='currentColor'
+                                    viewBox='0 0 20 20'
+                                    xmlns='http://www.w3.org/2000/svg'>
+                                    <path
+                                        fillRule='evenodd'
+                                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                                        clipRule='evenodd'></path>
+                                </svg>
+                            </button>
+                            <div className='pb-4 px-6 text-center flex flex-col gap-4 items-center'>
+                                <svg
+                                    className='mb-4 w-12 h-12 text-dark-3'
+                                    fill='none'
+                                    stroke='currentColor'
+                                    viewBox='0 0 24 24'
+                                    xmlns='http://www.w3.org/2000/svg'>
+                                    <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        strokeWidth='2'
+                                        d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path>
+                                </svg>
+                                <h3 className='text-lg font-normal text-gray-500 '>
+                                    Er du sikker på at du vil slette gruppen?
+                                </h3>
+                                <h3>
+                                    Vennligst skriv inn &quot;
+                                    {group.data.groupName}&quot; for å slette
+                                </h3>
+                                <input
+                                    onChange={(e) =>
+                                        setConfirmDeleteText(e.target.value)
                                     }
-                                    className={
-                                        (confirmDelete
-                                            ? 'bg-purple-2 hover:bg-purple-1 '
-                                            : 'bg-dark-4 ') +
-                                        '  text-white bg-purple-2 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center'
-                                    }>
-                                    Ja, jeg er sikker
-                                </button>
+                                    className='flex px-4 py-2 border w-full rounded-lg'></input>
+                                <div className='flex justify-center gap-2'>
+                                    <button
+                                        onClick={() => setShowModal(false)}
+                                        className='text-dark-3 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900'>
+                                        Nei, gå tilbake
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setShowModal(false)
+                                            deleteGroupMutate.mutateAsync()
+                                        }}
+                                        disabled={
+                                            confirmDeleteText !==
+                                            group.data.groupName
+                                        }
+                                        className={
+                                            (confirmDelete
+                                                ? 'bg-purple-2 hover:bg-purple-1 '
+                                                : 'bg-dark-4 ') +
+                                            '  text-white bg-purple-2 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center'
+                                        }>
+                                        Ja, jeg er sikker
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div className='bg-dark-1 w-full h-full absolute top-0 left-0 z-50 opacity-40'></div>
+            </>
         )
     }
 
@@ -225,7 +228,7 @@ const Settings = () => {
             />
             {group.data && (
                 <>
-                    <div className='grid h-full grid-cols-1 p-4 lg:grid-cols-4'>
+                    <div className='grid h-full grid-cols-1 p-4 lg:grid-cols-4 text-dark-1'>
                         <div className='flex flex-col col-span-1 p-4 gap-2 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
                             <p className='text-lg font-semibold pb-2'>
                                 Gruppeinnstillinger
@@ -285,8 +288,11 @@ const Settings = () => {
                             {successMessage !== '' && <>{successMessage}</>}
                             <div className='flex flex-col justify-end items-end gap-2'>
                                 <FlatButton
-                                    className={'min-w-fit w-52'}
+                                    as='button'
                                     disabled={isSaveButtonDisabled()}
+                                    className={
+                                        'min-w-fit w-52 disabled:bg-dark-4 disabled:cursor-default'
+                                    }
                                     onClick={() => {
                                         if (!isSaveButtonDisabled()) {
                                             console.log(isSaveButtonDisabled())
@@ -296,8 +302,9 @@ const Settings = () => {
                                     Lagre endringer
                                 </FlatButton>
                                 <FlatButton
+                                    as='button'
                                     className={
-                                        'bg-red-500 hover:bg-red-700 min-w-fit w-52'
+                                        'bg-red-500 hover:bg-red-800 min-w-fit w-52'
                                     }
                                     onClick={() => setShowModal(true)}>
                                     Slett gruppe

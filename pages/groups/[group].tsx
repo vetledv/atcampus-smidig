@@ -15,8 +15,8 @@ import { dehydrate, QueryClient, useMutation } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
 import { Group, GroupMessages, Member } from 'types/groups'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
-const MessageComponent = dynamic(
-    () => import('../../components/groups/MessageComponent')
+const MessagesWrapper = dynamic(
+    () => import('../../components/groups/chat/MessagesWrapper')
 )
 
 interface AddMutateObj {
@@ -333,7 +333,7 @@ const GroupPage = () => {
                             )}
                             {activeTab === 2 && (
                                 <div className='col-span-1 lg:col-span-3'>
-                                    <MessageComponent
+                                    <MessagesWrapper
                                         groupId={group.data._id}
                                         groupName={group.data.groupName}
                                         groupMembers={group.data.members}

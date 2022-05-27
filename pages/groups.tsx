@@ -8,6 +8,7 @@ import { Group } from 'types/groups'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import { baseUrl } from 'lib/constants'
 import { useRouter } from 'next/router'
+import { getSession, GetSessionParams } from 'next-auth/react'
 
 interface PaginatedGroups {
     groups: Group[]
@@ -204,7 +205,16 @@ const Groups = () => {
 
 export default Groups
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetSessionParams) {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            },
+        }
+    }
     const queryClient = new QueryClient()
     await queryClient.prefetchQuery<PaginatedGroups, Error>(
         ['groups', 1],

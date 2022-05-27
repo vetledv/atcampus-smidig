@@ -16,6 +16,7 @@ export default function FlatButton({
         <Component
             data-attr={id}
             type={type}
+            disabled={disabled}
             onClick={onClick}
             className={classNames(
                 className ? className : '',

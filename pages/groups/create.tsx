@@ -103,23 +103,23 @@ const TestCreateGroup = () => {
     //make sure every field is filled when creating group
     const isValid = useCallback(() => {
         if (groupName.length === 0) {
-            setErrorText('Group name is required')
+            setErrorText('Gruppenavn er ikke fylt ut')
             return false
         }
         if (description.length === 0) {
-            setErrorText('Description is required')
+            setErrorText('Beskrivelse er ikke fylt ut')
             return false
         }
         if (school.length === 0) {
-            setErrorText('School is required')
+            setErrorText('Skole er påkrevd')
             return false
         }
         if (course.length === 0) {
-            setErrorText('Course is required')
+            setErrorText('Fag er påkrevd')
             return false
         }
         if (goal.length === 0) {
-            setErrorText('Goal is required')
+            setErrorText('Mål er påkrevd')
             return false
         }
         setErrorText('')
@@ -194,12 +194,20 @@ const TestCreateGroup = () => {
             <button
                 key={tag}
                 className={
-                    (state === tag ? 'bg-pink-400' : 'bg-white') +
+                    (state === tag ? 'bg-purple-1 text-white ' : 'bg-white') +
                     ' px-4 py-2 rounded border'
                 }
                 onClick={() => setState(tag)}>
                 {tag}
             </button>
+        )
+    }
+
+    const schoolSelect = (tag: string) => {
+        return (
+            <option key={tag} value={tag} className=' p-2'>
+                {tag}
+            </option>
         )
     }
 
@@ -230,25 +238,31 @@ const TestCreateGroup = () => {
             </div>
             <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
                 <div className='flex flex-col col-span-1 gap-2 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
-                    <input
-                        className='px-4 py-2 rounded border'
-                        type='text'
-                        value={groupName}
-                        onChange={(e) => {
-                            setGroupName(e.target.value)
-                            console.log(groupName)
-                        }}
-                        placeholder='Skriv inn gruppenavn'
-                        maxLength={30}
-                    />
-                    <input
-                        className='px-4 py-2 rounded border'
-                        type='text'
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder='Beskrivelse'
-                        maxLength={80}
-                    />
+                    <div className='group flex border rounded outline-purple-2 focus-within:outline focus-within:outline-2 pr-4 items-center'>
+                        <input
+                            className='w-full rounded-lg px-4 py-2 border-0 focus:outline-none bg-transparent'
+                            type={'text'}
+                            maxLength={30}
+                            value={groupName}
+                            onChange={(e) => {
+                                setGroupName(e.target.value)
+                                console.log(groupName)
+                            }}
+                            placeholder='Skriv inn gruppenavn (maks 30 tegn)'
+                        />
+                        <p className='text-dark-3'>{30 - groupName.length}</p>
+                    </div>
+                    <div className='group flex border rounded outline-purple-2 focus-within:outline focus-within:outline-2 pr-4 items-center'>
+                        <input
+                            className='w-full rounded-lg px-4 py-2 border-0 focus:outline-none bg-transparent'
+                            type={'text'}
+                            maxLength={80}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder='Beskrivelse (maks 80 tegn)'
+                        />
+                        <p className='text-dark-3'>{80 - description.length}</p>
+                    </div>
                     <CheckboxOld
                         value={isPrivate}
                         id={undefined}
@@ -269,6 +283,12 @@ const TestCreateGroup = () => {
                         </select>
                     </div>
                     <h1>Skole</h1>
+                    <select
+                        className='w-fit border border-purple-3 rounded p-2 '
+                        onChange={(e) => setSchool(e.target.value)}>
+                        {schoolTags.map((tag) => schoolSelect(tag))}
+                    </select>
+                    <h1>Populære instutisjoner</h1>
                     {schoolTags.map((tag) => (
                         <div key={tag}>{TagButton(tag, school, setSchool)}</div>
                     ))}
@@ -283,7 +303,7 @@ const TestCreateGroup = () => {
                                 key={tag}
                                 className={
                                     (goal.includes(tag)
-                                        ? 'bg-pink-400'
+                                        ? 'bg-purple-1 text-white '
                                         : 'bg-white') +
                                     ' px-4 py-2 rounded border'
                                 }
@@ -322,11 +342,7 @@ export const getServerSideProps = async (context: GetSessionParams) => {
             },
         }
     }
-    return {
-        props: {
-            session,
-        },
-    }
+    return
 }
 
 export default TestCreateGroup

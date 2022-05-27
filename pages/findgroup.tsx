@@ -8,6 +8,7 @@ import { Group, Tags } from 'types/groups'
 import ChooseGroup from '../components/findgroups/ChooseGroup'
 import FindClassPage from '../components/findgroups/findclass'
 import SelectGoals from '../components/findgroups/selectgoals'
+import { getSession, GetSessionParams } from 'next-auth/react'
 
 interface State {
     step: Number
@@ -165,6 +166,21 @@ const FindGroupPage = ({ selectedTagss }) => {
             </div>
         </>
     )
+}
+
+export const getServerSideProps = async (context: GetSessionParams) => {
+    const session = await getSession(context)
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/auth/login',
+                permanent: false,
+            },
+        }
+    }
+    return {
+        props: {},
+    }
 }
 
 export default FindGroupPage

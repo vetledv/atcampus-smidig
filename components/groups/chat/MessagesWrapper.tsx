@@ -2,7 +2,6 @@ import FlatButton from 'components/general/FlatButton'
 import { fetchReactQuery, postJSON } from 'hooks/useGroups'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
 import {
     Dispatch,
     KeyboardEvent,
@@ -17,13 +16,14 @@ import {
 import { useQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { GroupMessages, Member, Message, SendMessage } from 'types/groups'
+import MessageItem from './MessageItem'
 
 interface ByDayMessage {
-    day: string
+    day: Date
     messages: Message[]
 }
 
-const MessageComponent = ({
+const MessagesWrapper = ({
     groupId,
     groupName,
     groupMembers,
@@ -61,6 +61,7 @@ const MessageComponent = ({
     const refetch = useCallback(() => {
         messages.refetch()
     }, [messages])
+
     useEffect(() => {
         if (!socket.current) return
         socket.current.on(`message ${groupId.toString()}`, (message) => {
@@ -161,8 +162,13 @@ const MessageComponent = ({
         let messagesByDay: ByDayMessage[] = []
         if (!messages.data) return messagesByDay
         messages.data.messages.forEach((message) => {
-            const day = new Date(message.timestamp).toLocaleDateString()
-            const index = messagesByDay.findIndex((m) => m.day === day)
+            const day = new Date(message.timestamp)
+            const index = messagesByDay.findIndex(
+                (m) =>
+                    m.day.getFullYear() === day.getFullYear() &&
+                    m.day.getMonth() === day.getMonth() &&
+                    m.day.getDate() === day.getDate()
+            )
             if (index === -1) {
                 messagesByDay.push({
                     day,
@@ -180,86 +186,27 @@ const MessageComponent = ({
         if (messagesByDay.length === 0) return <div>Ingen meldinger.</div>
         return messagesByDay.map((day) => {
             return (
-                <div key={day.day} className='flex flex-col gap-2'>
+                <div key={day.day.getTime()} className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
                         <div className='bg-dark-5 w-full h-[1px]'></div>
-                        {day.day === new Date().toLocaleDateString() ? (
+                        {day.day.toLocaleDateString() ===
+                        new Date().toLocaleDateString() ? (
                             <div className='font-semibold text-dark-4 text-sm text-center'>
                                 Today
                             </div>
                         ) : (
                             <div className='font-semibold text-dark-4 text-sm'>
-                                {day.day}
+                                {day.day.toLocaleDateString()}
                             </div>
                         )}
                         <div className='bg-dark-5 w-full h-[1px]'></div>
                     </div>
                     {day.messages.map((message: Message, j) => (
-                        <div key={j} className='flex p-2 rounded gap-2'>
-                            <div className='w-14'>
-                                {groupMembers.find(
-                                    (member) =>
-                                        member.userId === message.from.userId
-                                )?.picture ? (
-                                    <div className='border-2 rounded-full w-12 h-12'>
-                                        <Image
-                                            src={
-                                                groupMembers.find(
-                                                    (member) =>
-                                                        member.userId ===
-                                                        message.from.userId
-                                                )?.picture
-                                            }
-                                            alt=''
-                                            width={48}
-                                            height={48}
-                                            className='rounded-full'
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className='h-12 w-12 rounded-full border-2 bg-white items-center flex justify-center font-semibold'>
-                                        {message.from.userName.charAt(0)}
-                                    </div>
-                                )}
-                            </div>
-                            <div className='flex flex-col w-2/3'>
-                                <div className='flex flex-row gap-2'>
-                                    {groupMembers.filter(
-                                        (m) => m.userId === message.from.userId
-                                    ).length > 0 ? (
-                                        <div className='font-semibold text-dark-1'>
-                                            {
-                                                groupMembers.filter(
-                                                    (m) =>
-                                                        m.userId ===
-                                                        message.from.userId
-                                                )[0].userName
-                                            }
-                                        </div>
-                                    ) : (
-                                        <div className='flex gap-2'>
-                                            <div className=' text-dark-3 flex gap-2 font-semibold'>
-                                                {message.from.userName}
-                                            </div>
-                                            <div className='italic text-sm text-dark-3 mt-auto'>
-                                                Left
-                                            </div>
-                                        </div>
-                                    )}
-                                    <div className='italic text-dark-4 flex flex-grow'>
-                                        {new Date(
-                                            message.timestamp
-                                        ).toLocaleTimeString('no-NO', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                    </div>
-                                </div>
-                                <div className='text-dark-1 text-md break-words'>
-                                    {message.message}
-                                </div>
-                            </div>
-                        </div>
+                        <MessageItem
+                            key={j}
+                            message={message}
+                            groupMembers={groupMembers}
+                        />
                     ))}
                 </div>
             )
@@ -309,4 +256,4 @@ const MessageComponent = ({
     )
 }
 
-export default MessageComponent
+export default MessagesWrapper
