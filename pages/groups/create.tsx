@@ -2,6 +2,7 @@ import { CheckboxOld } from 'components/general/Checkbox'
 import FlatButton from 'components/general/FlatButton'
 import { postReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {
     ChangeEvent,
@@ -204,11 +205,14 @@ const TestCreateGroup = () => {
 
     return (
         <>
+            <Head>
+                <title>Kollokviegrupper - Lag ny</title>
+            </Head>
             <div className='bg-white py-4 px-6 flex gap-2'>
                 <div
                     className='cursor-pointer hover:text-purple-500'
                     onClick={() => router.push('/groups')}>
-                    Grupper
+                    Kollokviegrupper
                 </div>
                 {' / '}
                 <div className='cursor-pointer hover:text-purple-500'>

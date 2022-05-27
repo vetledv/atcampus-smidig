@@ -73,7 +73,7 @@ const Groups = () => {
     return (
         <>
             <Head>
-                <title>Grupper</title>
+                <title>Kollokviegrupper </title>
             </Head>{' '}
             <div className='flex flex-col gap-6 pb-6 w-full'>
                 <div className='flex flex-col w-full gap-2 bg-white'>

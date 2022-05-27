@@ -234,8 +234,8 @@ const GroupPage = () => {
             <Head>
                 <title>
                     {group.data
-                        ? 'Grupper - ' + group.data?.groupName
-                        : 'Grupper'}
+                        ? 'Kollokviegrupper  - ' + group.data?.groupName
+                        : 'Kollokviegrupper '}
                 </title>
             </Head>
             {group.data && (

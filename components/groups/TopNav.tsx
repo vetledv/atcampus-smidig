@@ -15,7 +15,7 @@ const TopNav = ({
             <div
                 className='cursor-pointer hover:text-purple-500'
                 onClick={() => router.push('/groups')}>
-                Grupper
+                Kollokviegrupper
             </div>
             {' / '}
             <div
