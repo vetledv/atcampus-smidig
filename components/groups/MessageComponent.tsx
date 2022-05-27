@@ -64,7 +64,7 @@ const MessageComponent = ({
     useEffect(() => {
         if (!socket.current) return
         socket.current.on(`message ${groupId.toString()}`, (message) => {
-            console.log('message received:', message)
+            setUserTyping('')
             refetch()
         })
         socket.current.on(`typing`, (data, user: string) => {
@@ -74,7 +74,12 @@ const MessageComponent = ({
             }
         })
         socket.current.on(`stopped-typing`, (data, user) => {
-            console.log('stopped typing:', data, 'user: ', user)
+            console.log(
+                'stopped typing messagecomponent:',
+                data,
+                'user: ',
+                user
+            )
             if (activeTab === 2) {
                 setUserTyping('')
             }

@@ -12,7 +12,7 @@ import {
     useEffect,
     useState,
 } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 import { Group, GroupAdmin, Member, Tags } from 'types/groups'
 
 interface GroupSubmit {
@@ -59,11 +59,6 @@ const TestCreateGroup = () => {
         }
     )
 
-    //search data once searchMutate is successful
-    const search = useQuery<Group[], Error>('search', () => searchMutate.data, {
-        enabled: searchMutate.isSuccess,
-    })
-
     useEffect(() => {
         if (createdGroupId) {
             console.log('created, group id: ', createdGroupId)
@@ -96,7 +91,7 @@ const TestCreateGroup = () => {
         'Øve til eksamen',
     ]
 
-    const selectmembers = () => {
+    const selectMembersAmount = () => {
         let maxMem: JSX.Element[] = []
         for (let i = 3; i < 12; i++) {
             maxMem.push(<option key={i} label={`${i + 1}`} value={i + 1} />)
@@ -206,101 +201,110 @@ const TestCreateGroup = () => {
             </button>
         )
     }
-    //search for groups with tags
-    const handleSearchForGroupByTags = async (
-        e: React.FormEvent<HTMLFormElement>
-    ) => {
-        e.preventDefault()
-        const tags = {
-            school,
-            course,
-            goals: goal,
-        }
-        //send tags to server
-        searchMutate.mutateAsync(tags)
-    }
 
     return (
-        <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
-            <div className='col-span-1 lg:col-span-3 flex flex-col gap-2'>
-                <h1>TestCreateGroup</h1>
-                <input
-                    className='px-4 py-2 rounded border'
-                    type='text'
-                    value={groupName}
-                    onChange={(e) => {
-                        setGroupName(e.target.value)
-                        console.log(groupName)
-                    }}
-                    placeholder='Skriv inn gruppenavn'
-                    maxLength={30}
-                />
-                <input
-                    className='px-4 py-2 rounded border'
-                    type='text'
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder='Beskrivelse'
-                    maxLength={80}
-                />
-                <CheckboxOld
-                    value={isPrivate}
-                    id={undefined}
-                    name={'Privat'}
-                    className={undefined}
-                    onClick={(e: ChangeEvent<HTMLInputElement>) =>
-                        setIsPrivate(e.target.checked)
-                    }></CheckboxOld>
-                <div className='flex gap-2 items-center'>
-                    <div>Maks medlemmer</div>
-                    <select
-                        className='py-2 px-4 rounded border'
-                        defaultValue={12}
-                        onChange={(e) => setMaxMembers(Number(e.target.value))}>
-                        {selectmembers()}
-                    </select>
+        <>
+            <div className='bg-white py-4 px-6 flex gap-2'>
+                <div
+                    className='cursor-pointer hover:text-purple-500'
+                    onClick={() => router.push('/groups')}>
+                    Grupper
                 </div>
-                <h1>School</h1>
-                {schoolTags.map((tag) => (
-                    <div key={tag}>{TagButton(tag, school, setSchool)}</div>
-                ))}
-                <h1>Course</h1>
-                {courseTags.map((tag) => (
-                    <div key={tag}>{TagButton(tag, course, setCourse)}</div>
-                ))}
-                <h1>Goals (velg fler)</h1>
-                {goalTags.map((tag) => (
-                    <button
-                        key={tag}
-                        className={
-                            (goal.includes(tag) ? 'bg-pink-400' : 'bg-white') +
-                            ' px-4 py-2 rounded border'
-                        }
-                        onClick={() => {
-                            setGoal(
-                                goal.includes(tag)
-                                    ? goal.filter((t) => t !== tag)
-                                    : [...goal, tag]
-                            )
-                        }}>
-                        {tag}
-                    </button>
-                ))}
-                <FlatButton
-                    onClick={(e: FormEvent<HTMLFormElement>) => {
-                        handleSubmitGroup(e)
-                    }}>
-                    Lag gruppe
-                </FlatButton>
-                {errorText && <div>{errorText}</div>}
-                <FlatButton
-                    onClick={(e: FormEvent<HTMLFormElement>) =>
-                        handleSearchForGroupByTags(e)
-                    }>
-                    Søk
-                </FlatButton>
+                {' / '}
+                <div className='cursor-pointer hover:text-purple-500'>
+                    Lag ny Gruppe
+                </div>
             </div>
-        </div>
+
+            <div className='flex flex-col w-full gap-2 bg-dark-1'>
+                <div className='flex flex-row gap-2 px-6 py-12 items-center'>
+                    <h1 className='text-2xl text-white'>Lag ny gruppe</h1>
+                    <div className='px-3 bg-dark-6 h-fit rounded-full'>
+                        Beta
+                    </div>
+                </div>
+            </div>
+            <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
+                <div className='flex flex-col col-span-1 gap-2 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
+                    <input
+                        className='px-4 py-2 rounded border'
+                        type='text'
+                        value={groupName}
+                        onChange={(e) => {
+                            setGroupName(e.target.value)
+                            console.log(groupName)
+                        }}
+                        placeholder='Skriv inn gruppenavn'
+                        maxLength={30}
+                    />
+                    <input
+                        className='px-4 py-2 rounded border'
+                        type='text'
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder='Beskrivelse'
+                        maxLength={80}
+                    />
+                    <CheckboxOld
+                        value={isPrivate}
+                        id={undefined}
+                        name={'Privat'}
+                        className={undefined}
+                        onClick={(e: ChangeEvent<HTMLInputElement>) =>
+                            setIsPrivate(e.target.checked)
+                        }></CheckboxOld>
+                    <div className='flex gap-2 items-center'>
+                        <div>Maks medlemmer</div>
+                        <select
+                            className='py-2 px-4 rounded border'
+                            defaultValue={12}
+                            onChange={(e) =>
+                                setMaxMembers(Number(e.target.value))
+                            }>
+                            {selectMembersAmount()}
+                        </select>
+                    </div>
+                    <h1>Skole</h1>
+                    {schoolTags.map((tag) => (
+                        <div key={tag}>{TagButton(tag, school, setSchool)}</div>
+                    ))}
+                    <h1>Fag</h1>
+                    {courseTags.map((tag) => (
+                        <div key={tag}>{TagButton(tag, course, setCourse)}</div>
+                    ))}
+                    <h1>Mål (kan velge fler)</h1>
+                    <div className='flex flex-wrap h-fit gap-2'>
+                        {goalTags.map((tag) => (
+                            <button
+                                key={tag}
+                                className={
+                                    (goal.includes(tag)
+                                        ? 'bg-pink-400'
+                                        : 'bg-white') +
+                                    ' px-4 py-2 rounded border'
+                                }
+                                onClick={() => {
+                                    setGoal(
+                                        goal.includes(tag)
+                                            ? goal.filter((t) => t !== tag)
+                                            : [...goal, tag]
+                                    )
+                                }}>
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                    <FlatButton
+                        className='h-fit'
+                        onClick={(e: FormEvent<HTMLFormElement>) => {
+                            handleSubmitGroup(e)
+                        }}>
+                        Lag gruppe
+                    </FlatButton>
+                    {errorText && <div>{errorText}</div>}
+                </div>
+            </div>
+        </>
     )
 }
 

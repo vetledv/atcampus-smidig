@@ -51,7 +51,7 @@ export const CheckboxOld = ({
 }) => {
     const [isChecked, setIsChecked] = useState(false)
     const box =
-        'block cursor-pointer relative w-20 md-w-auto p-2 ml-2 text-md text-center rounded-standard border-2 font-normal'
+        'block cursor-pointer relative w-20 md-w-auto p-2 text-md text-center rounded-standard border-2 font-normal'
     const checkedBox =
         'text-purple-1 bg-white hover:shadow-md hover:shadow-purple-2/50'
     const uncheckedBox =

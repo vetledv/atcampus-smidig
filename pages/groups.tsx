@@ -7,6 +7,7 @@ import { dehydrate, QueryClient, useQuery } from 'react-query'
 import { Group } from 'types/groups'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 import { baseUrl } from 'lib/constants'
+import { useRouter } from 'next/router'
 
 interface PaginatedGroups {
     groups: Group[]
@@ -23,6 +24,7 @@ const Groups = () => {
         () => fetchProjects(page),
         { keepPreviousData: true }
     )
+    const router = useRouter()
 
     const hasNextPage = groups.data?.totalPages > page
     const [activeTab, setActiveTab] = useState(0)
@@ -181,7 +183,10 @@ const Groups = () => {
                     {activeTab === 1 && (
                         <div className='flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
                             <FindOrCreateBtn>Finn ny Gruppe</FindOrCreateBtn>
-                            <FindOrCreateBtn>Lag ny Gruppe</FindOrCreateBtn>
+                            <FindOrCreateBtn
+                                onClick={() => router.push('/groups/create')}>
+                                Lag ny Gruppe
+                            </FindOrCreateBtn>
                         </div>
                     )}
                 </div>

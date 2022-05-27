@@ -9,7 +9,7 @@ interface FindOrCreateProps {
 const FindOrCreateBtn: FC<FindOrCreateProps> = ({ children, onClick }) => {
     return (
         <div
-            onClick={() => onClick}
+            onClick={onClick}
             className='flex bg-white px-16 py-4 h-fit border-dark-5 rounded-md hover:shadow-md cursor-pointer'>
             <div className='flex flex-col items-center w-full'>
                 <PlusCircleIcon className='text-dark-3 w-8' />
