@@ -342,7 +342,9 @@ export const getServerSideProps = async (context: GetSessionParams) => {
             },
         }
     }
-    return
+    return {
+        props: {},
+    }
 }
 
 export default TestCreateGroup

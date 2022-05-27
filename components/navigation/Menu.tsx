@@ -21,8 +21,8 @@ export default function Menu() {
         {
             name: 'Finn Gruppe',
             icon: DocumentTextIcon,
-            href: '/findgroup',
-            current: router.asPath === '/findgroup',
+            href: '/groups/findgroup',
+            current: router.asPath === '/groups/findgroup',
         },
         {
             name: 'testjoingroup',
@@ -57,7 +57,7 @@ export default function Menu() {
                         />
                     </div>
                     <nav
-                        className='mt-5 flex-1 px-2 space-y-1'
+                        className='mt-5 flex-1 px-2 space-y-2'
                         aria-label='Sidebar'>
                         {navigation.map((item) => (
                             <a
@@ -65,7 +65,7 @@ export default function Menu() {
                                 href={item.href}
                                 className={classNames(
                                     item.current
-                                        ? 'border-2 border-solid border-purple-1'
+                                        ? 'outline outline-2 outline-purple-1'
                                         : 'text-purple-1 hover:border-purple-2 hover:outline hover:outline-2',
                                     'group flex items-center px-2 py-2 text-sm font-semibold rounded-md '
                                 )}>

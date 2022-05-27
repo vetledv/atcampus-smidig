@@ -5,9 +5,9 @@ import { postReactQuery } from 'hooks/useGroups'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { Group, Tags } from 'types/groups'
-import ChooseGroup from '../components/findgroups/ChooseGroup'
-import FindClassPage from '../components/findgroups/findclass'
-import SelectGoals from '../components/findgroups/selectgoals'
+import ChooseGroup from '../../components/findgroups/ChooseGroup'
+import FindClassPage from '../../components/findgroups/findclass'
+import SelectGoals from '../../components/findgroups/selectgoals'
 import { getSession, GetSessionParams } from 'next-auth/react'
 
 interface State {
