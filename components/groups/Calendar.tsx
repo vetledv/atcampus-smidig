@@ -29,11 +29,18 @@ const GroupCalendar = () => {
         )
     }
     return (
+        //<div className='bg-purple-4 p-4 rounded-standard'>
         <FullCalendar
             eventContent={renderEvent}
             events={data}
             plugins={[dayGridPlugin]}
+            eventBackgroundColor='#7C7FCA'
+            eventColor='#7C7FCA'
+            eventTextColor='#FFFFFF'
+            eventBorderColor='#7C7FCA'
+            height={'auto'}
         />
+        //</div>
     )
 }
 
