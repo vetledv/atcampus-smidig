@@ -10,7 +10,7 @@ const SubjectCardCompact = ({
     onClick,
 }) => {
     const classes =
-        'flex p-3 input-shadow w-80 items-center rounded-standard text-white bg-purple-1'
+        'flex p-3 input-shadow w-80 h-28 items-center rounded-standard text-white bg-purple-1'
     const [isSelectedSubject, isSetSelectedSubject] = useState(false)
 
     const handleSelection = () => {
@@ -26,7 +26,7 @@ const SubjectCardCompact = ({
                 className={
                     selected
                         ? classes
-                        : 'flex p-3 input-shadow w-80 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50'
+                        : 'flex p-3 input-shadow w-80 h-28 items-center bg-white rounded-standard text-dark-1 hover:bg-purple-4 hover:shadow-purple-4/50'
                 }
                 onClick={onClick}>
                 <Image src={subjectImage} width={64} height={64} alt='' />
