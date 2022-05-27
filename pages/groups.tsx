@@ -190,7 +190,12 @@ const Groups = () => {
                     )}
                     {activeTab === 1 && (
                         <div className='flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
-                            <FindOrCreateBtn>Finn ny Gruppe</FindOrCreateBtn>
+                            <FindOrCreateBtn
+                                onClick={() => {
+                                    router.push('/groups/findgroup')
+                                }}>
+                                Finn ny Gruppe
+                            </FindOrCreateBtn>
                             <FindOrCreateBtn
                                 onClick={() => router.push('/groups/create')}>
                                 Lag ny Gruppe

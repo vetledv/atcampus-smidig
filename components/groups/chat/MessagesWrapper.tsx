@@ -182,36 +182,69 @@ const MessagesWrapper = ({
         return messagesByDay
     }, [messages.data])
 
+    //dont show name/pic if previous message is from the same person and within the last 5 minutes
+    const shouldShowName = useCallback((messages: Message[], index: number) => {
+        if (index === 0) return true
+        const lastMessage = messages[index - 1]
+        const lastMessageDate = new Date(lastMessage.timestamp)
+        const currentMessageDate = new Date(messages[index].timestamp)
+        const diff = currentMessageDate.getTime() - lastMessageDate.getTime()
+        const diffMinutes = Math.floor(diff / 1000 / 60)
+        if (
+            lastMessage.from.userId === messages[index].from.userId &&
+            diffMinutes < 5
+        ) {
+            return false
+        }
+        return true
+    }, [])
+
     const renderMessages = useCallback(() => {
         if (messagesByDay.length === 0) return <div>Ingen meldinger.</div>
         return messagesByDay.map((day) => {
             return (
-                <div key={day.day.getTime()} className='flex flex-col gap-2'>
-                    <div className='flex items-center gap-2'>
-                        <div className='bg-dark-5 w-full h-[1px]'></div>
+                <div
+                    key={day.day.getTime()}
+                    className='flex flex-col gap-0.5 text-dark-1 last:pb-2'>
+                    <div className='flex items-center gap-2 '>
+                        <div className='bg-dark-5 w-full h-[1px] '></div>
                         {day.day.toLocaleDateString() ===
                         new Date().toLocaleDateString() ? (
                             <div className='font-semibold text-dark-4 text-sm text-center'>
                                 Today
                             </div>
                         ) : (
-                            <div className='font-semibold text-dark-4 text-sm'>
+                            <div className='font-semibold text-dark-4 text-xs'>
                                 {day.day.toLocaleDateString()}
                             </div>
                         )}
                         <div className='bg-dark-5 w-full h-[1px]'></div>
                     </div>
                     {day.messages.map((message: Message, j) => (
-                        <MessageItem
-                            key={j}
-                            message={message}
-                            groupMembers={groupMembers}
-                        />
+                        <div key={j}>
+                            {!shouldShowName(day.messages, j) ? (
+                                <div className='group flex gap-2 items-center hover:bg-gray-100'>
+                                    <div className='w-14 text-white text-center text-xs group-hover:text-dark-3'>
+                                        {new Date(message.timestamp)
+                                            .toLocaleTimeString()
+                                            .slice(0, -3)}
+                                    </div>
+                                    <div className='flex flex-col'>
+                                        {message.message}
+                                    </div>
+                                </div>
+                            ) : (
+                                <MessageItem
+                                    message={message}
+                                    groupMembers={groupMembers}
+                                />
+                            )}
+                        </div>
                     ))}
                 </div>
             )
         })
-    }, [groupMembers, messagesByDay])
+    }, [groupMembers, messagesByDay, shouldShowName])
 
     if (messages.isLoading) {
         return <div>Loading...</div>
