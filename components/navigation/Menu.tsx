@@ -19,12 +19,6 @@ export default function Menu() {
             current: router.asPath === '/groups',
         },
         {
-            name: 'Mine Grupper',
-            icon: DocumentTextIcon,
-            href: '/testpage',
-            current: router.asPath === '/testpage',
-        },
-        {
             name: 'Finn Gruppe',
             icon: DocumentTextIcon,
             href: '/findgroup',
@@ -72,7 +66,7 @@ export default function Menu() {
                                 className={classNames(
                                     item.current
                                         ? 'border-2 border-solid border-purple-1'
-                                        : 'text-purple-1 hover:border-purple-2 hover:border-solid hover:border-2',
+                                        : 'text-purple-1 hover:border-purple-2 hover:outline hover:outline-2',
                                     'group flex items-center px-2 py-2 text-sm font-semibold rounded-md'
                                 )}>
                                 <item.icon

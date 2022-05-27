@@ -1,5 +1,5 @@
+import { CheckboxOld } from 'components/general/Checkbox'
 import FlatButton from 'components/general/FlatButton'
-import Checkbox from 'components/general/Checkbox'
 import { postReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -243,15 +243,14 @@ const TestCreateGroup = () => {
                     placeholder='Beskrivelse'
                     maxLength={80}
                 />
-                <Checkbox
+                <CheckboxOld
                     value={isPrivate}
                     id={undefined}
                     name={'Privat'}
                     className={undefined}
                     onClick={(e: ChangeEvent<HTMLInputElement>) =>
                         setIsPrivate(e.target.checked)
-                    }
-                    selected={undefined}></Checkbox>
+                    }></CheckboxOld>
                 <div className='flex gap-2 items-center'>
                     <div>Maks medlemmer</div>
                     <select
