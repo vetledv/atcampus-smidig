@@ -177,7 +177,7 @@ const Groups = () => {
                         </div>
                     )}
                     {activeTab === 1 && (
-                        <div className='col-span-1 lg:col-span-3 flex flex-row gap-4'>
+                        <div className='flex-wrap justify-center py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
                             <FindOrCreateBtn>Finn ny Gruppe</FindOrCreateBtn>
                             <FindOrCreateBtn>Lag ny Gruppe</FindOrCreateBtn>
                         </div>
