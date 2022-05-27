@@ -4,7 +4,7 @@ import Header from './navigation/Header'
 
 const AppLayout = ({ children }) => {
     return (
-        <div className='flex flex-col w-full flex-wrap'>
+        <div className='flex flex-col w-full'>
             <Menu />
             <div className='xl:pl-[18rem] bg-gray-50'>
                 <Header />

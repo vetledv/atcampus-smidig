@@ -75,7 +75,7 @@ const Groups = () => {
             <Head>
                 <title>Grupper</title>
             </Head>{' '}
-            <div className='flex flex-col gap-6 pb-6 w-full min-h-'>
+            <div className='flex flex-col gap-6 pb-6 w-full'>
                 <div className='flex flex-col w-full gap-2 bg-white'>
                     <div className='flex flex-row gap-2 p-6 items-center'>
                         <h1 className='text-2xl text-dark-1'>
@@ -92,7 +92,7 @@ const Groups = () => {
                 </div>
                 <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4 h-full flex-grow'>
                     {activeTab === 0 && groups.data && (
-                        <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[500px] justify-between h-full max-w-5xl'>
+                        <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[600px] justify-between h-full max-w-5xl'>
                             {groups.data.groups.length === 0 ? (
                                 <div>
                                     <p>Not in any groups.</p>
@@ -124,57 +124,64 @@ const Groups = () => {
                                         </div>
                                     ))}
                                 </div>
-                            )}{' '}
-                            <div className='flex gap-1 pt-12'>
-                                <div>Mangler gruppen din?</div>
-                                <div className='hover:text-purple-2 cursor-pointer'>
-                                    Lag en ny gruppe helt anonymt!
-                                </div>
-                            </div>
-                            <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 mb-12 justify-between shadow-sm shadow-purple-5 items-center'>
-                                <div className='flex gap-1 justify-end text-sm h-fit'>
-                                    Viser {(page - 1) * 5 + 1} til{' '}
-                                    {groups.data.groups.length + (page - 1) * 5}{' '}
-                                    av {groups.data.totalGroups} grupper
-                                </div>
-                                <div className='flex'>
-                                    <button
-                                        className={
-                                            ' px-2 rounded-tl-lg rounded-bl-lg border-l border-t border-b  ' +
-                                            (page !== 1
-                                                ? 'hover:bg-dark-6'
-                                                : '')
-                                        }
-                                        onClick={() =>
-                                            setPage((old) =>
-                                                Math.max(old - 1, 0)
-                                            )
-                                        }
-                                        disabled={page === 1}>
-                                        <ChevronLeftIcon className='w-5 h-5 text-dark-3' />
-                                    </button>
-                                    {renderPagination()}
-                                    <button
-                                        className={
-                                            ' px-2 rounded-tr-lg rounded-br-lg border-r border-t border-b ' +
-                                            (hasNextPage
-                                                ? 'hover:bg-dark-6'
-                                                : '')
-                                        }
+                            )}
+                            <div>
+                                <div className='flex gap-1 pb-4'>
+                                    <div>Mangler gruppen din?</div>
+                                    <div
                                         onClick={() => {
-                                            if (
-                                                !groups.isPreviousData &&
-                                                hasNextPage
-                                            ) {
-                                                setPage((old) => old + 1)
-                                            }
+                                            router.push('/groups/create')
                                         }}
-                                        disabled={
-                                            groups.isPreviousData ||
-                                            !hasNextPage
-                                        }>
-                                        <ChevronRightIcon className='w-5 h-5 text-dark-3' />
-                                    </button>
+                                        className='hover:text-purple-2 cursor-pointer'>
+                                        Lag en ny gruppe!
+                                    </div>
+                                </div>
+                                <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 mb-12 justify-between shadow-sm shadow-purple-5 items-center'>
+                                    <div className='flex gap-1 justify-end text-sm h-fit'>
+                                        Viser {(page - 1) * 6 + 1} til{' '}
+                                        {groups.data.groups.length +
+                                            (page - 1) * 6}{' '}
+                                        av {groups.data.totalGroups} grupper
+                                    </div>
+                                    <div className='flex'>
+                                        <button
+                                            className={
+                                                ' px-2 rounded-tl-lg rounded-bl-lg border-l border-t border-b  ' +
+                                                (page !== 1
+                                                    ? 'hover:bg-dark-6'
+                                                    : '')
+                                            }
+                                            onClick={() =>
+                                                setPage((old) =>
+                                                    Math.max(old - 1, 0)
+                                                )
+                                            }
+                                            disabled={page === 1}>
+                                            <ChevronLeftIcon className='w-5 h-5 text-dark-3' />
+                                        </button>
+                                        {renderPagination()}
+                                        <button
+                                            className={
+                                                ' px-2 rounded-tr-lg rounded-br-lg border-r border-t border-b ' +
+                                                (hasNextPage
+                                                    ? 'hover:bg-dark-6'
+                                                    : '')
+                                            }
+                                            onClick={() => {
+                                                if (
+                                                    !groups.isPreviousData &&
+                                                    hasNextPage
+                                                ) {
+                                                    setPage((old) => old + 1)
+                                                }
+                                            }}
+                                            disabled={
+                                                groups.isPreviousData ||
+                                                !hasNextPage
+                                            }>
+                                            <ChevronRightIcon className='w-5 h-5 text-dark-3' />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             {/* {groups.isFetching ? <span> Loading...</span> : null} */}
