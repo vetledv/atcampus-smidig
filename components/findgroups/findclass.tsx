@@ -39,7 +39,7 @@ const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
                             subjectImage={subject.image}
                             subjectName={subject.className}
                             subjectId={subject.id}
-                            selected={selectedSubject === subject.id}
+                            selected={selectedSubject === subject.className}
                             onClick={() => {
                                 setSelectedSubject(subject.className)
                             }}
