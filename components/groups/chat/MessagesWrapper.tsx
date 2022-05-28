@@ -47,6 +47,7 @@ const MessagesWrapper = ({
         ['messages', groupId],
         fetchReactQuery(`groups/${groupId}/messages`)
     )
+
     const [msg, setMsg] = useState<string>('')
 
     const msgCont = useRef<HTMLDivElement>(null)
@@ -64,7 +65,7 @@ const MessagesWrapper = ({
 
     useEffect(() => {
         if (!socket.current) return
-        socket.current.on(`message ${groupId.toString()}`, (message) => {
+        socket.current.on(`message ${groupId.toString()}`, () => {
             setUserTyping('')
             refetch()
         })
@@ -85,11 +86,22 @@ const MessagesWrapper = ({
                 setUserTyping('')
             }
         })
-    }, [activeTab, groupId, refetch, setUserTyping, socket])
+    }, [
+        activeTab,
+        groupId,
+        refetch,
+        session.data.user.id,
+        setUserTyping,
+        socket,
+    ])
 
     useEffect(() => {
         scrollToBottom()
     }, [messages.data, scrollToBottom])
+
+    // messages.isRefetching && setTimeout(()=>scrollToBottom()
+
+    // , 1000)
 
     const handleUserTyping = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
@@ -253,10 +265,10 @@ const MessagesWrapper = ({
         return <div>Error</div>
     }
     return (
-        <div className='  gap-2 flex flex-col'>
+        <div className='relative flex flex-col gap-2'>
             <div
                 ref={msgCont}
-                className=' flex flex-col h-[500px] overflow-y-auto gap-1'>
+                className='flex flex-col h-[500px] overflow-y-auto gap-1'>
                 <>{renderMessages()}</>
             </div>
             <div className='flex gap-2'>

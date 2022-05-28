@@ -4,7 +4,7 @@ import FlatButton from 'components/general/FlatButton'
 import RenderPaginationNav from 'components/PaginationNav'
 import { fetchReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams } from 'next-auth/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { PaginatedGroups } from 'types/groups'
 import ChooseGroup from '../../components/findgroups/ChooseGroup'
@@ -21,6 +21,7 @@ const FindGroupPage = () => {
     const [selectedSchool, setSelectedSchool] = useState('')
     const [selectedSubject, setSelectedSubject] = useState('')
     const [goalsTags, setGoalsTags] = useState([])
+    const [errorText, setErrorText] = useState('')
 
     const search = useQuery<PaginatedGroups, Error>(
         ['search', page],
@@ -31,20 +32,43 @@ const FindGroupPage = () => {
             enabled: step === 3,
         }
     )
-    const hasNextPage = search?.data?.totalPages > page
+    const hasNextPage = useMemo(
+        () => search.data?.totalPages > page,
+        [search.data, page]
+    )
 
     const handleStep = () => {
         if (step === 0) {
-            setStep(step + 1)
-            setStepTitle('Velg Fag')
+            setErrorText('')
+            if (selectedSchool !== '') {
+                setStep(step + 1)
+                setStepTitle('Velg Fag')
+            } else {
+                setErrorText('Du må velge en skole først!')
+            }
         }
         if (step === 1) {
-            setStep(step + 1)
-            setStepTitle('Velg Mål')
+            setErrorText('')
+            if (selectedSubject !== '') {
+                setStep(step + 1)
+                setStepTitle('Velg Mål')
+            } else {
+                setErrorText('Velg et fag først!')
+            }
+        }
+        if (step === 2) {
+            setErrorText('')
+            if (goalsTags.length !== 0) {
+                setStep(step + 1)
+                setStepTitle('Gruppeforslag')
+            } else {
+                setErrorText('Velg minst ett mål!')
+            }
         }
     }
 
     const handleStepback = () => {
+        setErrorText('')
         if (step === 1) {
             setStep(0)
             setStepTitle('Velg Skole')
@@ -111,26 +135,18 @@ const FindGroupPage = () => {
                             </>
                         )}
                         <div className='m-6 flex flex-row-reverse justify-between'>
-                            {step === 2 && (
-                                <FlatButton
-                                    className={
-                                        'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
-                                    }
-                                    onClick={() => {
-                                        setStep(step + 1)
-                                        setStepTitle('Gruppeforslag')
-                                    }}>
-                                    Finn Gruppe
-                                </FlatButton>
-                            )}
-                            {step! < 2 && (
-                                <FlatButton
-                                    onClick={handleStep}
-                                    className={
-                                        'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
-                                    }>
-                                    Gå videre
-                                </FlatButton>
+                            {step! < 3 && (
+                                <div className='flex gap-4 items-center'>
+                                    {errorText}
+                                    <FlatButton
+                                        as='button'
+                                        onClick={handleStep}
+                                        className={
+                                            'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
+                                        }>
+                                        Gå videre
+                                    </FlatButton>
+                                </div>
                             )}
                             {step != 0 && (
                                 <FlatButton

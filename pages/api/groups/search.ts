@@ -14,10 +14,11 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const page = parseInt(stringPage as string)
     const limit = 3
     const offset = (page - 1) * limit
-
-    const school = req.query.school as string
-    const subject = req.query.subject as string
-    const qGoals = req.query.goals as string
+    const {
+        school,
+        subject,
+        goals: qGoals,
+    } = req.query as { school: string; subject: string; goals: string }
     const goals = qGoals.split(',')
 
     const session = await getToken({

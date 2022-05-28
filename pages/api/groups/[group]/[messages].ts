@@ -3,7 +3,7 @@ import { ObjectId, WithId } from 'mongodb'
 import { NextApiRequest } from 'next'
 import nextConnect from 'next-connect'
 import { NextApiResponseServerIO } from 'types/socket'
-import { GroupMessages, Message, SendMessage } from '../../../../types/groups'
+import { GroupMessages, SendMessage } from '../../../../types/groups'
 
 const messagesHandler = nextConnect()
 
@@ -22,14 +22,6 @@ messagesHandler.get(
                     offset,
                     offset + limit
                 )
-                // if (!messages) {
-                //     const newMessages = {
-                //         groupId: groupId,
-                //         messages: [],
-                //     }
-                //     db.collection('group-messages').insertOne(newMessages)
-                //     res.status(200).json(newMessages)
-                // }
                 res.status(200).json(messages)
             })
             .catch((err) => {
@@ -45,11 +37,10 @@ messagesHandler.post(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
         const { messages: groupId } = req.query
-        const { userId, userName, message, groupName } = JSON.parse(
+        const { userId, userName, message } = JSON.parse(
             req.body
         ) as SendMessage
-        // console.log('[messages] message: ', message)
-        // console.log('[messages] groupId: ', groupId)
+        const date = new Date()
         await db
             .collection('group-messages')
             .updateOne(
@@ -57,7 +48,7 @@ messagesHandler.post(
                 {
                     $push: {
                         messages: {
-                            timestamp: new Date(),
+                            timestamp: date,
                             from: {
                                 userId: userId,
                                 userName: userName,
@@ -68,11 +59,18 @@ messagesHandler.post(
                 }
             )
             .then((messages) => {
-                //res?.socket?.server?.io?.emit(`message ${groupName}`, message)
+                const emitObj = {
+                    timestamp: date,
+                    from: {
+                        userId: userId,
+                        userName: userName,
+                    },
+                    message: message,
+                }
                 res?.socket?.server?.io
                     ?.in(groupId)
-                    .emit(`message ${groupId as string}`, message)
-                console.log(`message ${groupId as string}`, message)
+                    .emit(`message ${groupId as string}`, emitObj)
+                console.log(`message ${groupId as string}`, emitObj)
                 res.status(201).json(messages)
             })
             .catch((err) => {
@@ -83,26 +81,5 @@ messagesHandler.post(
             })
     }
 )
-
-const middleware = async (
-    req: NextApiRequest,
-    res: NextApiResponseServerIO,
-    next
-) => {
-    const { messages: groupId } = req.query
-    console.log(`groupId: ${groupId}`)
-    res?.socket?.server?.io
-        .in(`${groupId}`)
-        .allSockets()
-        .then((sockets) => {
-            console.log(`room:${groupId} sockets size:`, sockets.size)
-            return sockets.size
-        })
-        .then((number) => {
-            res?.socket?.server?.io.in(`${groupId}`).emit('active', number)
-        })
-    next()
-}
-//messagesHandler.use(middleware)
 
 export default messagesHandler
