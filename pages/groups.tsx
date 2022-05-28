@@ -157,13 +157,14 @@ export async function getServerSideProps(context: GetSessionParams) {
         }
     }
     const queryClient = new QueryClient()
-    await queryClient.prefetchQuery<PaginatedGroups, Error>(
-        ['groups', 1],
-        async () => {
-            const res = await fetch(baseUrl + '/api/groups?page=1')
-            return await res.json()
-        }
-    )
+    //why this no work
+    // await queryClient.prefetchQuery<PaginatedGroups, Error>(
+    //     ['groups', 1],
+    //     async () => {
+    //         const res = await fetch(baseUrl + '/api/groups?page=1')
+    //         return await res.json()
+    //     }
+    // )
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
