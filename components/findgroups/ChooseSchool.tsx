@@ -24,7 +24,7 @@ const schools = [
     },
 ]
 
-const ChooseSchool = ({ setSelectedSchool }) => {
+const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
     return (
         <>
             <div className=''>
@@ -36,7 +36,10 @@ const ChooseSchool = ({ setSelectedSchool }) => {
                     <div className='ml-7 font-semibold text-xl text-dark-1 p-4'>
                         Populære institusjoner
                     </div>
-                    <SchoolMap setSelectedSchool={setSelectedSchool} />
+                    <SchoolMap
+                        setSelectedSchool={setSelectedSchool}
+                        selectedSchool={selectedSchool}
+                    />
                 </div>
             </div>
         </>

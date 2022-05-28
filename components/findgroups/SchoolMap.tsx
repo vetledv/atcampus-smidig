@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 import { Key, useState } from 'react'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
-export const SchoolMap = ({ setSelectedSchool }) => {
+export const SchoolMap = ({ setSelectedSchool, selectedSchool }) => {
     const schools = [
         {
             id: 1,
@@ -26,7 +26,10 @@ export const SchoolMap = ({ setSelectedSchool }) => {
                     onClick={() => {
                         setSelectedSchool(school.value)
                     }}>
-                    <FindGroupsPopularSchools schoolName={school.value} />
+                    <FindGroupsPopularSchools
+                        schoolName={school.value}
+                        selectedSchool={selectedSchool}
+                    />
                 </div>
             ))}
         </>

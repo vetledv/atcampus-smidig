@@ -113,6 +113,7 @@ const FindGroupPage = ({ selectedTagss }) => {
                         {step === 0 && (
                             <ChooseSchool
                                 setSelectedSchool={setSelectedSchool}
+                                selectedSchool={selectedSchool}
                             />
                         )}
                         {step === 1 && (
