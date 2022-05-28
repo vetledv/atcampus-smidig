@@ -7,54 +7,6 @@
     @apply h-full;
 }
 
-/* Burger */
-.hamburger {
-    position: relative;
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-    transition: all 0.25s;
-}
-
-.burger-top,
-.burger-mid,
-.burger-bot {
-    position: absolute;
-    height: 2px;
-    width: 24px;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    transform: rotate(0);
-    transition: all 0.5s;
-}
-
-.burger-mid {
-    transform: translateY(7px) !important;
-}
-
-.burger-bot {
-    transform: translateY(14px) !important;
-}
-
-.open {
-    transform: rotate(90deg) !important;
-    transform: translateY(0px) !important;
-}
-
-.open .burger-top {
-    transform: rotate(45deg) translateY(6px) translate(6px);
-}
-
-.open .burger-mid {
-    display: none;
-}
-
-.open .burger-bot {
-    transform: rotate(-45deg) translateY(6px) translate(-6px);
-}
-
-.open #menu-mobile {
-    transform: translateY(14px);
-    transition: all 0.5s;
+* {
+    font: "be-vietnam", sans-serif;
 }
