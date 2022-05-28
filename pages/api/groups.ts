@@ -36,6 +36,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(200).json({
                     totalPages,
                     totalGroups: total,
+                    limit,
                     groups: pagedGroups,
                 })
             } else {

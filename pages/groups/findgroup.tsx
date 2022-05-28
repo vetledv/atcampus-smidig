@@ -1,59 +1,37 @@
-import FlatButton from 'components/general/FlatButton'
 import ChooseSchool from 'components/findgroups/ChooseSchool'
 import FindGroupsHeader from 'components/findgroups/FindGroupsHeader'
-import { postReactQuery } from 'hooks/useGroups'
-import React, { FormEvent, useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { Group, Tags } from 'types/groups'
+import FlatButton from 'components/general/FlatButton'
+import RenderPaginationNav from 'components/PaginationNav'
+import { fetchReactQuery } from 'hooks/useGroups'
+import { getSession, GetSessionParams } from 'next-auth/react'
+import { useState } from 'react'
+import { useQuery, useQueryClient } from 'react-query'
+import { PaginatedGroups } from 'types/groups'
 import ChooseGroup from '../../components/findgroups/ChooseGroup'
 import FindClassPage from '../../components/findgroups/findclass'
 import SelectGoals from '../../components/findgroups/selectgoals'
-import { getSession, GetSessionParams } from 'next-auth/react'
 
-interface State {
-    step: Number
-    stepTitle: String
-}
-
-const FindGroupPage = ({ selectedTagss }) => {
-    const searchMutate = useMutation(
-        (object: Tags) => postReactQuery('/api/groups/search', object),
-        {
-            onSuccess: (result: Group[]) => {
-                //queryClient.setQueryData('search', result)
-                console.log('onSuccess', result)
-                console.log('onSuccess', searchMutate.data)
-                searchMutate.data = result
-                console.log('onSuccess2', searchMutate.data)
-            },
-            onSettled: (result: Group[]) => {
-                console.log('onSettled', result)
-            },
-        }
-    )
-
-    //search data once searchMutate is successful
-    const search = useQuery<Group[], Error>('search', () => searchMutate.data, {
-        enabled: searchMutate.isSuccess,
-    })
+const FindGroupPage = () => {
+    const queryClient = useQueryClient()
+    const [page, setPage] = useState(1)
 
     const [step, setStep] = useState(0)
     const [stepTitle, setStepTitle] = useState('Velg Skole')
 
     const [selectedSchool, setSelectedSchool] = useState('')
     const [selectedSubject, setSelectedSubject] = useState('')
-    const [selectedGoal, setSelectedGoal] = useState([])
-    const [selectedPreferances, setSelectedPreferances] = useState([])
-
     const [goalsTags, setGoalsTags] = useState([])
 
-    useEffect(() => {
-        setGoalsTags([selectedGoal, selectedPreferances])
-    }, [selectedGoal, selectedPreferances])
-
-    console.log('School:    ' + selectedSchool)
-    console.log('Subject:    ' + selectedSubject)
-    console.log('goals:    ' + goalsTags)
+    const search = useQuery<PaginatedGroups, Error>(
+        ['search', page],
+        fetchReactQuery(
+            `groups/search?page=${page}&school=${selectedSchool}&subject=${selectedSubject}&goals=${goalsTags}`
+        ),
+        {
+            enabled: step === 3,
+        }
+    )
+    const hasNextPage = search?.data?.totalPages > page
 
     const handleStep = () => {
         if (step === 0) {
@@ -81,22 +59,11 @@ const FindGroupPage = ({ selectedTagss }) => {
         }
     }
 
-    //search for groups with tags
-    const handleSearchForGroupByTags = async (
-        e: React.FormEvent<HTMLFormElement>
-    ) => {
-        if (step === 2) {
-            setStep(step + 1)
-            setStepTitle('Gruppeforslag')
-        }
-        e.preventDefault()
-        const tags = {
-            school: selectedSchool,
-            course: selectedSubject,
-            goals: goalsTags,
-        }
-        //send tags to server
-        searchMutate.mutateAsync(tags)
+    if (search.isLoading) {
+        return <div>Loading</div>
+    }
+    if (search.isError) {
+        return <div>Error</div>
     }
 
     return (
@@ -124,22 +91,35 @@ const FindGroupPage = ({ selectedTagss }) => {
                         )}
                         {step === 2 && (
                             <SelectGoals
-                                setSelectedGoal={setSelectedGoal}
-                                selectedGoal={selectedGoal}
-                                setSelectedPreferances={setSelectedPreferances}
-                                selectedPreferences={selectedPreferances}
+                                setSelectedGoal={setGoalsTags}
+                                selectedGoal={goalsTags}
+                                setSelectedPreferances={setGoalsTags}
+                                selectedPreferences={goalsTags}
                             />
                         )}
-                        {step === 3 && <ChooseGroup search={search} />}
+                        {step === 3 && (
+                            <>
+                                <ChooseGroup search={search.data} />
+                                <RenderPaginationNav
+                                    isPreviousData={search.isPreviousData}
+                                    hasNextPage={hasNextPage}
+                                    data={search.data}
+                                    page={page}
+                                    setPage={setPage}
+                                    limit={search.data.limit}
+                                />
+                            </>
+                        )}
                         <div className='m-6 flex flex-row-reverse justify-between'>
                             {step === 2 && (
                                 <FlatButton
                                     className={
                                         'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
                                     }
-                                    onClick={(e: FormEvent<HTMLFormElement>) =>
-                                        handleSearchForGroupByTags(e)
-                                    }>
+                                    onClick={() => {
+                                        setStep(step + 1)
+                                        setStepTitle('Gruppeforslag')
+                                    }}>
                                     Finn Gruppe
                                 </FlatButton>
                             )}

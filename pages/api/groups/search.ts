@@ -1,21 +1,38 @@
+import { secret_key } from 'lib/constants'
 import { connectToDB } from 'lib/mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getToken } from 'next-auth/jwt'
 import nextConnect from 'next-connect'
 import { Group } from 'types/groups'
-import { Tags } from '../../../types/groups'
 
 const handler = nextConnect()
 
-handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDB()
-    const tags = JSON.parse(req.body) as Tags
-    const { school, course, goals } = tags
+
+    const { page: stringPage } = req.query
+    const page = parseInt(stringPage as string)
+    const limit = 3
+    const offset = (page - 1) * limit
+
+    const school = req.query.school as string
+    const subject = req.query.subject as string
+    const qGoals = req.query.goals as string
+    const goals = qGoals.split(',')
+
+    const session = await getToken({
+        req,
+        secret: secret_key,
+    })
 
     const noGoalFind = db
         .collection('atcampus-groups')
         .find({
             'tags.school': school,
-            'tags.course': course,
+            'tags.course': subject,
+            'tags.goals': {
+                $in: goals,
+            },
         })
         .toArray()
 
@@ -23,29 +40,56 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
         .collection('atcampus-groups')
         .find({
             'tags.school': school,
-            'tags.course': course,
-            'tags.goals': {
-                $in: goals,
-            },
+            'tags.course': subject,
         })
         .toArray()
         .then((groups: Group[]) => {
-            //if length is 0, search without goals
             if (groups.length === 0) {
                 noGoalFind.then((noGoalGroups: Group[]) => {
-                    console.log('creategroupapi:', noGoalGroups)
-                    res.status(200).json(noGoalGroups)
+                    //filter out groups from noGoalGroups that user is already in
+                    const filteredGroups = noGoalGroups.filter(
+                        (group) =>
+                            !group.members.some(
+                                (member) => member.userId === session.sub
+                            )
+                    )
+                    const total = filteredGroups.length
+                    const totalPages = Math.ceil(total / limit)
+                    const pagedGroups = filteredGroups.slice(
+                        offset,
+                        offset + limit
+                    )
+
+                    res.status(200).json({
+                        totalPages,
+                        totalGroups: total,
+                        limit,
+                        groups: pagedGroups,
+                    })
                 })
             } else {
-                console.log('creategroupapi:', groups)
-                res.status(200).json(groups)
+                const filteredGroups = groups.filter(
+                    (group) =>
+                        !group.members.some(
+                            (member) => member.userId === session.sub
+                        )
+                )
+                const total = filteredGroups.length
+                const totalPages = Math.ceil(total / limit)
+                const pagedGroups = filteredGroups.slice(offset, offset + limit)
+                res.status(200).json({
+                    totalPages,
+                    totalGroups: total,
+                    limit,
+                    groups: pagedGroups,
+                })
             }
         })
         .catch((error: Error) => {
-            console.log('error', error)
             res.status(500).json({
                 error,
             })
         })
 })
+
 export default handler

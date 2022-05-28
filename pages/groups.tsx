@@ -1,28 +1,22 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
 import Tabs from 'components/groups/Tabs'
+import { baseUrl } from 'lib/constants'
+import { getSession, GetSessionParams } from 'next-auth/react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
-import { Group } from 'types/groups'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
-import { baseUrl } from 'lib/constants'
-import { useRouter } from 'next/router'
-import { getSession, GetSessionParams } from 'next-auth/react'
-
-interface PaginatedGroups {
-    groups: Group[]
-    totalPages: number
-    totalGroups: number
-}
+import { PaginatedGroups } from 'types/groups'
+import PaginationNav from './../components/PaginationNav'
 
 const Groups = () => {
     const [page, setPage] = useState(1)
-    const fetchProjects = (page = 1) =>
+    const fetchPaginated = (page = 1) =>
         fetch('/api/groups?page=' + page).then((res) => res.json())
     const groups = useQuery<PaginatedGroups, Error>(
         ['groups', page],
-        () => fetchProjects(page),
+        () => fetchPaginated(page),
         { keepPreviousData: true }
     )
     const router = useRouter()
@@ -30,26 +24,6 @@ const Groups = () => {
     const hasNextPage = groups.data?.totalPages > page
     const [activeTab, setActiveTab] = useState(0)
     const tabs = ['Mine grupper', 'Finn ny gruppe']
-
-    const renderPagination = () => {
-        const pages = []
-        for (let i = 1; i <= groups.data?.totalPages; i++) {
-            pages.push(
-                <button
-                    key={i}
-                    className={
-                        ' h-fit px-4 py-2 border border-purple-4' +
-                        (i === page
-                            ? ' bg-purple-1 text-white '
-                            : 'bg-white hover:bg-dark-6')
-                    }
-                    onClick={() => setPage(i)}>
-                    {i}
-                </button>
-            )
-        }
-        return pages
-    }
 
     if (groups.isLoading) {
         return (
@@ -71,6 +45,7 @@ const Groups = () => {
             </>
         )
     }
+
     return (
         <>
             <Head>
@@ -126,65 +101,24 @@ const Groups = () => {
                                     ))}
                                 </div>
                             )}
-                            <div>
-                                <div className='flex gap-1 pb-4'>
-                                    <div>Mangler gruppen din?</div>
-                                    <div
-                                        onClick={() => {
-                                            router.push('/groups/create')
-                                        }}
-                                        className='hover:text-purple-2 cursor-pointer'>
-                                        Lag en ny gruppe!
-                                    </div>
-                                </div>
-                                <div className='flex bg-white border border-purple-4 rounded-lg py-3 px-6 mb-12 justify-between shadow-sm shadow-purple-5 items-center'>
-                                    <div className='flex gap-1 justify-end text-sm h-fit'>
-                                        Viser {(page - 1) * 6 + 1} til{' '}
-                                        {groups.data.groups.length +
-                                            (page - 1) * 6}{' '}
-                                        av {groups.data.totalGroups} grupper
-                                    </div>
-                                    <div className='flex'>
-                                        <button
-                                            className={
-                                                ' px-2 rounded-tl-lg rounded-bl-lg border-l border-t border-b  ' +
-                                                (page !== 1
-                                                    ? 'hover:bg-dark-6'
-                                                    : '')
-                                            }
-                                            onClick={() =>
-                                                setPage((old) =>
-                                                    Math.max(old - 1, 0)
-                                                )
-                                            }
-                                            disabled={page === 1}>
-                                            <ChevronLeftIcon className='w-5 h-5 text-dark-3' />
-                                        </button>
-                                        {renderPagination()}
-                                        <button
-                                            className={
-                                                ' px-2 rounded-tr-lg rounded-br-lg border-r border-t border-b ' +
-                                                (hasNextPage
-                                                    ? 'hover:bg-dark-6'
-                                                    : '')
-                                            }
-                                            onClick={() => {
-                                                if (
-                                                    !groups.isPreviousData &&
-                                                    hasNextPage
-                                                ) {
-                                                    setPage((old) => old + 1)
-                                                }
-                                            }}
-                                            disabled={
-                                                groups.isPreviousData ||
-                                                !hasNextPage
-                                            }>
-                                            <ChevronRightIcon className='w-5 h-5 text-dark-3' />
-                                        </button>
-                                    </div>
+                            <div className='flex gap-1 pb-4'>
+                                <div>Mangler gruppen din?</div>
+                                <div
+                                    onClick={() => {
+                                        router.push('/groups/create')
+                                    }}
+                                    className='hover:text-purple-2 cursor-pointer'>
+                                    Lag en ny gruppe!
                                 </div>
                             </div>
+                            <PaginationNav
+                                isPreviousData={groups.isPreviousData}
+                                hasNextPage={hasNextPage}
+                                data={groups.data}
+                                page={page}
+                                setPage={setPage}
+                                limit={groups.data.limit}
+                            />
                             {/* {groups.isFetching ? <span> Loading...</span> : null} */}
                         </div>
                     )}

@@ -29,6 +29,13 @@ export interface Group {
     pendingMembers: Member[]
 }
 
+export interface PaginatedGroups {
+    groups: Group[]
+    limit: number
+    totalPages: number
+    totalGroups: number
+}
+
 export interface GroupMessages {
     _id: ObjectId
     groupId: ObjectId

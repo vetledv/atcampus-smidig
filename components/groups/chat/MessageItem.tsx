@@ -11,7 +11,7 @@ const MessageItem = ({
 }) => {
     return (
         <div className='flex pt-4 rounded gap-2'>
-            <div className='flex w-full px-2 p-0.5 hover:bg-gray-100'>
+            <div className='flex w-full px-2 py-0.5 hover:bg-gray-100'>
                 <div className='w-14'>
                     {groupMembers.find(
                         (member) => member.userId === message.from.userId

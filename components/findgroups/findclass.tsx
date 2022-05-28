@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
-    const [classes, setSelectedClass] = useState([
+    const classes = [
         {
             id: 1,
             image: 'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg',
@@ -27,7 +27,7 @@ const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
             className: 'Marked, samfunn og globalisering',
             classCode: '12666',
         },
-    ])
+    ]
 
     return (
         <div className='flex items-center justify-center'>
