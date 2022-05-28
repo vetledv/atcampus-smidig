@@ -9,10 +9,10 @@ export const FindGroupsFilter = ({
     return (
         <div className='flex flex-col items-center'>
             <div className='flex justify-center py-8'>
-                <div className='w-40 md:w-80 xl:w-96'>
+                <div className='hidden md:block md:w-80 xl:w-96'>
                     <TopSearch title='Søk etter skole...' />
                 </div>
-                <div className='w-40 md:w-80 xl:w-96 ml-8'>
+                <div className='w-40 md:w-80 xl:w-96 ml-8 xs:mb-8 xs:mr-32'>
                     <DropDown
                         title={selectedSchool}
                         items={items}
