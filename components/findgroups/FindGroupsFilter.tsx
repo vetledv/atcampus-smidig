@@ -1,7 +1,11 @@
 import DropDown from 'components/general/DropDown'
 import TopSearch from 'components/general/TopSearch'
 
-export const FindGroupsFilter = ({ items, setSelectedSchool }) => {
+export const FindGroupsFilter = ({
+    items,
+    setSelectedSchool,
+    selectedSchool,
+}) => {
     return (
         <div className='flex flex-col items-center'>
             <div className='flex justify-center py-8'>
@@ -10,9 +14,11 @@ export const FindGroupsFilter = ({ items, setSelectedSchool }) => {
                 </div>
                 <div className='w-40 md:w-80 xl:w-96 ml-8'>
                     <DropDown
-                        title={'Velg Skole'}
+                        title={selectedSchool}
                         items={items}
-                        dropDownTitle={'Velg Skole'}
+                        dropDownTitle={
+                            selectedSchool ? selectedSchool : 'Velg institusjon'
+                        }
                         setSelectedSchool={setSelectedSchool}
                     />
                 </div>

@@ -30,6 +30,7 @@ const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
             <div className=''>
                 <FindGroupsFilter
                     setSelectedSchool={setSelectedSchool}
+                    selectedSchool={selectedSchool}
                     items={schools}
                 />
                 <div>
