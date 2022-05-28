@@ -27,7 +27,7 @@ const schools = [
 const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
     return (
         <>
-            <div className=''>
+            <div className='flex flex-col'>
                 <FindGroupsFilter
                     setSelectedSchool={setSelectedSchool}
                     selectedSchool={selectedSchool}
