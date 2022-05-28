@@ -69,36 +69,38 @@ const Groups = () => {
                 <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4 h-full flex-grow'>
                     {activeTab === 0 && groups.data && (
                         <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[600px] justify-between h-full max-w-5xl'>
-                            {groups.data.groups.length === 0 ? (
+                            <div className='flex flex-wrap'>
+                                {groups.data?.groups?.map((group) => (
+                                    <div
+                                        className='md:basis-1/2 sm:basis-1/2 w-full 2xl:basis-1/3 xs:basis-auto '
+                                        key={group._id.toString()}>
+                                        <div className='pr-2 pb-2 h-full'>
+                                            <SubjectCard
+                                                key={group.groupName}
+                                                groupName={group.groupName}
+                                                groupId={group._id}
+                                                groupImage={
+                                                    'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
+                                                }
+                                                compact={true}
+                                                subjectCode={'PG63'}
+                                                members={group.members.length}
+                                                totalMembers={
+                                                    group.members.length
+                                                }
+                                                onClick={() => {
+                                                    router.push(
+                                                        '/groups/' + group._id
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {groups.data.groups.length === 0 && (
                                 <div>
                                     <p>Not in any groups.</p>
-                                </div>
-                            ) : (
-                                <div className='flex flex-wrap'>
-                                    {groups.data.groups.map((group) => (
-                                        <div
-                                            className='md:basis-1/2 sm:basis-1/2 w-full 2xl:basis-1/3 xs:basis-auto '
-                                            key={group._id.toString()}>
-                                            <div className='pr-2 pb-2 h-full'>
-                                                <SubjectCard
-                                                    key={group.groupName}
-                                                    groupName={group.groupName}
-                                                    groupId={group._id}
-                                                    groupImage={
-                                                        'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
-                                                    }
-                                                    compact={true}
-                                                    subjectCode={'PG63'}
-                                                    members={
-                                                        group.members.length
-                                                    }
-                                                    totalMembers={
-                                                        group.members.length
-                                                    }
-                                                />
-                                            </div>
-                                        </div>
-                                    ))}
                                 </div>
                             )}
                             <div className='flex gap-1 pb-4'>

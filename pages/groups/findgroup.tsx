@@ -100,7 +100,7 @@ const FindGroupPage = () => {
                     nextStep={handleStep}
                 />
                 <div className='flex justify-center'>
-                    <div className='bg-white input-shadow h-full min-w-full max-w-7xl w-full my-16'>
+                    <div className='bg-white input-shadow h-full min-w-full max-w-7xl w-full my-16 p-4'>
                         {step === 0 && (
                             <ChooseSchool
                                 setSelectedSchool={setSelectedSchool}

@@ -1,8 +1,7 @@
 import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { ObjectId } from 'mongodb'
+import Image from 'next/image'
 
 interface SubjectCardProps {
     groupName: string
@@ -12,6 +11,8 @@ interface SubjectCardProps {
     members?: number
     totalMembers?: number
     compact: boolean
+    onClick?: () => void
+    classNames?: string
 }
 
 const SubjectCard = ({
@@ -22,15 +23,19 @@ const SubjectCard = ({
     members,
     totalMembers,
     compact,
+    onClick,
+    classNames,
 }: SubjectCardProps) => {
-    const router = useRouter()
     const imageSize = compact ? 64 : 128
     console.log(groupId)
 
     return (
         <div
-            onClick={() => router.push(`/groups/${groupId}`)}
-            className='group cursor-pointer flex p-3 h-full shadow-md shadow-purple-4 max-w-lg items-center bg-white rounded-standard text-dark-1'>
+            onClick={onClick}
+            className={
+                classNames +
+                ' group cursor-pointer flex p-3 h-full shadow-md shadow-purple-4 max-w-lg items-center bg-white rounded-standard text-dark-1'
+            }>
             <div className='w-max'>
                 <Image
                     src={groupImage}

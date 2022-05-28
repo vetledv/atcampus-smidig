@@ -48,6 +48,7 @@ const ChooseGroup = ({ search }: { search: PaginatedGroups }) => {
                                 subjectCode={group.description}
                                 members={group.members.length}
                                 totalMembers={group.maxMembers}
+                                classNames={'cursor-default'}
                             />
                         </li>
                     )
