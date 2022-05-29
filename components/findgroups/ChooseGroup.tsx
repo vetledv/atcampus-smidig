@@ -7,6 +7,11 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
+import { GroupMembers } from '../general/Lib'
+import Image from 'next/image'
+import GroupTags from '../groups/settings/GroupTags'
+
+//TODO:       Highlight matching tags!!!!!!  Highlight matching tags!!!!!!  Highlight matching tags!!!!!!  Highlight matching tags!!!!!!
 
 const ChooseGroup = ({
     search,
@@ -84,11 +89,86 @@ const ChooseGroup = ({
     const renderModal = (group: PaginatedGroups['groups'][0]) => {
         return (
             <>
-                <div className='absolute z-[999] top-0 bottom-0 left-0 right-0 m-auto p-4 w-fit h-fit bg-white rounded shadow flex flex-col gap-2'>
-                    <h1>{group.groupName}</h1>
-                    <p>{group.description}</p>
+                <div className='absolute z-[999] p-4 flex flex-col w-fit h-fit top-0 bottom-0 left-0 right-0 m-auto bg-white rounded shadow gap-2'>
+                    <button
+                        type='button'
+                        onClick={() => setShowModal(false)}
+                        className='absolute -mt-4 right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm inline-flex items-center '>
+                        <svg
+                            className='w-5 h-5'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                            xmlns='http://www.w3.org/2000/svg'>
+                            <path
+                                fillRule='evenodd'
+                                d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                                clipRule='evenodd'></path>
+                        </svg>
+                    </button>
+                    <h1 className='text-2xl font-semibold'>
+                        {group.groupName}
+                    </h1>
+                    <div>
+                        {' '}
+                        {/* Group description */}
+                        <p className='font-medium'>Group Description</p>
+                        <div className='border border-dark-5 rounded-standard bg-purple-5'>
+                            <p className='m-2'>{group.description}</p>
+                        </div>
+                    </div>
+                    <div>
+                        {' '}
+                        {/* Group members */}
+                        <div className='flex'>
+                            <p className='font-medium mr-2'>Group Members</p>
+                            <p>
+                                {group.members.length} / {group.maxMembers}
+                            </p>
+                        </div>
+                        <div className='grid md:grid-cols-3 grid-cols-2 border border-dark-5 rounded-standard bg-purple-5'>
+                            {group.members.map((member) => (
+                                <div
+                                    key={member.userId}
+                                    className={
+                                        'flex items-center bg-purple-2 rounded-xl text-white m-1 cursor-default'
+                                    }>
+                                    <div className='px-2 mt-1'>
+                                        <Image
+                                            src={member.picture}
+                                            alt={
+                                                member.userName +
+                                                'profile picture'
+                                            }
+                                            width={24}
+                                            height={24}
+                                            className={'rounded-xl'}
+                                        />
+                                    </div>
+                                    <p className='pr-2'>{member.userName}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className='w-full'>
+                        {' '}
+                        {/* Group subjects */}
+                        <p className='font-medium'>Tags</p>
+                        <div className='border border-dark-5 rounded-standard bg-purple-5'>
+                            <div className='m-1'>
+                                <div className='grid grid-cols-4'>
+                                    {group.tags.goals.map((goal) => (
+                                        <div key={goal.length}>
+                                            <p className='bg-purple-2 rounded-xl text-white p-1 m-1 flex justify-center'>
+                                                {goal}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <div className='flex gap-2'>
+                    <div className='flex justify-between'>
                         <FlatButton
                             as='button'
                             onClick={() => handleClick(group)}>

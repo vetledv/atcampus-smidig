@@ -268,7 +268,7 @@ const Settings = () => {
                                     {30 - newGroupName.length}
                                 </p>
                             </div>
-                            <p>Gruppenavn</p>
+                            <p>Gruppebeskrivelse</p>
                             <div className='group flex border rounded focus-within:outline focus-within:outline-2 pr-4 items-center'>
                                 <input
                                     className='w-full rounded-lg px-4 py-2 border-0 focus:outline-none bg-transparent'
