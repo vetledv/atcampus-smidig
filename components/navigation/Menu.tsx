@@ -1,11 +1,13 @@
-import { DocumentTextIcon, HomeIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { MenuIcon, CollectionIcon, MailIcon } from '@heroicons/react/outline'
-import MobileNav from './MobileNav'
+import { useState } from 'react'
 import MenuNavigation from './MenuNavigation'
+import MobileNav from './MobileNav'
+import { XIcon } from '@heroicons/react/solid'
 
 export default function Menu() {
+    const [open, setOpen] = useState(false) // dropdown is open or not
+    const toggle = () => setOpen(!open) // toggle dropdown
+
     return (
         <>
             <div className='fixed top-0 left-0 flex-1 xl:flex flex-col min-h-screen bg-purple-5 xl:min-w-[18rem] hidden'>
@@ -23,7 +25,26 @@ export default function Menu() {
                     <MenuNavigation />
                 </div>
             </div>
-            <MobileNav />
+            <MobileNav toggle={() => toggle()} />
+            {open && (
+                <div className='fixed visible xl:invisible h-full w-10/12 bg-dark-6 z-[900] border border-dark-5'>
+                    <div className='flex w-full px-6 py-4 bg-white shadow justify-between items-center'>
+                        <div className='h-fit'>
+                            <Image
+                                tabIndex={0}
+                                aria-label={'atcampus logo'}
+                                width={139}
+                                height={29}
+                                src={'/atcampus-full-logo.svg'}
+                            />
+                        </div>
+                        <XIcon
+                            onClick={() => toggle()}
+                            className='w-10 h-10 cursor-pointer'></XIcon>
+                    </div>
+                    <MenuNavigation />
+                </div>
+            )}
         </>
     )
 }
