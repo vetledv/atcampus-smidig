@@ -1,5 +1,4 @@
 import Checkbox from 'components/general/Checkbox'
-import { useState } from 'react'
 
 interface State {
     selectedGoal: Array<String>

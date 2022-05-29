@@ -23,12 +23,6 @@ const MenuNavigation = () => {
             href: '/groups/findgroup',
             current: router.asPath === '/groups/findgroup',
         },
-        {
-            name: 'testjoingroup',
-            icon: DocumentTextIcon,
-            href: '/testjoingroup',
-            current: router.asPath === '/testjoingroup',
-        },
     ]
 
     function classNames(...classes) {

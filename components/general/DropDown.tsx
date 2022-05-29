@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import onClickOutside, { HandleClickOutside } from 'react-onclickoutside'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import React, { useState } from 'react'
+import onClickOutside from 'react-onclickoutside'
 
 function DropDown({
     title = undefined,

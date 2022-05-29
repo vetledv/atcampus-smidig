@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { Key, useState } from 'react'
+import { Key } from 'react'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
 export const SchoolMap = ({ setSelectedSchool, selectedSchool }) => {

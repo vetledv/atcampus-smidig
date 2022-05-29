@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
 const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {

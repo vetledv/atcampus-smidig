@@ -1,5 +1,4 @@
 import FlatButton from 'components/general/FlatButton'
-import { useState } from 'react'
 
 const FindGroupsPopularSchools = ({ schoolName, selectedSchool }) => {
     const classes =

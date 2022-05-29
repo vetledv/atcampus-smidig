@@ -1,8 +1,5 @@
-import { ObjectId } from 'mongodb'
-import { SchoolMap } from './SchoolMap'
-import { Key, useState } from 'react'
 import { FindGroupsFilter } from './FindGroupsFilter'
-import FindGroupsPopularSchools from './FindGroupsPopularSchools'
+import { SchoolMap } from './SchoolMap'
 
 interface State {
     step: Number

@@ -1,7 +1,7 @@
 import SubjectCard from 'components/cards/SubjectCard'
 import { ObjectId } from 'mongodb'
 import React from 'react'
-import { Group, PaginatedGroups } from 'types/groups'
+import { PaginatedGroups } from 'types/groups'
 
 interface MutateResponse {
     message: string

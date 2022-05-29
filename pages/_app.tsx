@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools/development'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { SessionProvider } from 'next-auth/react'
 import '../styles/globals.css'
 import AppLayout from 'components/AppLayout'
