@@ -64,7 +64,6 @@ const Settings = () => {
         {
             onSuccess: (result) => {
                 group.refetch()
-                //clear newGroupName and newGroupDescription
                 setNewGroupName('')
                 setNewGroupDescription('')
                 setNewMaxMembers(group.data.maxMembers)

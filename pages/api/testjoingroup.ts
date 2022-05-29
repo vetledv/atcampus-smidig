@@ -38,6 +38,22 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
         .toArray()
         .then((groups: Group[]) => {
             const group = groups[0]
+            if (!group) {
+                res.status(404).json({ error: 'Group not found' })
+            }
+            //check if user is in members or pendingMembers
+            if (group.members.find((member) => member.userId === userId)) {
+                res.status(200).json({
+                    message: 'Allerede medlem',
+                })
+            } else if (
+                group.pendingMembers.find((member) => member.userId === userId)
+            ) {
+                res.status(200).json({
+                    message: 'Venter på godkjenning',
+                })
+            }
+
             if (group.members.length < group.maxMembers) {
                 if (group.private) {
                     //add user to pendingMembers
@@ -46,17 +62,21 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
                             pendingMembers: members,
                         },
                     })
+                    res.status(200).json({
+                        message: 'Venter på godkjenning',
+                        private: true,
+                    })
                 } else {
-                    //add user to members
                     db.collection('atcampus-groups').updateOne(filter, {
                         $push: {
                             members: members,
                         },
                     })
+                    res.status(200).json({
+                        message: 'Lagt til i gruppen',
+                        private: false,
+                    })
                 }
-                res.status(200).json({
-                    message: 'Lagt til i gruppen',
-                })
             } else {
                 res.status(400).json({
                     message: 'Gruppen er full',
@@ -68,66 +88,5 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
                 error,
             })
         })
-
-    //     if (isPrivate) {
-    //         //check if user is already in pendingMembers
-    //         await db
-    //             .collection('atcampus-groups')
-    //             .findOne({
-    //                 ...filter,
-    //                 pendingMembers: {
-    //                     $elemMatch: {
-    //                         userId,
-    //                     },
-    //                 },
-    //             })
-    //             .then((group) => {
-    //                 if (group) {
-    //                     res.status(200).json({
-    //                         message: 'Already pending invite',
-    //                         private: true,
-    //                     })
-    //                 } else {
-    //                     //add user to pendingMembers
-    //                     db.collection('atcampus-groups')
-    //                         .updateOne(filter, {
-    //                             $push: {
-    //                                 pendingMembers: members,
-    //                             },
-    //                         })
-    //                         .then(() => {
-    //                             res.status(200).json({
-    //                                 message: 'Await approval from group owner',
-    //                                 private: true,
-    //                             })
-    //                         })
-    //                         .catch((err) => {
-    //                             res.status(500).json({
-    //                                 message: err.message,
-    //                             })
-    //                         })
-    //                 }
-    //             })
-    //     } else {
-    //         await db
-    //             .collection('atcampus-groups')
-    //             .updateOne(filter, {
-    //                 $addToSet: {
-    //                     members,
-    //                 },
-    //             })
-    //             .then((updateResult) => {
-    //                 console.log(groupId)
-    //                 res.status(200).json({
-    //                     message: 'success',
-    //                     private: false,
-    //                 })
-    //             })
-    //             .catch((err) => {
-    //                 res.status(500).json({
-    //                     message: err.message,
-    //                 })
-    //             })
-    //     }
 })
 export default handler

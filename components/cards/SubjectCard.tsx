@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 interface SubjectCardProps {
     groupName: string
-    groupImage: string
+    groupImage?: string
     groupId: ObjectId
     subjectCode: string
     members?: number
@@ -14,6 +14,7 @@ interface SubjectCardProps {
     onClick?: () => void
     onMouseEnter?: () => void
     classNames?: string
+    children?: React.ReactNode
 }
 
 const SubjectCard = ({
@@ -27,10 +28,12 @@ const SubjectCard = ({
     onClick,
     onMouseEnter,
     classNames,
+    children,
 }: SubjectCardProps) => {
     const imageSize = compact ? 64 : 128
-    console.log(groupId)
-
+    const image =
+        groupImage ||
+        'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
     return (
         <div
             onClick={onClick}
@@ -41,7 +44,7 @@ const SubjectCard = ({
             }>
             <div className='w-max'>
                 <Image
-                    src={groupImage}
+                    src={image}
                     width={imageSize}
                     height={imageSize}
                     alt=''
@@ -59,9 +62,7 @@ const SubjectCard = ({
                             totalMembers={totalMembers}
                             color={'dark-1'}
                         />
-                        <div className={'py-1'}>
-                            <FlatButton>Join Group</FlatButton>
-                        </div>
+                        {children}
                     </div>
                 ) : null}
             </div>

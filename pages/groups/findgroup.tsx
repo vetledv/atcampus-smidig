@@ -4,7 +4,7 @@ import FlatButton from 'components/general/FlatButton'
 import RenderPaginationNav from 'components/PaginationNav'
 import { fetchReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams } from 'next-auth/react'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { PaginatedGroups } from 'types/groups'
 import ChooseGroup from '../../components/findgroups/ChooseGroup'
@@ -31,6 +31,10 @@ const FindGroupPage = () => {
             enabled: step === 3,
         }
     )
+    const refetch = useCallback(() => {
+        search.refetch()
+    }, [search])
+
     const hasNextPage = useMemo(
         () => search.data?.totalPages > page,
         [search.data, page]
@@ -122,7 +126,10 @@ const FindGroupPage = () => {
                         )}
                         {step === 3 && (
                             <>
-                                <ChooseGroup search={search.data} />
+                                <ChooseGroup
+                                    search={search.data}
+                                    refetch={refetch}
+                                />
                                 <RenderPaginationNav
                                     isPreviousData={search.isPreviousData}
                                     hasNextPage={hasNextPage}
