@@ -5,14 +5,13 @@ import RenderPaginationNav from 'components/PaginationNav'
 import { fetchReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams } from 'next-auth/react'
 import { useMemo, useState } from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 import { PaginatedGroups } from 'types/groups'
 import ChooseGroup from '../../components/findgroups/ChooseGroup'
 import FindClassPage from '../../components/findgroups/findclass'
 import SelectGoals from '../../components/findgroups/selectgoals'
 
 const FindGroupPage = () => {
-    const queryClient = useQueryClient()
     const [page, setPage] = useState(1)
 
     const [step, setStep] = useState(0)
@@ -176,7 +175,9 @@ export const getServerSideProps = async (context: GetSessionParams) => {
         }
     }
     return {
-        props: {},
+        props: {
+            session,
+        },
     }
 }
 

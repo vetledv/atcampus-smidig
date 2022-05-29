@@ -122,6 +122,7 @@ export const getServerSideProps = async (context: GetSessionParams) => {
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
+            session,
         },
     }
 }

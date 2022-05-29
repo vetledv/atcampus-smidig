@@ -12,6 +12,7 @@ interface SubjectCardProps {
     totalMembers?: number
     compact: boolean
     onClick?: () => void
+    onMouseEnter?: () => void
     classNames?: string
 }
 
@@ -24,6 +25,7 @@ const SubjectCard = ({
     totalMembers,
     compact,
     onClick,
+    onMouseEnter,
     classNames,
 }: SubjectCardProps) => {
     const imageSize = compact ? 64 : 128
@@ -32,6 +34,7 @@ const SubjectCard = ({
     return (
         <div
             onClick={onClick}
+            onMouseEnter={onMouseEnter}
             className={
                 classNames +
                 ' group cursor-pointer flex p-3 h-full shadow-md shadow-purple-4 max-w-lg items-center bg-white rounded-standard text-dark-1'

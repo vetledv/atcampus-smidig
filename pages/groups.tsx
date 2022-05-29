@@ -1,3 +1,4 @@
+import { fetchReactQuery } from '@/hooks/useGroups'
 import SubjectCard from 'components/cards/SubjectCard'
 import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
 import Tabs from 'components/groups/Tabs'
@@ -6,11 +7,12 @@ import { getSession, GetSessionParams } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
+import { dehydrate, QueryClient, useQuery, useQueryClient } from 'react-query'
 import { PaginatedGroups } from 'types/groups'
 import PaginationNav from './../components/PaginationNav'
 
 const Groups = () => {
+    const queryClient = useQueryClient()
     const [page, setPage] = useState(1)
     const fetchPaginated = (page = 1) =>
         fetch('/api/groups?page=' + page).then((res) => res.json())
@@ -93,6 +95,19 @@ const Groups = () => {
                                                         '/groups/' + group._id
                                                     )
                                                 }}
+                                                onMouseEnter={async () => {
+                                                    queryClient.prefetchQuery(
+                                                        ['group', group._id],
+                                                        fetchReactQuery(
+                                                            'groups/' +
+                                                                group._id
+                                                        ),
+                                                        {
+                                                            staleTime:
+                                                                1000 * 60 * 10,
+                                                        }
+                                                    )
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -168,6 +183,7 @@ export async function getServerSideProps(context: GetSessionParams) {
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
+            session,
         },
     }
 }

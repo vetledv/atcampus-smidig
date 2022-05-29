@@ -8,6 +8,7 @@ import nextConnect from 'next-connect'
 import { Group } from 'types/groups'
 
 const handler = nextConnect()
+
 // get group by id
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { db } = await connectToDB()
@@ -22,7 +23,6 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
             error: 'You are not logged in',
         })
     } else {
-        console.log('IN ELSE')
         await db
             .collection('atcampus-groups')
             .findOne({ _id: new ObjectId(group as string) })
@@ -37,7 +37,6 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
                         error: 'user not in group',
                     })
                 } else {
-                    //TODO: this causes an error before returning the group, but doesn't seem to be a problem
                     res.status(200).json(group)
                 }
             })

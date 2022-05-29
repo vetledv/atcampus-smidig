@@ -1,9 +1,3 @@
-import FlatButton from 'components/general/FlatButton'
-import GroupHeader from 'components/groups/GroupHeaderMobile'
-import Tabs from 'components/groups/Tabs'
-import TopNav from 'components/groups/TopNav'
-import { postJSON, useGroup } from 'hooks/useGroups'
-import { baseUrl } from 'lib/constants'
 import { ObjectId } from 'mongodb'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
@@ -13,7 +7,14 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
-import { Group, GroupMessages, Member } from 'types/groups'
+
+import FlatButton from '@/components/general/FlatButton'
+import GroupHeader from '@/components/groups/GroupHeaderMobile'
+import Tabs from '@/components/groups/Tabs'
+import TopNav from '@/components/groups/TopNav'
+import { postJSON, useGroup } from '@/hooks/useGroups'
+import { baseUrl } from '@/lib/constants'
+import { Group, GroupMessages, Member } from '@/types/groups'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const MessagesWrapper = dynamic(
     () => import('../../components/groups/chat/MessagesWrapper')
@@ -40,10 +41,7 @@ const GroupPage = () => {
     const [connected, setConnected] = useState<boolean>(false)
     const [userTyping, setUserTyping] = useState<string>('')
 
-    const [notImplementedError, setNotImplementedError] = useState<boolean>()
     const socket = useRef<Socket>(null)
-
-    const [image, setImage] = useState(null)
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
     const { mutateAsync: leaveGroupAsync } = useMutation(
@@ -152,25 +150,12 @@ const GroupPage = () => {
         return session?.user?.id === group.data?.admin?.userId?.toString()
     }, [group, session])
 
-    const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const file = e.target.files[0]
-            if (file.type === 'image/png' || file.type === 'image/jpeg') {
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    setImage(e.target.result)
-                }
-                reader.readAsDataURL(file)
-            }
-        }
-    }
-
     const renderAdminPanel = useCallback(() => {
         if (!isAdmin()) return null
         if (!group?.data) return null
         return (
             <div className='flex flex-col gap-2'>
-                <h1>Pending members:</h1>
+                <h1 className=' font-semibold'>Ventende medlemmer</h1>
                 {group.data.pendingMembers.map((pendingMember) => (
                     <div
                         key={pendingMember.userId?.toString()}
@@ -197,46 +182,11 @@ const GroupPage = () => {
                     </div>
                 ))}
                 {group.data.pendingMembers.length === 0 && (
-                    <div>No pending members</div>
+                    <p>Ingen ventende medlemmer.</p>
                 )}
-                {image !== null && (
-                    <>
-                        <div>
-                            <Image
-                                src={image}
-                                alt=''
-                                width={200}
-                                height={200}></Image>
-                        </div>
-                        <FlatButton
-                            onClick={() => {
-                                setNotImplementedError(true)
-                            }}>
-                            Upload
-                        </FlatButton>
-                        {notImplementedError && (
-                            <div>
-                                Beklager, denne funksjonen er ikke implementert
-                                enda :)
-                            </div>
-                        )}
-                    </>
-                )}
-                <form>
-                    <input
-                        type={'file'}
-                        onChange={(e) => onImageChange(e)}></input>
-                </form>
             </div>
         )
-    }, [
-        adminMutatePending.isLoading,
-        group.data,
-        handlePendingMember,
-        image,
-        isAdmin,
-        notImplementedError,
-    ])
+    }, [adminMutatePending.isLoading, group.data, handlePendingMember, isAdmin])
 
     if (group.isLoading) {
         return <div>Loading...</div>
@@ -271,31 +221,25 @@ const GroupPage = () => {
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
-                    <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4'>
+                    <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4 font-serif text-dark-1'>
                         <div className='col-span-1 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
                             {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
-                                    <p className='font-regular text-dark-1'>
+                                    <p className='font-regular '>
                                         {group.data?.description}
                                     </p>
-                                    <h1 className='text-dark-1 font-semibold'>
-                                        Skole
-                                    </h1>
-                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
+                                    <h1 className='font-semibold'>Skole</h1>
+                                    <div className='bg-purple-4 rounded-md w-fit px-4 font-sm'>
                                         {group.data?.tags?.school}
                                     </div>
-                                    <h1 className='text-dark-1 font-semibold'>
-                                        Fag
-                                    </h1>
-                                    <div className='bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'>
+                                    <h1 className='font-semibold'>Fag</h1>
+                                    <div className='bg-purple-4 rounded-md w-fit px-4 font-sm'>
                                         {group.data?.tags?.course}
                                     </div>
-                                    <h1 className='text-dark-1 font-semibold'>
-                                        Goals
-                                    </h1>
+                                    <h1 className='font-semibold'>Goals</h1>
                                     {group.data.tags?.goals?.map((tag) => (
                                         <div
-                                            className=' bg-purple-4 text-dark-1 rounded-md w-fit px-4 font-sm'
+                                            className=' bg-purple-4 rounded-md w-fit px-4 font-sm'
                                             key={tag}>
                                             {tag}
                                         </div>
@@ -303,10 +247,10 @@ const GroupPage = () => {
 
                                     {group.data.admin?.userId && (
                                         <>
-                                            <h1 className='text-dark-1 font-semibold'>
+                                            <h1 className='font-semibold'>
                                                 Admin
                                             </h1>
-                                            <div className='text-dark-1 font-regular w-fit'>
+                                            <div className=' font-regular w-fit'>
                                                 {group.data.admin.userName}
                                             </div>
                                         </>
@@ -320,7 +264,7 @@ const GroupPage = () => {
                                     {group.data.members.map((member, i) => (
                                         <div
                                             key={member.userId.toString()}
-                                            className='flex flex-row gap-2 bg-purple-5  rounded-sm w-full  p-2 text-dark-1'>
+                                            className='flex flex-row gap-2 bg-purple-5  rounded-sm w-full  p-2 '>
                                             <Image
                                                 src={member?.picture}
                                                 alt=''
@@ -414,6 +358,7 @@ export const getServerSideProps = async (
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
+            session,
         },
     }
 }

@@ -4,6 +4,7 @@ import TopNav from 'components/groups/TopNav'
 import { useGroup } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
@@ -30,6 +31,9 @@ const Settings = () => {
     const [confirmDeleteText, setConfirmDeleteText] = useState('')
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
+
+    const [image, setImage] = useState(null)
+    const [notImplementedError, setNotImplementedError] = useState<boolean>()
 
     const putFetch = async (object: MutateOptions) => {
         await fetch(`/api/groups/${routerQuery.group}`, {
@@ -111,6 +115,18 @@ const Settings = () => {
             return
         } else {
             changeGroupMutate.mutateAsync(mutateObj as MutateOptions)
+        }
+    }
+    const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const file = e.target.files[0]
+            if (file.type === 'image/png' || file.type === 'image/jpeg') {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    setImage(e.target.result)
+                }
+                reader.readAsDataURL(file)
+            }
         }
     }
 
@@ -284,6 +300,40 @@ const Settings = () => {
                                 }}>
                                 {renderSelectOptions()}
                             </select>
+
+                            <h1>Gruppebilde</h1>
+                            <form>
+                                <input
+                                    type={'file'}
+                                    onChange={(e) => onImageChange(e)}></input>
+                            </form>
+                            {image !== null && (
+                                <div className='flex flex-col gap-2 h-fit w-fit'>
+                                    <div className=''>
+                                        <Image
+                                            src={image}
+                                            alt=''
+                                            width={200}
+                                            height={200}></Image>
+                                    </div>
+                                    <div className='flex items-center gap-2'>
+                                        <FlatButton
+                                            className={'w-fit h-fit'}
+                                            onClick={() => {
+                                                setNotImplementedError(true)
+                                            }}>
+                                            Upload
+                                        </FlatButton>
+
+                                        {notImplementedError && (
+                                            <div>
+                                                Beklager, denne funksjonen er
+                                                ikke implementert enda :)
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
 
                             {successMessage !== '' && <>{successMessage}</>}
                             <div className='flex flex-col justify-end items-end gap-2'>
