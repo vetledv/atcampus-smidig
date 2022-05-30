@@ -129,6 +129,7 @@ const FindGroupPage = () => {
                                 <ChooseGroup
                                     search={search.data}
                                     refetch={refetch}
+                                    selectedGoals={goalsTags}
                                 />
                                 <RenderPaginationNav
                                     isPreviousData={search.isPreviousData}

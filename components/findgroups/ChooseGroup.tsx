@@ -2,23 +2,22 @@ import SubjectCard from '@/components/cards/SubjectCard'
 import FlatButton from '@/components/general/FlatButton'
 import { postReactQuery } from '@/hooks/useGroups'
 import { Group, PaginatedGroups } from '@/types/groups'
-import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
-import { GroupMembers } from '../general/Lib'
-import Image from 'next/image'
-import GroupTags from '../groups/settings/GroupTags'
 
 //TODO:       Highlight matching tags!!!!!!  Highlight matching tags!!!!!!  Highlight matching tags!!!!!!  Highlight matching tags!!!!!!
 
 const ChooseGroup = ({
     search,
     refetch,
+    selectedGoals,
 }: {
     search: PaginatedGroups
     refetch: () => void
+    selectedGoals: string[]
 }) => {
     const session = useSession()
     const router = useRouter()
@@ -152,17 +151,40 @@ const ChooseGroup = ({
                     <div className='w-full'>
                         {' '}
                         {/* Group subjects */}
-                        <p className='font-medium'>Tags</p>
+                        <p className='flex items-center'>
+                            <p className='mr-2 font-medium'>Tags:</p>
+                            <p className='mr-2 bg-purple-2 rounded-xl p-1 m-1 flex justify-center border border-dark-5 text-white cursor-default'>
+                                Matching
+                            </p>
+                            <p className='rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'>
+                                Not matching
+                            </p>
+                        </p>
                         <div className='border border-dark-5 rounded-standard bg-purple-5'>
                             <div className='m-1'>
                                 <div className='grid grid-cols-4'>
-                                    {group.tags.goals.map((goal) => (
-                                        <div key={goal.length}>
-                                            <p className='rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'>
-                                                {goal}
-                                            </p>
-                                        </div>
-                                    ))}
+                                    {group.tags.goals.map((goal) => {
+                                        let classes = ''
+                                        if (
+                                            selectedGoals
+                                                .map((tag) => tag.toLowerCase())
+                                                .includes(goal.toLowerCase())
+                                        ) {
+                                            classes = 'bg-purple-2 text-white'
+                                        }
+                                        return (
+                                            <div key={goal.length}>
+                                                <p
+                                                    className={
+                                                        classes +
+                                                        ' ' +
+                                                        'rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'
+                                                    }>
+                                                    {goal}
+                                                </p>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
