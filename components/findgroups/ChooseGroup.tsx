@@ -104,9 +104,33 @@ const ChooseGroup = ({
                                 clipRule='evenodd'></path>
                         </svg>
                     </button>
-                    <h1 className='text-2xl font-semibold'>
-                        {group.groupName}
-                    </h1>
+                    <div className='flex h-fit justify-between'>
+                        <p className='text-2xl font-semibold'>
+                            {group.groupName}
+                        </p>
+                        <p className='italic mt-1'>
+                            {group.private ? (
+                                <div className='flex'>
+                                    <p className=''>Privat gruppe</p>
+                                    <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='h-6 w-6'
+                                        fill='none'
+                                        viewBox='0 0 24 24'
+                                        stroke='currentColor'
+                                        strokeWidth={1.5}>
+                                        <path
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                                        />
+                                    </svg>
+                                </div>
+                            ) : (
+                                <div className='hidden'></div>
+                            )}
+                        </p>
+                    </div>
                     <div>
                         {' '}
                         {/* Group description */}
