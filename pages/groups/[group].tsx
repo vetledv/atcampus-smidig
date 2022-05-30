@@ -237,13 +237,15 @@ const GroupPage = () => {
                                         {group.data?.tags?.course}
                                     </div>
                                     <h1 className='font-semibold'>Goals</h1>
-                                    {group.data.tags?.goals?.map((tag) => (
-                                        <div
-                                            className=' bg-purple-4 rounded-md w-fit px-4 font-sm'
-                                            key={tag}>
-                                            {tag}
-                                        </div>
-                                    ))}
+                                    <div className='flex flex-wrap w-80'>
+                                        {group.data.tags?.goals?.map((tag) => (
+                                            <div
+                                                className='bg-purple-4 rounded-md w-fit px-4 font-sm m-1'
+                                                key={tag}>
+                                                {tag}
+                                            </div>
+                                        ))}
+                                    </div>
 
                                     {group.data.admin?.userId && (
                                         <>
