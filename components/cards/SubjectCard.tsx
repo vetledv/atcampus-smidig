@@ -51,9 +51,11 @@ const SubjectCard = ({
                 />
             </div>
             <div className={'px-6 w-3/4'}>
-                <div className='p-1 group-hover:text-purple-2'>
+                <div className='flex flex-col gap-1 p-1 group-hover:text-purple-2'>
                     <div className={'text-lg font-semibold'}>{groupName}</div>
-                    <div className='text-sm'>{subjectCode}</div>
+                    <div className='text-sm px-2 py-1 rounded-md w-fit bg-purple-5'>
+                        {subjectCode}
+                    </div>
                 </div>
                 {!compact ? (
                     <div className='py-1'>

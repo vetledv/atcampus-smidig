@@ -52,7 +52,7 @@ const Groups = () => {
             <Head>
                 <title>Kollokviegrupper </title>
             </Head>{' '}
-            <div className='flex flex-col gap-6 pb-6 w-full'>
+            <div className='flex flex-col gap-6 pb-6 w-full font-serif'>
                 <div className='flex flex-col w-full gap-2 bg-white'>
                     <div className='flex flex-row gap-2 p-6 items-center'>
                         <h1 className='text-2xl text-dark-1'>
@@ -84,7 +84,7 @@ const Groups = () => {
                                                     'https://image.shutterstock.com/image-vector/geography-open-book-hand-drawn-260nw-1782248465.jpg'
                                                 }
                                                 compact={true}
-                                                subjectCode={'PG63'}
+                                                subjectCode={group.tags.school}
                                                 members={group.members.length}
                                                 totalMembers={
                                                     group.members.length
@@ -117,16 +117,6 @@ const Groups = () => {
                                     <p>Not in any groups.</p>
                                 </div>
                             )}
-                            <div className='flex gap-1 pb-4'>
-                                <div>Mangler gruppen din?</div>
-                                <div
-                                    onClick={() => {
-                                        router.push('/groups/create')
-                                    }}
-                                    className='hover:text-purple-2 cursor-pointer'>
-                                    Lag en ny gruppe!
-                                </div>
-                            </div>
                             <PaginationNav
                                 isPreviousData={groups.isPreviousData}
                                 hasNextPage={hasNextPage}

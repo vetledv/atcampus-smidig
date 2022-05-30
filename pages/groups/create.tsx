@@ -236,9 +236,9 @@ const TestCreateGroup = () => {
                     </div>
                 </div>
             </div>
-            <div className='grid h-full min-h-screen grid-cols-1 bg-gray-50 p-4 lg:grid-cols-4'>
-                <div className='flex flex-col col-span-1 gap-2 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
-                    <div className='group flex border rounded outline-purple-2 focus-within:outline focus-within:outline-2 pr-4 items-center'>
+            <div className='grid h-full min-h-screen grid-cols-1 bg-dark-6 p-4 lg:grid-cols-4'>
+                <div className='flex flex-col col-span-1 gap-2 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl shadow shadow-purple-4'>
+                    <div className='group flex border rounded outline-purple-2 focus-within:outline focus-within:outline-2 pr-4 items-center '>
                         <input
                             className='w-full rounded-lg px-4 py-2 border-0 focus:outline-none bg-transparent'
                             type={'text'}

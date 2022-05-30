@@ -31,9 +31,6 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         .find({
             'tags.school': school,
             'tags.course': subject,
-            'tags.goals': {
-                $in: goals,
-            },
         })
         .toArray()
 
@@ -42,6 +39,9 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         .find({
             'tags.school': school,
             'tags.course': subject,
+            'tags.goals': {
+                $in: goals,
+            },
         })
         .toArray()
         .then((groups: Group[]) => {

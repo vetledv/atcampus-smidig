@@ -3,7 +3,7 @@ import React from 'react'
 
 const MobileNav = ({ toggle }: { toggle: () => void }) => {
     return (
-        <div className='flex flex-row items-end justify-around m-0 p-0 text-dark-1 bg-white visible xl:hidden fixed bottom-0 w-full z-[999]'>
+        <div className='flex flex-row items-end justify-around m-0 p-0 text-dark-1 bg-white visible xl:hidden fixed bottom-0 w-full z-50'>
             <div
                 className='flex flex-col items-center w-20 cursor-pointer'
                 onClick={toggle}>

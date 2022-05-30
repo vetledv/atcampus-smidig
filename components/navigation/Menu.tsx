@@ -27,23 +27,28 @@ export default function Menu() {
             </div>
             <MobileNav toggle={() => toggle()} />
             {open && (
-                <div className='fixed visible xl:invisible h-full w-10/12 bg-dark-6 z-[900] border border-dark-5'>
-                    <div className='flex w-full px-6 py-4 bg-white shadow justify-between items-center'>
-                        <div className='h-fit'>
-                            <Image
-                                tabIndex={0}
-                                aria-label={'atcampus logo'}
-                                width={139}
-                                height={29}
-                                src={'/atcampus-full-logo.svg'}
-                            />
+                <>
+                    <div className='fixed visible xl:invisible h-full w-10/12 bg-dark-6 z-[900] border border-dark-5'>
+                        <div className='flex w-full px-6 py-4 bg-white shadow justify-between items-center'>
+                            <div className='h-fit'>
+                                <Image
+                                    tabIndex={0}
+                                    aria-label={'atcampus logo'}
+                                    width={139}
+                                    height={29}
+                                    src={'/atcampus-full-logo.svg'}
+                                />
+                            </div>
+                            <XIcon
+                                onClick={() => toggle()}
+                                className='w-10 h-10 cursor-pointer'></XIcon>
                         </div>
-                        <XIcon
-                            onClick={() => toggle()}
-                            className='w-10 h-10 cursor-pointer'></XIcon>
+                        <MenuNavigation />
                     </div>
-                    <MenuNavigation />
-                </div>
+                    <div
+                        onClick={() => toggle()}
+                        className='bg-dark-1 w-full h-full fixed inset-0 z-50 opacity-40'></div>
+                </>
             )}
         </>
     )

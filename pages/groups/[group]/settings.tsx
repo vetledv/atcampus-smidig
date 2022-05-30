@@ -1,7 +1,8 @@
-import FlatButton from 'components/general/FlatButton'
-import GroupHeader from 'components/groups/GroupHeaderMobile'
-import TopNav from 'components/groups/TopNav'
-import { useGroup } from 'hooks/useGroups'
+import { useShowModal } from '@/hooks/useShowModal'
+import FlatButton from '@/components/general/FlatButton'
+import GroupHeader from '@/components/groups/GroupHeaderMobile'
+import TopNav from '@/components/groups/TopNav'
+import { useGroup } from '@/hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -24,12 +25,14 @@ const Settings = () => {
     //check if admin
     const isAdmin = session?.user.id === group?.data?.admin?.userId
 
+    const [showModal, setShowModal] = useShowModal()
+
     const [newGroupName, setNewGroupName] = useState('')
     const [newGroupDescription, setNewGroupDescription] = useState('')
     const [newMaxMembers, setNewMaxMembers] = useState(0)
-    const [showModal, setShowModal] = useState(false)
+
     const [confirmDeleteText, setConfirmDeleteText] = useState('')
-    const [confirmDelete, setConfirmDelete] = useState(false)
+    const [confirmDelete, setConfirmDelete] = useState(false) // true when text is equal to group name
     const [successMessage, setSuccessMessage] = useState('')
 
     const [image, setImage] = useState(null)
@@ -143,7 +146,7 @@ const Settings = () => {
     const renderDeleteModal = () => {
         return (
             <>
-                <div className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-[999]'>
+                <div className='w-fit h-fit fixed inset-0 z-[999] m-auto'>
                     <div className='flex p-6 w-full max-w-md h-full md:h-auto'>
                         <div className='flex flex-col bg-white rounded-lg shadow '>
                             <button
@@ -214,7 +217,12 @@ const Settings = () => {
                         </div>
                     </div>
                 </div>
-                <div className='bg-dark-1 w-full h-full absolute top-0 left-0 z-50 opacity-40'></div>
+                <div
+                    onClick={() => {
+                        console.log('123')
+                        setShowModal(false)
+                    }}
+                    className='bg-dark-1 w-full h-full fixed inset-0 z-[900] opacity-40'></div>
             </>
         )
     }

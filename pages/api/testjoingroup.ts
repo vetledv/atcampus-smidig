@@ -45,12 +45,14 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
             if (group.members.find((member) => member.userId === userId)) {
                 res.status(200).json({
                     message: 'Allerede medlem',
+                    private: false,
                 })
             } else if (
                 group.pendingMembers.find((member) => member.userId === userId)
             ) {
                 res.status(200).json({
                     message: 'Venter på godkjenning',
+                    private: true,
                 })
             }
 

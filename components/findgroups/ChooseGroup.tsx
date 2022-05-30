@@ -1,6 +1,7 @@
 import SubjectCard from '@/components/cards/SubjectCard'
 import FlatButton from '@/components/general/FlatButton'
 import { postReactQuery } from '@/hooks/useGroups'
+import { useShowModal } from '@/hooks/useShowModal'
 import { Group, PaginatedGroups } from '@/types/groups'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -19,7 +20,7 @@ const ChooseGroup = ({
 }) => {
     const session = useSession()
     const router = useRouter()
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useShowModal()
     const [selectedGroup, setSelectedGroup] =
         useState<PaginatedGroups['groups'][0]>(null)
 
@@ -29,7 +30,6 @@ const ChooseGroup = ({
             if (!showModal) {
                 setSelectedGroup(group)
                 setShowModal(true)
-                window.scrollTo(0, 0)
                 console.log(mutate.data)
             } else {
                 setSelectedGroup(null)
@@ -39,17 +39,17 @@ const ChooseGroup = ({
         }
     }
 
-    //disable scroll when modal is open
-    useEffect(() => {
-        if (showModal) {
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = 'auto'
-        }
-        return () => {
-            document.body.style.overflow = 'auto'
-        }
-    }, [showModal])
+    // //disable scroll when modal is open
+    // useEffect(() => {
+    //     if (showModal) {
+    //         document.body.style.overflow = 'hidden'
+    //     } else {
+    //         document.body.style.overflow = 'auto'
+    //     }
+    //     return () => {
+    //         document.body.style.overflow = 'auto'
+    //     }
+    // }, [showModal])
 
     const mutate = useMutation(
         (userInfo: any) => postReactQuery(`/api/testjoingroup`, userInfo),
@@ -86,22 +86,22 @@ const ChooseGroup = ({
     const renderModal = (group: PaginatedGroups['groups'][0]) => {
         return (
             <>
-                <div className='absolute z-[999] p-4 flex flex-col w-fit h-fit top-0 bottom-0 left-0 right-0 m-auto bg-white rounded shadow gap-2 text-dark-1'>
+                <div className='fixed z-[999] p-4 flex flex-col w-fit h-fit inset-0 m-auto bg-white rounded shadow gap-2 text-dark-1'>
                     <button
                         type='button'
                         onClick={() => setShowModal(false)}
-                        className='absolute -mt-4 right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm inline-flex items-center '>
+                        className='absolute -mt-4 p-2 right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm inline-flex items-center '>
                         {groupSvgs.exitModal}
                     </button>
-                    <div className='flex h-fit justify-between'>
+                    <div className='flex h-fit gap-2 items-baseline'>
                         <p className='text-2xl font-semibold'>
                             {group.groupName}
                         </p>
                         <p className='italic mt-1'>
                             {group.private ? (
                                 <div className='flex'>
-                                    <p className=''>Privat gruppe</p>
                                     {groupSvgs.privateGroup}
+                                    <p className=''>Privat gruppe</p>
                                 </div>
                             ) : (
                                 <div className='hidden'></div>
@@ -241,7 +241,7 @@ const ChooseGroup = ({
                 </div>
                 <div
                     onClick={() => handleClick(group)}
-                    className='bg-dark-1 w-full h-full absolute top-0 left-0 z-50 opacity-40'></div>
+                    className='bg-dark-1 w-full h-full fixed inset-0 z-50 opacity-40'></div>
             </>
         )
     }
@@ -318,7 +318,7 @@ export default ChooseGroup
 const groupSvgs = {
     exitModal: (
         <svg
-            className='w-5 h-5'
+            className='w-6 h-6'
             fill='currentColor'
             viewBox='0 0 20 20'
             xmlns='http://www.w3.org/2000/svg'>
