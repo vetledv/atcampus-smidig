@@ -27,7 +27,8 @@
       "@/lib/*": ["lib/*"],
       "@/hooks/*": ["hooks/*"],
       "@/types/*": ["types/*"],
-    }
+    },
+    "types": ["cypress"],
   },
   "include": [
     "next-env.d.ts",
@@ -35,6 +36,11 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "instrumented/**",
+    "coverage/**",
+    ".nyc_output/**",
+    "cypress/**",
+    ".next/**",
   ]
 }

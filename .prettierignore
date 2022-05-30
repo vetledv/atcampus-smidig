@@ -2,3 +2,12 @@
 node_modules/
 .next/
 tailwind.config.js
+coverage/
+.nyc_output/
+cypress/
+instrumented/
+.eslintrc.json
+cypress.json
+cypress.env.json
+*.config.js
+*.d.ts

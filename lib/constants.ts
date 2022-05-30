@@ -12,4 +12,3 @@ export const mongodb_auth_name = process.env.MONGODB_AUTH_NAME
 export const google_client_id = process.env.GOOGLE_CLIENT_ID
 export const google_client_secret = process.env.GOOGLE_CLIENT_SECRET
 export const google_refresh_token = process.env.GOOGLE_REFRESH_TOKEN
-export const imgur_client_id = process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID
