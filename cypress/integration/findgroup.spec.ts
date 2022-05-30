@@ -27,5 +27,26 @@ describe('Findgroup page', () => {
         cy.contains('Gå videre').click()
         cy.contains('Gå videre').click()
     })
+    it('Cypress find a group, then leave', () => {
+        cy.login()
+        cy.visit('/groups/findgroup')
+        cy.get('div').contains('Høyskolen Kristiania').click()
+        cy.get('div').contains('Gå videre').click()
+        cy.get('div').contains('Programmering').click()
+        cy.get('div').contains('Gå videre').click()
+        cy.get('div').contains('Bestått').click()
+        cy.get('div').contains('Ha det gøy').click()
+        cy.get('div').contains('Gå videre').click()
+        cy.get('div').contains('AtCampus Testgruppe').click()
+        cy.get('div').contains('Bli med').click()
+        cy.get('div').contains('Gå til gruppe').click()
+        cy.visit('/groups/6294a36c9fed637dcea27856')
+        cy.get('div').contains('Forlat gruppe').click()
+        cy.get('div').contains('Ja, jeg er sikker').click()
+        cy.visit('/')
+        cy.get('div').contains('Logout').click()
+        expect(cy.contains('Logout')).to.exist
+    })
 })
-export {}
+export { }
+
