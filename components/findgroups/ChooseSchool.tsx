@@ -33,13 +33,15 @@ const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
                     />
                 </div>
                 <div>
-                    <div className='ml-20 md:ml-7 font-semibold text-xl text-dark-1 p-4'>
+                    <div className='ml-20 md:ml-7 lg:ml-48 font-semibold text-xl text-dark-1 p-4'>
                         Populære institusjoner
                     </div>
-                    <SchoolMap
-                        setSelectedSchool={setSelectedSchool}
-                        selectedSchool={selectedSchool}
-                    />
+                    <div className='sm:w-screen'>
+                        <SchoolMap
+                            setSelectedSchool={setSelectedSchool}
+                            selectedSchool={selectedSchool}
+                        />
+                    </div>
                 </div>
             </div>
         </>
