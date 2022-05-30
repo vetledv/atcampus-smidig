@@ -273,7 +273,7 @@ const Settings = () => {
                                 <input
                                     className='w-full rounded-lg px-4 py-2 border-0 focus:outline-none bg-transparent'
                                     type={'text'}
-                                    maxLength={80}
+                                    maxLength={100}
                                     value={newGroupDescription}
                                     onChange={(e) => {
                                         setNewGroupDescription(e.target.value)
@@ -284,7 +284,7 @@ const Settings = () => {
                                     placeholder={group.data.description}
                                 />
                                 <p className='text-dark-3'>
-                                    {80 - newGroupDescription.length}
+                                    {100 - newGroupDescription.length}
                                 </p>
                             </div>
                             <p>Maks medlemmer</p>
