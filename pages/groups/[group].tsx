@@ -221,7 +221,7 @@ const GroupPage = () => {
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
-                    <div className='grid h-full min-h-screen grid-cols-1  p-4 lg:grid-cols-4 font-serif text-dark-1'>
+                    <div className='grid h-full min-h-fit grid-cols-1  p-4 lg:grid-cols-4 font-serif text-dark-1'>
                         <div className='col-span-1 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
                             {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
