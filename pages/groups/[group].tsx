@@ -229,18 +229,18 @@ const GroupPage = () => {
                                         {group.data?.description}
                                     </p>
                                     <h1 className='font-semibold'>Skole</h1>
-                                    <div className='bg-purple-4 rounded-md w-fit px-4 font-sm'>
+                                    <div className='bg-purple-2 rounded-md w-fit px-4 font-sm text-white'>
                                         {group.data?.tags?.school}
                                     </div>
                                     <h1 className='font-semibold'>Fag</h1>
-                                    <div className='bg-purple-4 rounded-md w-fit px-4 font-sm'>
+                                    <div className='bg-purple-2 rounded-md w-fit px-4 font-sm text-white'>
                                         {group.data?.tags?.course}
                                     </div>
                                     <h1 className='font-semibold'>Goals</h1>
                                     <div className='flex flex-wrap w-80'>
                                         {group.data.tags?.goals?.map((tag) => (
                                             <div
-                                                className='bg-purple-4 rounded-md w-fit px-4 font-sm m-1'
+                                                className='border border-dark-5 rounded-xl w-fit px-4 font-sm m-1'
                                                 key={tag}>
                                                 {tag}
                                             </div>
