@@ -206,10 +206,12 @@ const GroupPage = () => {
             </Head>
             {group.data && (
                 <>
-                    <TopNav
-                        groupId={group.data._id?.toString()}
-                        groupName={group.data.groupName}
-                    />
+                    <div className='hidden xl:block'>
+                        <TopNav
+                            groupId={group.data._id?.toString()}
+                            groupName={group.data.groupName}
+                        />
+                    </div>
                     <GroupHeader
                         leave={handleLeaveGroup}
                         group={group.data}
@@ -233,7 +235,7 @@ const GroupPage = () => {
                                             {group.data?.description}
                                         </p>
                                     </div>
-                                    <div className='flex pb-4 border-b'>
+                                    <div className='flex pb-4 border-b flex-wrap'>
                                         <div className='mr-2'>
                                             <div>
                                                 <h1 className='font-semibold'>
@@ -252,7 +254,7 @@ const GroupPage = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='ml-2'>
+                                        <div className='sm:ml-2 flex-wrap'>
                                             <h1 className='font-semibold'>
                                                 Goals
                                             </h1>

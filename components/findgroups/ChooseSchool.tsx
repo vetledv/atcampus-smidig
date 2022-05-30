@@ -24,14 +24,16 @@ const schools = [
 const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
     return (
         <>
-            <div className='flex flex-col'>
-                <FindGroupsFilter
-                    setSelectedSchool={setSelectedSchool}
-                    selectedSchool={selectedSchool}
-                    items={schools}
-                />
+            <div className='flex flex-col items-center'>
+                <div className='mr-32 xs:mr-0'>
+                    <FindGroupsFilter
+                        setSelectedSchool={setSelectedSchool}
+                        selectedSchool={selectedSchool}
+                        items={schools}
+                    />
+                </div>
                 <div>
-                    <div className='ml-7 font-semibold text-xl text-dark-1 p-4'>
+                    <div className='ml-20 md:ml-7 font-semibold text-xl text-dark-1 p-4'>
                         Populære institusjoner
                     </div>
                     <SchoolMap

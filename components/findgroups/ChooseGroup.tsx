@@ -125,12 +125,12 @@ const ChooseGroup = ({
                                 {group.members.length} / {group.maxMembers}
                             </p>
                         </div>
-                        <div className='grid md:grid-cols-3 grid-cols-2 border border-dark-5 rounded-standard bg-purple-5'>
+                        <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 border border-dark-5 rounded-standard bg-purple-5'>
                             {group.members.map((member) => (
                                 <div
                                     key={member.userId}
                                     className={
-                                        'flex items-center bg-purple-2 rounded-xl text-white m-1 cursor-default'
+                                        'flex items-center bg-purple-2 rounded-xl text-white m-1 cursor-default '
                                     }>
                                     <div className='px-2 mt-1'>
                                         <Image
@@ -163,7 +163,7 @@ const ChooseGroup = ({
                         </p>
                         <div className='border border-dark-5 rounded-standard bg-purple-5'>
                             <div className='m-1'>
-                                <div className='grid grid-cols-4'>
+                                <div className='grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2'>
                                     {group.tags.goals.map((goal) => {
                                         let classes = ''
                                         if (
@@ -179,7 +179,7 @@ const ChooseGroup = ({
                                                     className={
                                                         classes +
                                                         ' ' +
-                                                        'rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'
+                                                        'rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default whitespace-nowrap'
                                                     }>
                                                     {goal}
                                                 </p>
