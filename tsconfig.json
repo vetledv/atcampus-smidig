@@ -20,15 +20,31 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/components/*": ["components/*"],
-      "@/pages/*": ["pages/*"],
-      "@/pages/auth/*": ["pages/auth/*"],
-      "@/styles/*": ["styles/*"],
-      "@/lib/*": ["lib/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/types/*": ["types/*"],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/pages/*": [
+        "pages/*"
+      ],
+      "@/pages/auth/*": [
+        "pages/auth/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ]
     },
-    "types": ["cypress"],
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -36,11 +52,6 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "instrumented/**",
-    "coverage/**",
-    ".nyc_output/**",
-    "cypress/**",
-    ".next/**",
+    "node_modules"
   ]
 }

@@ -11,7 +11,6 @@ export default function TextInputField({
     icon = null,
     button = null,
     maxLength = null,
-    register = (any?: any) => {},
     value,
     className,
     onChange,
@@ -44,7 +43,6 @@ export default function TextInputField({
                         data-attr={id}
                         id={id}
                         type={type}
-                        {...register(name)}
                         value={value}
                         className={classes}
                         disabled={disabled}
