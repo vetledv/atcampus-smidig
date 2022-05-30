@@ -89,7 +89,7 @@ const ChooseGroup = ({
     const renderModal = (group: PaginatedGroups['groups'][0]) => {
         return (
             <>
-                <div className='absolute z-[999] p-4 flex flex-col w-fit h-fit top-0 bottom-0 left-0 right-0 m-auto bg-white rounded shadow gap-2'>
+                <div className='absolute z-[999] p-4 flex flex-col w-fit h-fit top-0 bottom-0 left-0 right-0 m-auto bg-white rounded shadow gap-2 text-dark-1'>
                     <button
                         type='button'
                         onClick={() => setShowModal(false)}
@@ -158,7 +158,7 @@ const ChooseGroup = ({
                                 <div className='grid grid-cols-4'>
                                     {group.tags.goals.map((goal) => (
                                         <div key={goal.length}>
-                                            <p className='bg-purple-2 rounded-xl text-white p-1 m-1 flex justify-center'>
+                                            <p className='rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'>
                                                 {goal}
                                             </p>
                                         </div>
