@@ -111,7 +111,7 @@ const ChooseGroup = ({
                     <div>
                         {' '}
                         {/* Group description */}
-                        <p className='font-medium'>Group Description</p>
+                        <p className='font-medium'>Gruppebeskrivelse</p>
                         <div className='border border-dark-5 rounded-standard bg-purple-5'>
                             <p className='m-2'>{group.description}</p>
                         </div>
@@ -120,7 +120,7 @@ const ChooseGroup = ({
                         {' '}
                         {/* Group members */}
                         <div className='flex'>
-                            <p className='font-medium mr-2'>Group Members</p>
+                            <p className='font-medium mr-2'>Gruppemedlemmer</p>
                             <p>
                                 {group.members.length} / {group.maxMembers}
                             </p>
@@ -153,12 +153,12 @@ const ChooseGroup = ({
                         {' '}
                         {/* Group subjects */}
                         <p className='flex items-center'>
-                            <p className='mr-2 font-medium'>Tags:</p>
+                            <p className='mr-2 font-medium'>Mål:</p>
                             <p className='mr-2 bg-purple-2 rounded-xl p-1 m-1 flex justify-center border border-dark-5 text-white cursor-default'>
-                                Matching
+                                Likt søk
                             </p>
                             <p className='rounded-xl p-1 m-1 flex justify-center border border-dark-5 cursor-default'>
-                                Not matching
+                                Ulikt søk
                             </p>
                         </p>
                         <div className='border border-dark-5 rounded-standard bg-purple-5'>
