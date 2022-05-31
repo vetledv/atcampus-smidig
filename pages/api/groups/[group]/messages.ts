@@ -11,18 +11,28 @@ messagesHandler.get(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
         const { group: groupId } = req.query
-        //TODO: limit and offset
-        const limit = parseInt(req.query.limit as string) || 10
-        const offset = parseInt(req.query.offset as string) || 0
+        const page = Number(req.query.page as string)
         await db
             .collection('group-messages')
             .findOne({ groupId: new ObjectId(groupId as string) })
             .then((messages: WithId<GroupMessages>) => {
-                const slicedMessages = messages.messages.slice(
-                    offset,
-                    offset + limit
-                )
-                res.status(200).json(messages)
+                const invertedMessages = messages.messages.reverse()
+                //messages to send 50 messages per page
+                const start = (page - 1) * 50
+                const end = start + 50
+                const messagesToSend = invertedMessages.slice(start, end)
+                //check if more pages, send next page
+                if (messages.messages.length > end) {
+                    res.send({
+                        messages: messagesToSend,
+                        next: page + 1,
+                    })
+                } else {
+                    res.send({
+                        messages: messagesToSend,
+                        next: null,
+                    })
+                }
             })
             .catch((err) => {
                 res.status(500).json({
@@ -36,7 +46,7 @@ messagesHandler.get(
 messagesHandler.post(
     async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         const { db } = await connectToDB()
-        const { messages: groupId } = req.query
+        const { group } = req.query
         const { userId, userName, message } = JSON.parse(
             req.body
         ) as SendMessage
@@ -44,7 +54,7 @@ messagesHandler.post(
         await db
             .collection('group-messages')
             .updateOne(
-                { groupId: new ObjectId(groupId as string) },
+                { groupId: new ObjectId(group as string) },
                 {
                     $push: {
                         messages: {
@@ -68,9 +78,9 @@ messagesHandler.post(
                     message: message,
                 }
                 res?.socket?.server?.io
-                    ?.in(groupId)
-                    .emit(`message ${groupId as string}`, emitObj)
-                console.log(`message ${groupId as string}`, emitObj)
+                    ?.in(group)
+                    .emit(`message ${group as string}`, emitObj)
+                console.log(`message ${group as string}`, emitObj)
                 res.status(201).json(messages)
             })
             .catch((err) => {

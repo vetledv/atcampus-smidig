@@ -1,5 +1,5 @@
 import FlatButton from 'components/general/FlatButton'
-import { fetchReactQuery, postJSON } from 'hooks/useGroups'
+import { postJSON } from 'hooks/useGroups'
 import { ObjectId } from 'mongodb'
 import { useSession } from 'next-auth/react'
 import {
@@ -9,18 +9,24 @@ import {
     SetStateAction,
     useCallback,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
 } from 'react'
-import { useInfiniteQuery, useQuery } from 'react-query'
+import { useInfiniteQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
-import { GroupMessages, Member, Message, SendMessage } from 'types/groups'
+import { Member, Message, SendMessage } from 'types/groups'
 import MessageItem from './MessageItem'
 
 interface ByDayMessage {
     day: Date
     messages: Message[]
+}
+
+interface InfMessages {
+    messages: Message[]
+    next: number | null
 }
 
 const MessagesWrapper = ({
@@ -43,21 +49,22 @@ const MessagesWrapper = ({
     setUserTyping: Dispatch<SetStateAction<string>>
 }) => {
     const session = useSession()
-    const messages = useQuery<GroupMessages, Error>(
-        ['messages', groupId],
-        fetchReactQuery(`groups/${groupId}/messages`)
-    )
 
-    const fetchProjects = ({ pageParam = 0 }) =>
-        fetch(`/api/groups/${groupId}/messages?page=` + pageParam)
-
-    const query = useInfiniteQuery<any, Error>('messages', fetchProjects, {
-        getNextPageParam: (lastPage, pages) => lastPage.nextPage,
+    const fetchData = async ({ pageParam = 1 }) => {
+        const response = await fetch(
+            `/api/groups/${groupId}/messages?page=` + pageParam
+        )
+        const data = await response.json()
+        return data
+    }
+    const query = useInfiniteQuery<InfMessages, Error>('messages', fetchData, {
+        getNextPageParam: (lastPage, pages) => lastPage.next,
     })
 
     const [msg, setMsg] = useState<string>('')
 
     const msgCont = useRef<HTMLDivElement>(null)
+    const previousScrollPos = useRef(0)
     const typingTimeout: { current: NodeJS.Timeout | null } = useRef(null)
     const stoppedTypeTimeout: { current: NodeJS.Timeout | null } = useRef(null)
 
@@ -68,14 +75,43 @@ const MessagesWrapper = ({
     }, [])
 
     const refetch = useCallback(() => {
-        messages.refetch()
-    }, [messages])
+        query.refetch()
+    }, [query])
 
+    //fetch more when scrolled to top
+    useEffect(() => {
+        if (msgCont.current) {
+            const messageCont = msgCont.current
+            const onScroll = () => {
+                if (messageCont.scrollTop === 0 && query.hasNextPage) {
+                    query.fetchNextPage()
+                }
+            }
+            messageCont.addEventListener('scroll', onScroll)
+
+            return () => {
+                messageCont.removeEventListener('scroll', onScroll)
+            }
+        }
+    }, [query, query.hasNextPage])
+
+    //socket events
     useEffect(() => {
         if (!socket.current) return
-        socket.current.on(`message ${groupId.toString()}`, () => {
+        socket.current.on(`message ${groupId.toString()}`, (data: Message) => {
             setUserTyping('')
             refetch()
+            const userPosInChat =
+                msgCont.current.scrollHeight -
+                msgCont.current.scrollTop -
+                msgCont.current.clientHeight
+            // scroll to bottom if user sent message and has not scrolled more than 300px
+            if (
+                data.from.userId === session?.data?.user?.id &&
+                userPosInChat < 300
+            ) {
+                msgCont.current.scrollTop = msgCont.current.scrollHeight
+            }
         })
         socket.current.on(`typing`, (data, user: string) => {
             console.log('typing:', data, 'user: ', user)
@@ -102,14 +138,6 @@ const MessagesWrapper = ({
         setUserTyping,
         socket,
     ])
-
-    useEffect(() => {
-        scrollToBottom()
-    }, [messages.data, scrollToBottom])
-
-    // messages.isRefetching && setTimeout(()=>scrollToBottom()
-
-    // , 1000)
 
     const handleUserTyping = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
@@ -166,7 +194,7 @@ const MessagesWrapper = ({
                     groupName,
                     groupId,
                 }
-                postJSON(`/api/groups/messages/${groupId}`, msgData)
+                postJSON(`/api/groups/${groupId}/messages`, msgData)
                 socket.current.emit(`message ${groupId}`, msgData)
                 setMsg('')
                 if (stoppedTypeTimeout.current) {
@@ -191,29 +219,31 @@ const MessagesWrapper = ({
         ]
     )
 
+    //filter messages by the day they were sent
     const messagesByDay = useMemo(() => {
         let messagesByDay: ByDayMessage[] = []
-        if (!messages.data) return messagesByDay
-        messages.data.messages.forEach((message) => {
-            const day = new Date(message.timestamp)
-            const index = messagesByDay.findIndex(
-                (m) =>
-                    m.day.getFullYear() === day.getFullYear() &&
-                    m.day.getMonth() === day.getMonth() &&
-                    m.day.getDate() === day.getDate()
-            )
-            if (index === -1) {
-                messagesByDay.push({
-                    day,
-                    messages: [message],
-                })
-            } else {
-                messagesByDay[index].messages.push(message)
-            }
+        if (!query.data) return messagesByDay
+        query.data.pages.forEach((page) => {
+            page.messages.forEach((message) => {
+                const day = new Date(message.timestamp)
+                const index = messagesByDay.findIndex(
+                    (m) =>
+                        m.day.getFullYear() === day.getFullYear() &&
+                        m.day.getMonth() === day.getMonth() &&
+                        m.day.getDate() === day.getDate()
+                )
+                if (index === -1) {
+                    messagesByDay.unshift({
+                        day,
+                        messages: [message],
+                    })
+                } else {
+                    messagesByDay[index].messages.unshift(message)
+                }
+            })
         })
-        console.log('messagesByDay:', messagesByDay)
         return messagesByDay
-    }, [messages.data])
+    }, [query.data])
 
     //dont show name/pic if previous message is from the same person and within the last 5 minutes
     const shouldShowName = useCallback((messages: Message[], index: number) => {
@@ -279,18 +309,45 @@ const MessagesWrapper = ({
         })
     }, [groupMembers, messagesByDay, shouldShowName])
 
-    if (messages.isLoading) {
-        return <div>Loading...</div>
-    }
-    if (messages.isError) {
-        return <div>Error</div>
+    //retain scroll pos when loading more messages
+    useMemo(() => {
+        if (msgCont.current) {
+            const cont = msgCont.current
+            previousScrollPos.current = cont.scrollHeight - cont.scrollTop
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query?.data?.pages?.length])
+
+    useLayoutEffect(() => {
+        if (msgCont?.current) {
+            const cont = msgCont.current
+            cont.scrollTop = cont.scrollHeight - previousScrollPos.current
+        }
+    }, [query?.data?.pages?.length])
+
+    //scroll to bottom the first time the component is rendered
+    useEffect(() => {
+        if (messagesByDay.length <= 1) {
+            scrollToBottom()
+        }
+    }, [messagesByDay.length, scrollToBottom])
+
+    if (query.isError) {
+        return <div>Error: {query.error.message}</div>
     }
     return (
         <div className='relative flex flex-col gap-2'>
             <div
                 ref={msgCont}
                 className='flex flex-col h-[500px] overflow-y-auto gap-1'>
-                <>{renderMessages()}</>
+                <>
+                    {query.isFetchingNextPage && (
+                        <div className='flex justify-center items-center'>
+                            <div>Laster inn...</div>
+                        </div>
+                    )}
+                    {renderMessages()}
+                </>
             </div>
             <div className='flex gap-2'>
                 <input

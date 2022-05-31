@@ -350,7 +350,7 @@ export const getServerSideProps = async (
         ['messages', group],
         async () => {
             const res = await fetch(
-                `${baseUrl}/api/groups/${group}/messages?offset=2&limit=5`
+                `${baseUrl}/api/groups/${group}/messages?page=1`
             )
             if (!res.ok) {
                 throw new Error(res.statusText)
