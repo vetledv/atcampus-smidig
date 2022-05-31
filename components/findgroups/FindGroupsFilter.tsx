@@ -7,18 +7,15 @@ export const FindGroupsFilter = ({
     selectedSchool,
 }) => {
     return (
-        <div className='flex justify-around items-start py-8'>
-            <div className='hidden md:block md:w-80 xl:w-96 mr-4'>
+        <div className='grid grid-cols-2'>
+            <div className='mr-2 hidden xl:block'>
                 <TopSearch title='Søk etter skole...' />
             </div>
-            <div className='w-40 md:w-80 xl:w-96 ml-4 xs:mr-32 mr-0'>
+            <div className='xl:ml-2 mb-4 xl:mb-0'>
                 <DropDown
-                    title={selectedSchool}
                     items={items}
-                    dropDownTitle={
-                        selectedSchool ? selectedSchool : 'Velg institusjon'
-                    }
                     setSelectedSchool={setSelectedSchool}
+                    dropDownTitle={selectedSchool}
                 />
             </div>
         </div>

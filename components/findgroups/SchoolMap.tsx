@@ -19,9 +19,10 @@ export const SchoolMap = ({ setSelectedSchool, selectedSchool }) => {
     ]
 
     return (
-        <>
+        <div>
             {schools.map((school: { id: Key | ObjectId; value: any }) => (
                 <div
+                    className='flex justify-center'
                     key={school.id.toString()}
                     onClick={() => {
                         setSelectedSchool(school.value)
@@ -32,6 +33,6 @@ export const SchoolMap = ({ setSelectedSchool, selectedSchool }) => {
                     />
                 </div>
             ))}
-        </>
+        </div>
     )
 }

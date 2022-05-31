@@ -21,13 +21,13 @@ function DropDown({
 
     return (
         /*May need to resize*/
-        <div className='rounded-standard border border-solid border-dark-5 min-w-fit max-w-screen-lg md:w-1/3 xl:w-1/4 bg-white absolute ease-in-out duration-200'>
+        <div className='rounded-standard border border-solid border-dark-5 w-11/12 xl:w-1/3 2xl:w-2/5 bg-white absolute'>
             <div tabIndex={0} onClick={() => toggle()}>
                 <div className='flex justify-between px-6 cursor-pointer items-center'>
-                    <div className='font-semibold text-lg text-purple-1 w-48 '>
+                    <div className='font-semibold text-lg text-purple-1 w-fit '>
                         {dropDownTitle}
                     </div>
-                    <ChevronDownIcon className='h-12 w-12 fill-gray-800' />
+                    <ChevronDownIcon className='h-11 w-11 fill-gray-800' />
                 </div>
             </div>
             {open && (
