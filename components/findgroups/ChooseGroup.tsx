@@ -39,18 +39,6 @@ const ChooseGroup = ({
         }
     }
 
-    // //disable scroll when modal is open
-    // useEffect(() => {
-    //     if (showModal) {
-    //         document.body.style.overflow = 'hidden'
-    //     } else {
-    //         document.body.style.overflow = 'auto'
-    //     }
-    //     return () => {
-    //         document.body.style.overflow = 'auto'
-    //     }
-    // }, [showModal])
-
     const mutate = useMutation(
         (userInfo: any) => postReactQuery(`/api/testjoingroup`, userInfo),
         {
@@ -250,12 +238,33 @@ const ChooseGroup = ({
         <>
             {showModal && selectedGroup && renderModal(selectedGroup)}
             <div className='m-4 text-dark-1'>
-                <div className='text-xl font-semibold'>
-                    Trykk for å bli å bli tatt til en gruppe
-                </div>
-                <div className='text-sm'>
-                    Noen grupper må gruppemedlemmer godkjennes
-                </div>
+                {search.groups.length > 0 ? (
+                    <>
+                        <div className='text-xl font-semibold'>
+                            Trykk for å bli å bli tatt til en gruppe
+                        </div>
+                        <div className='text-sm'>
+                            For private grupper må gruppemedlemmer godkjennes
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className='text-xl font-semibold'>
+                            Her var det ikke mye :(
+                        </div>
+                        <div className='text-sm flex gap-1'>
+                            <p>
+                                Vi fant ingen grupper med dine preferanser. Prøv
+                                igjen eller
+                            </p>
+                            <p
+                                onClick={() => router.push('/groups/create')}
+                                className='font-semibold hover:text-purple-2 cursor-pointer'>
+                                opprett en gruppe selv.
+                            </p>
+                        </div>
+                    </>
+                )}
             </div>
             <div className='w-fit grid grid-cols-1 lg:grid-cols-2'>
                 {search?.groups?.map((group, i) => (

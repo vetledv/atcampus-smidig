@@ -86,9 +86,6 @@ const FindGroupPage = () => {
         }
     }
 
-    if (search.isLoading) {
-        return <div>Loading</div>
-    }
     if (search.isError) {
         return <div>Error</div>
     }
@@ -126,19 +123,29 @@ const FindGroupPage = () => {
                         )}
                         {step === 3 && (
                             <>
-                                <ChooseGroup
-                                    search={search.data}
-                                    refetch={refetch}
-                                    selectedGoals={goalsTags}
-                                />
-                                <RenderPaginationNav
-                                    isPreviousData={search.isPreviousData}
-                                    hasNextPage={hasNextPage}
-                                    data={search.data}
-                                    page={page}
-                                    setPage={setPage}
-                                    limit={search.data.limit}
-                                />
+                                {search.isLoading ? (
+                                    <div className='min-w-[400px]'>
+                                        Laster inn...
+                                    </div>
+                                ) : (
+                                    <>
+                                        <ChooseGroup
+                                            search={search.data}
+                                            refetch={refetch}
+                                            selectedGoals={goalsTags}
+                                        />
+                                        <RenderPaginationNav
+                                            isPreviousData={
+                                                search.isPreviousData
+                                            }
+                                            hasNextPage={hasNextPage}
+                                            data={search.data}
+                                            page={page}
+                                            setPage={setPage}
+                                            limit={search.data.limit}
+                                        />
+                                    </>
+                                )}
                             </>
                         )}
                         <div className='m-6 flex flex-row-reverse justify-between'>
