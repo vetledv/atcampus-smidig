@@ -206,12 +206,10 @@ const GroupPage = () => {
             </Head>
             {group.data && (
                 <>
-                    <div className='hidden xl:block'>
-                        <TopNav
-                            groupId={group.data._id?.toString()}
-                            groupName={group.data.groupName}
-                        />
-                    </div>
+                    <TopNav
+                        groupId={group.data._id?.toString()}
+                        groupName={group.data.groupName}
+                    />
                     <GroupHeader
                         leave={handleLeaveGroup}
                         group={group.data}
