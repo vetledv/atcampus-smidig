@@ -52,10 +52,10 @@ const Groups = () => {
             <Head>
                 <title>Kollokviegrupper </title>
             </Head>{' '}
-            <div className='flex flex-col gap-6 pb-6 w-full font-serif'>
+            <div className='flex flex-col gap-6 w-full'>
                 <div className='flex flex-col w-full gap-2 bg-white'>
                     <div className='flex flex-row gap-2 p-6 items-center'>
-                        <h1 className='text-2xl text-dark-1'>
+                        <h1 className='text-xl md:text-2xl text-dark-1'>
                             Kollokviegrupper
                         </h1>
                         <div className='px-3 bg-dark-6 h-fit rounded-full'>
@@ -129,7 +129,7 @@ const Groups = () => {
                         </div>
                     )}
                     {activeTab === 1 && (
-                        <div className='flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 flex flex-row gap-4'>
+                        <div className='flex flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 gap-4'>
                             <FindOrCreateBtn
                                 onClick={() => {
                                     router.push('/groups/findgroup')

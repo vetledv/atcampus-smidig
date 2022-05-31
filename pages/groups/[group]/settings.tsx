@@ -312,6 +312,8 @@ const Settings = () => {
                             <form>
                                 <input
                                     type={'file'}
+                                    accept={'image/*'}
+                                    className=''
                                     onChange={(e) => onImageChange(e)}></input>
                             </form>
                             {image !== null && (
@@ -329,7 +331,7 @@ const Settings = () => {
                                             onClick={() => {
                                                 setNotImplementedError(true)
                                             }}>
-                                            Upload
+                                            Last opp
                                         </FlatButton>
 
                                         {notImplementedError && (

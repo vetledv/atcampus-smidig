@@ -225,49 +225,30 @@ const GroupPage = () => {
                         <div className='col-span-1 p-4 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
                             {activeTab === 0 && (
                                 <div className='flex flex-col gap-2'>
-                                    <div className='pb-4 border-b'>
-                                        <p className='font-semibold'>
-                                            Gruppebeskrivelse
-                                        </p>
-                                        <p className='font-regular border border-dark-5 rounded-standard bg-purple-5 p-2 w-fit mt-1'>
+                                    <div className='border-b'>
+                                        <p className='text-dark-3 p-2 w-fit'>
                                             {group.data?.description}
                                         </p>
                                     </div>
-                                    <div className='flex pb-4 border-b flex-wrap'>
-                                        <div className='mr-2'>
-                                            <div>
-                                                <h1 className='font-semibold'>
-                                                    Skole
-                                                </h1>
-                                                <div className='bg-purple-2 rounded-md w-fit px-4 font-sm text-white mt-1'>
-                                                    {group.data?.tags?.school}
-                                                </div>
-                                            </div>
-                                            <div className='mt-1'>
-                                                <h1 className='font-semibold'>
-                                                    Fag
-                                                </h1>
-                                                <div className='bg-purple-2 rounded-md w-fit px-4 font-sm text-white mt-1'>
-                                                    {group.data?.tags?.course}
-                                                </div>
-                                            </div>
+                                    <div>
+                                        <h1 className='font-semibold'>Skole</h1>
+                                        <div className='bg-purple-2 rounded-md w-fit px-4 py-1 font-sm text-white'>
+                                            {group.data?.tags?.school}
                                         </div>
-                                        <div className='sm:ml-2 flex-wrap'>
-                                            <h1 className='font-semibold'>
-                                                Goals
-                                            </h1>
-                                            <div className='flex flex-wrap w-80'>
-                                                {group.data.tags?.goals?.map(
-                                                    (tag) => (
-                                                        <div
-                                                            className='border border-dark-5 rounded-xl w-fit px-4 font-sm m-1'
-                                                            key={tag}>
-                                                            {tag}
-                                                        </div>
-                                                    )
-                                                )}
+                                    </div>
+                                    <h1 className='font-semibold'>Fag</h1>
+                                    <div className='bg-purple-2 rounded-md w-fit px-4 py-1 font-sm text-white'>
+                                        {group.data?.tags?.course}
+                                    </div>
+                                    <h1 className='font-semibold'>Goals</h1>
+                                    <div className='flex flex-wrap gap-2 w-1/2'>
+                                        {group.data.tags?.goals?.map((tag) => (
+                                            <div
+                                                className='border-2 border-purple-4 rounded-md w-fit px-4 font-sm'
+                                                key={tag}>
+                                                {tag}
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
 
                                     {group.data.admin?.userId && (
@@ -289,7 +270,7 @@ const GroupPage = () => {
                                     {group.data.members.map((member, i) => (
                                         <div
                                             key={member.userId.toString()}
-                                            className='flex flex-row gap-2 bg-purple-5 border border-dark-5 rounded-standard w-full  p-2 '>
+                                            className='flex flex-row gap-2  border-b border-purple-4 w-full p-2 '>
                                             <Image
                                                 src={member?.picture}
                                                 alt=''
