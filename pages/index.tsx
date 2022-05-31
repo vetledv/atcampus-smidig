@@ -6,6 +6,7 @@ import {
     useSession,
 } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import FlatButton from '@/components/general/FlatButton'
 
 const HomePage: NextPage = () => {
     const { data: session, status } = useSession()
@@ -25,7 +26,8 @@ const HomePage: NextPage = () => {
     return (
         <>
             <h1>Home</h1>
-            <button onClick={() => signOut()}>Logout</button>
+            <div className='grid grid-cols-2 gap-12 md:grid-cols-8 md:gap-2 lg:text-center lg:grid-col-10 lg:gap-5 '>
+            <FlatButton className='flex col-start-6 col-end-6 col col-span-2 justify-center lg:text-center' onClick={() => signOut()}>Logout</FlatButton></div>
             <>dont add shit here</>
         </>
     )
