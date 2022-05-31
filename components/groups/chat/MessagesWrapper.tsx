@@ -13,7 +13,7 @@ import {
     useRef,
     useState,
 } from 'react'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery, useQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { GroupMessages, Member, Message, SendMessage } from 'types/groups'
 import MessageItem from './MessageItem'
@@ -48,10 +48,18 @@ const MessagesWrapper = ({
         fetchReactQuery(`groups/${groupId}/messages`)
     )
 
+    const fetchProjects = ({ pageParam = 0 }) =>
+        fetch(`/api/groups/${groupId}/messages?page=` + pageParam)
+
+    const query = useInfiniteQuery<any, Error>('messages', fetchProjects, {
+        getNextPageParam: (lastPage, pages) => lastPage.nextPage,
+    })
+
     const [msg, setMsg] = useState<string>('')
 
     const msgCont = useRef<HTMLDivElement>(null)
-    const timeout: { current: NodeJS.Timeout | null } = useRef(null)
+    const typingTimeout: { current: NodeJS.Timeout | null } = useRef(null)
+    const stoppedTypeTimeout: { current: NodeJS.Timeout | null } = useRef(null)
 
     const scrollToBottom = useCallback(() => {
         if (msgCont.current) {
@@ -121,16 +129,29 @@ const MessagesWrapper = ({
             ) {
                 return
             }
-            const typingTimeout = setTimeout(() => {
+
+            if (typingTimeout.current) {
+                return
+            } else {
+                typingTimeout.current = setTimeout(() => {
+                    socket.current.emit(
+                        `typing`,
+                        groupId,
+                        session?.data.user?.name
+                    )
+                    typingTimeout.current = null
+                }, 1000)
+            }
+
+            stoppedTypeTimeout.current &&
+                clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
+            stoppedTypeTimeout.current = setTimeout(() => {
                 socket.current.emit(
                     `stopped-typing`,
                     groupId,
                     session?.data.user?.name
                 )
             }, 4000)
-            socket.current.emit(`typing`, groupId, session?.data.user?.name)
-            timeout.current && clearTimeout(timeout.current as NodeJS.Timeout)
-            timeout.current = typingTimeout as NodeJS.Timeout
         },
         [groupId, session?.data.user?.name, socket]
     )
@@ -148,9 +169,9 @@ const MessagesWrapper = ({
                 postJSON(`/api/groups/messages/${groupId}`, msgData)
                 socket.current.emit(`message ${groupId}`, msgData)
                 setMsg('')
-                if (timeout.current) {
+                if (stoppedTypeTimeout.current) {
                     console.log('clearing timeout')
-                    clearTimeout(timeout.current as NodeJS.Timeout)
+                    clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
                     socket.current.emit(
                         `stopped-typing ${groupId}`,
                         groupId,

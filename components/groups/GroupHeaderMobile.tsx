@@ -4,7 +4,6 @@ import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { Group } from 'types/groups'
 
 const GroupHeader = ({

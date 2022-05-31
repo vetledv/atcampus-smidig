@@ -1,7 +1,7 @@
-import Menu from 'components/navigation/Menu'
+import Menu from '@/components/navigation/Menu'
 import { useRouter } from 'next/router'
-import Footer from './general/Footer'
-import Header from './navigation/Header'
+import Footer from '@/components/general/Footer'
+import Header from '@/components/navigation/Header'
 
 const AppLayout = ({ children }) => {
     const { asPath } = useRouter()

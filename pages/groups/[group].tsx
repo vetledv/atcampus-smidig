@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
 import SocketIOClient, { Socket } from 'socket.io-client'
-
 import FlatButton from '@/components/general/FlatButton'
 import GroupHeader from '@/components/groups/GroupHeaderMobile'
 import Tabs from '@/components/groups/Tabs'

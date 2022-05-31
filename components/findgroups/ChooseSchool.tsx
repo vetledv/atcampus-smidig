@@ -1,11 +1,6 @@
 import { FindGroupsFilter } from './FindGroupsFilter'
 import { SchoolMap } from './SchoolMap'
 
-interface State {
-    step: Number
-    stepTitle: String
-}
-
 const schools = [
     {
         id: 1,

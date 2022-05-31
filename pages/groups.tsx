@@ -1,14 +1,14 @@
-import { fetchReactQuery } from '@/hooks/useGroups'
-import SubjectCard from 'components/cards/SubjectCard'
-import FindOrCreateBtn from 'components/findgroups/FindOrCreateBtn'
-import Tabs from 'components/groups/Tabs'
 import { getSession, GetSessionParams } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { dehydrate, QueryClient, useQuery, useQueryClient } from 'react-query'
-import { PaginatedGroups } from 'types/groups'
-import PaginationNav from './../components/PaginationNav'
+import { fetchReactQuery } from '@/hooks/useGroups'
+import SubjectCard from '@/components/cards/SubjectCard'
+import FindOrCreateBtn from '@/components/findgroups/FindOrCreateBtn'
+import Tabs from '@/components/groups/Tabs'
+import { PaginatedGroups } from '@/types/groups'
+import PaginationNav from '@/components/PaginationNav'
 
 const Groups = () => {
     const queryClient = useQueryClient()
@@ -69,7 +69,7 @@ const Groups = () => {
                 </div>
                 <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4'>
                     {activeTab === 0 && groups.data && (
-                        <div className='col-span-1 xl:col-span-3 gap-4 min-h-[600px] flex flex-col justify-between bg-pink-200 max-w-5xl'>
+                        <div className='col-span-1 xl:col-span-3 gap-4 min-h-[600px] flex flex-col justify-between max-w-5xl'>
                             <div className='grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3'>
                                 {groups.data?.groups?.map((group) => (
                                     <div key={group._id.toString()}>
