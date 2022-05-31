@@ -69,7 +69,7 @@ const Groups = () => {
                 </div>
                 <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4'>
                     {activeTab === 0 && groups.data && (
-                        <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[600px] mb-8 justify-between h-full max-w-5xl'>
+                        <div className='col-span-1 xl:col-span-3 gap-4 min-h-[600px] flex flex-col justify-between bg-pink-200 max-w-5xl'>
                             <div className='grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3'>
                                 {groups.data?.groups?.map((group) => (
                                     <div key={group._id.toString()}>
