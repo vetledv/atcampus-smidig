@@ -23,6 +23,7 @@ module.exports = {
                 'gradient-right': '#7C7FCA',
                 'icon-yellow': '#FFD66B',
                 'icon-red': '#FFA1A1',
+                'logout-red': '#C83700',
             },
             borderRadius: {
                 standard: '7px',
