@@ -67,17 +67,14 @@ const Groups = () => {
                         setActiveTab={setActiveTab}
                         tabs={tabs}></Tabs>
                 </div>
-                <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4 h-full flex-grow'>
+                <div className='px-4 md:px-6 grid grid-cols-1 xl:grid-cols-4'>
                     {activeTab === 0 && groups.data && (
                         <div className=' col-span-1 xl:col-span-3 flex flex-col gap-4 min-h-[600px] justify-between h-full max-w-5xl'>
-                            <div className='flex flex-wrap'>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3'>
                                 {groups.data?.groups?.map((group) => (
-                                    <div
-                                        className='md:basis-1/2 sm:basis-1/2 w-full 2xl:basis-1/3 xs:basis-auto '
-                                        key={group._id.toString()}>
+                                    <div key={group._id.toString()}>
                                         <div className='pr-2 pb-2 h-full'>
                                             <SubjectCard
-                                                key={group.groupName}
                                                 groupName={group.groupName}
                                                 groupId={group._id}
                                                 groupImage={
@@ -129,7 +126,7 @@ const Groups = () => {
                         </div>
                     )}
                     {activeTab === 1 && (
-                        <div className='flex flex-wrap justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 gap-4'>
+                        <div className='flex flex-col sm:flex-row justify-center sm:justify-start py-3 col-span-1 lg:col-span-3 gap-4'>
                             <FindOrCreateBtn
                                 onClick={() => {
                                     router.push('/groups/findgroup')
