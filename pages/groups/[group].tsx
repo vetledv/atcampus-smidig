@@ -16,9 +16,7 @@ import { baseUrl } from '@/lib/constants'
 import { Group, GroupMessages, Member } from '@/types/groups'
 import MemberItem from '@/components/groups/MemberItem'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
-const MessagesWrapper = dynamic(
-    () => import('../../components/groups/chat/MessagesWrapper')
-)
+const Chat = dynamic(() => import('../../components/groups/chat/Chat'))
 
 interface AddMutateObj {
     groupId: ObjectId
@@ -276,7 +274,7 @@ const GroupPage = () => {
                                 ))}
                             {activeTab === 2 && (
                                 <div className='col-span-1 lg:col-span-3'>
-                                    <MessagesWrapper
+                                    <Chat
                                         groupId={group.data._id}
                                         groupName={group.data.groupName}
                                         groupMembers={group.data.members}

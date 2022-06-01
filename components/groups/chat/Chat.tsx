@@ -30,7 +30,7 @@ interface InfMessages {
     next: number | null
 }
 
-const MessagesWrapper = ({
+const Chat = ({
     groupId,
     groupName,
     groupMembers,
@@ -378,4 +378,4 @@ const MessagesWrapper = ({
     )
 }
 
-export default MessagesWrapper
+export default Chat
