@@ -1,10 +1,8 @@
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import {
     google_client_id,
     google_client_secret,
     secret_key,
 } from 'lib/constants'
-import { connectToDB } from 'lib/mongodb'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
@@ -44,7 +42,7 @@ export default NextAuth({
     callbacks: {
         async session({ session, token }) {
             session.accessToken = token.accessToken
-            session.user = token.user
+            session.user = token.user as any
             // console.log('SESSION: ', session)
             //console.log('TOKEN:', token)
             return session

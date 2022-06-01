@@ -1,6 +1,12 @@
 import SubjectCardCompact from 'components/cards/SubjectCardCompact'
 
-const FindClassPage = ({ setSelectedSubject, selectedSubject }) => {
+const FindClassPage = ({
+    setSelectedSubject,
+    selectedSubject,
+}: {
+    setSelectedSubject: (subject: string) => void
+    selectedSubject: string
+}) => {
     const classes = [
         {
             id: 1,

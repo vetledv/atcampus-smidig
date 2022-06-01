@@ -16,7 +16,13 @@ const schools = [
     },
 ]
 
-const ChooseSchool = ({ setSelectedSchool, selectedSchool }) => {
+const ChooseSchool = ({
+    setSelectedSchool,
+    selectedSchool,
+}: {
+    setSelectedSchool: (school: string) => void
+    selectedSchool: string
+}) => {
     return (
         <>
             <div className='mr-32 xs:mr-0 pb-4'>

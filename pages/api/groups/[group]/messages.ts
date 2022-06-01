@@ -15,23 +15,27 @@ messagesHandler.get(
         await db
             .collection('group-messages')
             .findOne({ groupId: new ObjectId(groupId as string) })
-            .then((messages: WithId<GroupMessages>) => {
-                const invertedMessages = messages.messages.reverse()
-                //messages to send 50 messages per page
-                const start = (page - 1) * 50
-                const end = start + 50
-                const messagesToSend = invertedMessages.slice(start, end)
-                //check if more pages, send next page
-                if (messages.messages.length > end) {
-                    res.send({
-                        messages: messagesToSend,
-                        next: page + 1,
-                    })
+            .then((messages) => {
+                if (!messages) {
+                    res.status(200).json({ messages: [] })
                 } else {
-                    res.send({
-                        messages: messagesToSend,
-                        next: null,
-                    })
+                    const invertedMessages = messages.messages.reverse()
+                    //messages to send 50 messages per page
+                    const start = (page - 1) * 50
+                    const end = start + 50
+                    const messagesToSend = invertedMessages.slice(start, end)
+                    //check if more pages, send next page
+                    if (messages.messages.length > end) {
+                        res.send({
+                            messages: messagesToSend,
+                            next: page + 1,
+                        })
+                    } else {
+                        res.send({
+                            messages: messagesToSend,
+                            next: null,
+                        })
+                    }
                 }
             })
             .catch((err) => {

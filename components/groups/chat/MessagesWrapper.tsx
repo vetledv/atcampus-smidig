@@ -16,6 +16,7 @@ import {
 } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import { Member, Message, SendMessage } from 'types/groups'
 import MessageItem from './MessageItem'
 
@@ -43,7 +44,7 @@ const MessagesWrapper = ({
     groupName: string
     groupMembers: Member[]
     connected: boolean
-    socket: MutableRefObject<Socket>
+    socket: MutableRefObject<Socket<DefaultEventsMap, DefaultEventsMap> | null>
     activeTab: number
     userTyping: string
     setUserTyping: Dispatch<SetStateAction<string>>
@@ -101,15 +102,13 @@ const MessagesWrapper = ({
         socket.current.on(`message ${groupId.toString()}`, (data: Message) => {
             setUserTyping('')
             refetch()
-            const userPosInChat =
-                msgCont.current.scrollHeight -
-                msgCont.current.scrollTop -
-                msgCont.current.clientHeight
+            const userPosInChat = msgCont.current
+                ? msgCont.current.scrollHeight -
+                  msgCont.current.scrollTop -
+                  msgCont.current.clientHeight
+                : 0
             // scroll to bottom if user sent message and has not scrolled more than 300px
-            if (
-                data.from.userId === session?.data?.user?.id &&
-                userPosInChat < 300
-            ) {
+            if (userPosInChat < 300 && msgCont.current) {
                 msgCont.current.scrollTop = msgCont.current.scrollHeight
             }
         })
@@ -134,7 +133,7 @@ const MessagesWrapper = ({
         activeTab,
         groupId,
         refetch,
-        session.data.user.id,
+        session.data?.user.id,
         setUserTyping,
         socket,
     ])
@@ -162,10 +161,10 @@ const MessagesWrapper = ({
                 return
             } else {
                 typingTimeout.current = setTimeout(() => {
-                    socket.current.emit(
+                    socket.current?.emit(
                         `typing`,
                         groupId,
-                        session?.data.user?.name
+                        session.data?.user?.name
                     )
                     typingTimeout.current = null
                 }, 1000)
@@ -174,33 +173,34 @@ const MessagesWrapper = ({
             stoppedTypeTimeout.current &&
                 clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
             stoppedTypeTimeout.current = setTimeout(() => {
-                socket.current.emit(
+                socket.current?.emit(
                     `stopped-typing`,
                     groupId,
-                    session?.data.user?.name
+                    session.data?.user?.name
                 )
             }, 4000)
         },
-        [groupId, session?.data.user?.name, socket]
+        [groupId, session.data?.user.name, socket]
     )
 
     const sendMessage = useCallback(
         (message: string) => {
             if (session.status === 'authenticated' && msg.length > 0) {
+                if (session.data.user === null || undefined) return
                 const msgData: SendMessage = {
-                    userId: session.data.user.id,
-                    userName: session.data.user.name,
+                    userId: session.data.user.id as string,
+                    userName: session.data.user.name as string,
                     message: message,
                     groupName,
                     groupId,
                 }
                 postJSON(`/api/groups/${groupId}/messages`, msgData)
-                socket.current.emit(`message ${groupId}`, msgData)
+                socket.current?.emit(`message ${groupId}`, msgData)
                 setMsg('')
                 if (stoppedTypeTimeout.current) {
                     console.log('clearing timeout')
                     clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
-                    socket.current.emit(
+                    socket.current?.emit(
                         `stopped-typing ${groupId}`,
                         groupId,
                         session?.data.user?.name
@@ -212,8 +212,7 @@ const MessagesWrapper = ({
             groupId,
             groupName,
             msg.length,
-            session.data.user.id,
-            session.data.user.name,
+            session.data?.user,
             session.status,
             socket,
         ]
@@ -341,11 +340,11 @@ const MessagesWrapper = ({
                 ref={msgCont}
                 className='flex flex-col h-[500px] overflow-y-auto gap-1'>
                 <>
-                    {query.isFetchingNextPage && (
+                    {/* {query.isFetchingNextPage && (
                         <div className='flex justify-center items-center'>
                             <div>Laster inn...</div>
                         </div>
-                    )}
+                    )} */}
                     {renderMessages()}
                 </>
             </div>

@@ -5,6 +5,10 @@ export const FindGroupsFilter = ({
     items,
     setSelectedSchool,
     selectedSchool,
+}: {
+    items: Array<{ id: number; value: string }>
+    setSelectedSchool: (school: string) => void
+    selectedSchool: string
 }) => {
     return (
         <div className='grid grid-cols-2'>

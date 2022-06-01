@@ -2,7 +2,13 @@ import { ObjectId } from 'mongodb'
 import { Key } from 'react'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
-export const SchoolMap = ({ setSelectedSchool, selectedSchool }) => {
+export const SchoolMap = ({
+    setSelectedSchool,
+    selectedSchool,
+}: {
+    setSelectedSchool: (schoolName: string) => void
+    selectedSchool: string
+}) => {
     const schools = [
         {
             id: 1,

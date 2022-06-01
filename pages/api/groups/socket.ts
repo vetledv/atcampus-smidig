@@ -20,7 +20,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
         io.on('connection', (socket) => {
             var query = socket.handshake.query
-            var room = query.room
+            var room = query.room as string
             console.log('ROOM: ', room)
             let typing = false
 

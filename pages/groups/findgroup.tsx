@@ -35,10 +35,12 @@ const FindGroupPage = () => {
         search.refetch()
     }, [search])
 
-    const hasNextPage = useMemo(
-        () => search.data?.totalPages > page,
-        [search.data, page]
-    )
+    const hasNextPage = useMemo(() => {
+        if (!search.data) {
+            return false
+        }
+        return search.data.totalPages > page
+    }, [search.data, page])
 
     const handleStep = () => {
         if (step === 0) {
@@ -129,21 +131,25 @@ const FindGroupPage = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        <ChooseGroup
-                                            search={search.data}
-                                            refetch={refetch}
-                                            selectedGoals={goalsTags}
-                                        />
-                                        <RenderPaginationNav
-                                            isPreviousData={
-                                                search.isPreviousData
-                                            }
-                                            hasNextPage={hasNextPage}
-                                            data={search.data}
-                                            page={page}
-                                            setPage={setPage}
-                                            limit={search.data.limit}
-                                        />
+                                        {search.data && (
+                                            <>
+                                                <ChooseGroup
+                                                    search={search.data}
+                                                    refetch={refetch}
+                                                    selectedGoals={goalsTags}
+                                                />
+                                                <RenderPaginationNav
+                                                    isPreviousData={
+                                                        search.isPreviousData
+                                                    }
+                                                    hasNextPage={hasNextPage}
+                                                    data={search.data}
+                                                    page={page}
+                                                    setPage={setPage}
+                                                    limit={search.data!.limit}
+                                                />
+                                            </>
+                                        )}
                                     </>
                                 )}
                             </>

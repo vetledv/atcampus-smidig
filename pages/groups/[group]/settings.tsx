@@ -35,7 +35,7 @@ const Settings = () => {
     const [confirmDelete, setConfirmDelete] = useState(false) // true when text is equal to group name
     const [successMessage, setSuccessMessage] = useState('')
 
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState<string | null>(null)
     const [notImplementedError, setNotImplementedError] = useState<boolean>()
 
     const putFetch = async (object: MutateOptions) => {
@@ -69,7 +69,7 @@ const Settings = () => {
                 group.refetch()
                 setNewGroupName('')
                 setNewGroupDescription('')
-                setNewMaxMembers(group.data.maxMembers)
+                setNewMaxMembers(group.data!.maxMembers)
                 setSuccessMessage('Gruppen ble endret!')
             },
         }
@@ -84,7 +84,7 @@ const Settings = () => {
 
     useEffect(() => {
         if (!showModal) return
-        if (confirmDeleteText === group.data.groupName) {
+        if (confirmDeleteText === group.data?.groupName) {
             setConfirmDelete(true)
         } else {
             setConfirmDelete(false)
@@ -93,7 +93,7 @@ const Settings = () => {
 
     const renderSelectOptions = () => {
         let maxMem: JSX.Element[] = []
-        for (let i = group.data.members.length; i < 12; i++) {
+        for (let i = group.data?.members.length || 0; i < 12; i++) {
             maxMem.push(
                 <option key={i} value={i + 1} label={`${i + 1}`}></option>
             )
@@ -109,7 +109,7 @@ const Settings = () => {
         if (newGroupDescription !== '') {
             mutateObj.groupDescription = newGroupDescription
         }
-        if (newMaxMembers !== group.data.maxMembers) {
+        if (newMaxMembers !== group.data?.maxMembers) {
             mutateObj.maxMembers = newMaxMembers
         }
         if (Object.keys(mutateObj).length === 0) {
@@ -125,7 +125,7 @@ const Settings = () => {
             if (file.type === 'image/png' || file.type === 'image/jpeg') {
                 const reader = new FileReader()
                 reader.onload = (e) => {
-                    setImage(e.target.result)
+                    setImage((e.target?.result as string) || null)
                 }
                 reader.readAsDataURL(file)
             }
@@ -144,6 +144,7 @@ const Settings = () => {
     }, [newGroupName, newGroupDescription, newMaxMembers])
 
     const renderDeleteModal = () => {
+        if (!group.data) return null
         return (
             <>
                 <div className='w-fit h-fit fixed inset-0 z-[999] m-auto'>
@@ -233,24 +234,22 @@ const Settings = () => {
 
     return (
         <>
-            <Head>
-                <title>{group.data?.groupName} - Innstillinger</title>
-            </Head>
-
-            <TopNav
-                groupId={group.data._id.toString()}
-                groupName={group.data.groupName}
-                settings={true}
-            />
-            <GroupHeader
-                leave={null}
-                group={group.data}
-                activeMembers={0}
-                isAdmin={isAdmin}
-                isInSettings={true}
-            />
             {group.data && (
                 <>
+                    <Head>
+                        <title>{group.data?.groupName} - Innstillinger</title>
+                    </Head>
+                    <TopNav
+                        groupId={group.data._id.toString()}
+                        groupName={group.data.groupName}
+                        settings={true}
+                    />
+                    <GroupHeader
+                        group={group.data}
+                        activeMembers={0}
+                        isAdmin={isAdmin}
+                        isInSettings={true}
+                    />
                     <div className='grid h-full grid-cols-1 p-4 lg:grid-cols-4 text-dark-1'>
                         <div className='flex flex-col col-span-1 p-4 gap-2 lg:col-span-3 bg-white border border-purple-4 rounded-lg h-fit max-w-5xl'>
                             <p className='text-lg font-semibold pb-2'>

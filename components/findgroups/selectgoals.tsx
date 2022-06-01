@@ -6,6 +6,11 @@ const SelectGoals = ({
     selectedGoal,
     selectedPreferences,
     setSelectedPreferances,
+}: {
+    setSelectedGoal: Function
+    selectedGoal: Array<String>
+    selectedPreferences: Array<String>
+    setSelectedPreferances: Function
 }) => {
     return (
         <div className='bg-white w-full lg:h-96'>

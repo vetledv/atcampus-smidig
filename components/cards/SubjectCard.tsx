@@ -60,8 +60,8 @@ const SubjectCard = ({
                 {!compact ? (
                     <div className='py-1'>
                         <GroupMembers
-                            members={members}
-                            totalMembers={totalMembers}
+                            members={members || 0}
+                            totalMembers={totalMembers || 0}
                             color={'dark-1'}
                         />
                         {children}

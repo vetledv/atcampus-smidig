@@ -50,7 +50,7 @@ const Login = ({ providers }: { providers: GetServerSideProps }) => {
 }
 export default Login
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     const providers = await getProviders()
     return {
         props: {

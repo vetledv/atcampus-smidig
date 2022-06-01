@@ -21,8 +21,9 @@ const ChooseGroup = ({
     const session = useSession()
     const router = useRouter()
     const [showModal, setShowModal] = useShowModal()
-    const [selectedGroup, setSelectedGroup] =
-        useState<PaginatedGroups['groups'][0]>(null)
+    const [selectedGroup, setSelectedGroup] = useState<
+        PaginatedGroups['groups'][0] | null
+    >(null)
 
     //clicking modal
     const handleClick = (group: PaginatedGroups['groups'][0]) => {
@@ -55,9 +56,9 @@ const ChooseGroup = ({
     const handleJoin = async (group: Group) => {
         mutate.mutateAsync({
             groupId: group._id,
-            userId: session.data.user.id,
-            userName: session.data.user.name,
-            picture: session.data.user.image,
+            userId: session.data?.user.id,
+            userName: session.data?.user.name,
+            picture: session.data?.user.image,
         })
     }
 
@@ -65,7 +66,7 @@ const ChooseGroup = ({
     const isPending = (group: Group) => {
         if (group.pendingMembers) {
             return group.pendingMembers.some(
-                (member) => member.userId.toString() === session.data.user.id
+                (member) => member.userId.toString() === session.data?.user.id
             )
         }
         return false

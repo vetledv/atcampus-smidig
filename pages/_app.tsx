@@ -5,7 +5,13 @@ import { SessionProvider } from 'next-auth/react'
 import '../styles/globals.css'
 import AppLayout from 'components/AppLayout'
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({
+    Component,
+    pageProps: { session, ...pageProps },
+}: {
+    Component: any
+    pageProps: any
+}) {
     const [queryClient] = useState(
         () =>
             new QueryClient({

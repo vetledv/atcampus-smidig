@@ -8,6 +8,13 @@ const SubjectCardCompact = ({
     subjectId,
     selected,
     onClick,
+}: {
+    subjectImage: string
+    subjectName: string
+    subjectCode: string
+    subjectId: number
+    selected: boolean
+    onClick: () => void
 }) => {
     const classes =
         'flex p-3 input-shadow w-80 h-28 items-center rounded-standard text-white bg-purple-1'

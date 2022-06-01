@@ -1,8 +1,8 @@
 import { connectToDB } from 'lib/mongodb'
-import { ObjectId } from 'mongodb'
+import { ObjectId, WithId } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
-import { Group } from 'types/groups'
+import { Group, Member } from 'types/groups'
 
 const handler = nextConnect()
 
@@ -36,19 +36,23 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
         .collection('atcampus-groups')
         .find(filter)
         .toArray()
-        .then((groups: Group[]) => {
-            const group = groups[0]
+        .then((groups) => {
+            const group = groups[0] as Group
             if (!group) {
                 res.status(404).json({ error: 'Group not found' })
             }
             //check if user is in members or pendingMembers
-            if (group.members.find((member) => member.userId === userId)) {
+            if (
+                group.members.find((member: Member) => member.userId === userId)
+            ) {
                 res.status(200).json({
                     message: 'Allerede medlem',
                     private: false,
                 })
             } else if (
-                group.pendingMembers.find((member) => member.userId === userId)
+                group.pendingMembers.find(
+                    (member: Member) => member.userId === userId
+                )
             ) {
                 res.status(200).json({
                     message: 'Venter på godkjenning',

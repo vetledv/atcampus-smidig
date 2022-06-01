@@ -4,7 +4,13 @@ interface State {
     selectedGoal: Array<String>
 }
 
-const SelectGoal = ({ selectedGoal, setSelectedGoal }) => {
+const SelectGoal = ({
+    selectedGoal,
+    setSelectedGoal,
+}: {
+    selectedGoal: Array<String>
+    setSelectedGoal: Function
+}) => {
     const goals = [
         {
             id: 1,

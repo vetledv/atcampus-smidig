@@ -2,8 +2,9 @@ import Menu from '@/components/navigation/Menu'
 import { useRouter } from 'next/router'
 import Footer from '@/components/general/Footer'
 import Header from '@/components/navigation/Header'
+import { ReactNode } from 'react'
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children }: { children: ReactNode }) => {
     const { asPath } = useRouter()
     return (
         <>

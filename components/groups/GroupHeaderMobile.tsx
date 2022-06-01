@@ -13,8 +13,8 @@ const GroupHeader = ({
     isAdmin,
     isInSettings,
 }: {
-    leave: () => void
-    group: Group | null
+    leave?: () => void
+    group: Group
     activeMembers: number
     isAdmin: boolean
     isInSettings?: boolean
@@ -68,7 +68,7 @@ const GroupHeader = ({
                                     <button
                                         onClick={() => {
                                             setShowModal(false)
-                                            leave()
+                                            leave && leave()
                                         }}
                                         className='text-white bg-purple-2 hover:bg-purple-1 focus:ring-4 focus:outline-none focus:ring-red-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2'>
                                         Ja, jeg er sikker
@@ -101,7 +101,7 @@ const GroupHeader = ({
                     )}
 
                     <GroupMembers
-                        members={group?.members?.length}
+                        members={group?.members.length}
                         totalMembers={group?.maxMembers}
                         color={'white'}
                     />

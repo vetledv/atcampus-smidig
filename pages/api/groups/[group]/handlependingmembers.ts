@@ -41,7 +41,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     //check if user is admin
-    if (admin.userId.toString() !== session.sub) {
+    if (admin.userId.toString() !== session?.sub) {
         res.status(401).json({
             message: 'unauthorized',
         })

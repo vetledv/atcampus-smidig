@@ -23,7 +23,7 @@ const Groups = () => {
     )
     const router = useRouter()
 
-    const hasNextPage = groups?.data?.totalPages > page
+    const hasNextPage = groups.data ? groups.data.totalPages > page : false
     const [activeTab, setActiveTab] = useState(0)
     const tabs = ['Mine grupper', 'Finn ny gruppe']
 

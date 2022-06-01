@@ -1,6 +1,12 @@
 import FlatButton from 'components/general/FlatButton'
 
-const FindGroupsPopularSchools = ({ schoolName, selectedSchool }) => {
+const FindGroupsPopularSchools = ({
+    schoolName,
+    selectedSchool,
+}: {
+    schoolName: string
+    selectedSchool: string
+}) => {
     const classes =
         'xs:text-lg lg:text-xl font-regular bg-purple-1 text-white border-solid border-dark-5 border hover:bg-dark-1 hover:text-white hover:shadow-md hover:transition-all duration-200 ease-in-out transform hover:scale-105'
     return (

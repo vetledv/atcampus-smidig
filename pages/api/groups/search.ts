@@ -1,9 +1,10 @@
 import { secret_key } from 'lib/constants'
 import { connectToDB } from 'lib/mongodb'
+import { WithId } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
 import nextConnect from 'next-connect'
-import { Group } from 'types/groups'
+import { Group, Member } from 'types/groups'
 
 const handler = nextConnect()
 
@@ -44,14 +45,15 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
             },
         })
         .toArray()
-        .then((groups: Group[]) => {
+        .then((groups) => {
             if (groups.length === 0) {
-                noGoalFind.then((noGoalGroups: Group[]) => {
+                noGoalFind.then((noGoalGroups) => {
                     //filter out groups from noGoalGroups that user is already in
                     const filteredGroups = noGoalGroups.filter(
                         (group) =>
                             !group.members.some(
-                                (member) => member.userId === session.sub
+                                (member: Member) =>
+                                    member.userId === session?.sub
                             )
                     )
                     const total = filteredGroups.length
@@ -72,7 +74,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 const filteredGroups = groups.filter(
                     (group) =>
                         !group.members.some(
-                            (member) => member.userId === session.sub
+                            (member: Member) => member.userId === session?.sub
                         )
                 )
                 const total = filteredGroups.length

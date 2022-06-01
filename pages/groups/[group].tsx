@@ -14,6 +14,7 @@ import TopNav from '@/components/groups/TopNav'
 import { postJSON, useGroup } from '@/hooks/useGroups'
 import { baseUrl } from '@/lib/constants'
 import { Group, GroupMessages, Member } from '@/types/groups'
+import MemberItem from '@/components/groups/MemberItem'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const MessagesWrapper = dynamic(
     () => import('../../components/groups/chat/MessagesWrapper')
@@ -40,7 +41,7 @@ const GroupPage = () => {
     const [connected, setConnected] = useState<boolean>(false)
     const [userTyping, setUserTyping] = useState<string>('')
 
-    const socket = useRef<Socket>(null)
+    const socket = useRef<Socket | null>(null)
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
     const { mutateAsync: leaveGroupAsync } = useMutation(
@@ -72,7 +73,7 @@ const GroupPage = () => {
     //initialize socket
     useEffect(() => {
         //if (!routerQuery.group || group?.data) return
-        socket.current = SocketIOClient(process.env.NEXTAUTH_URL, {
+        socket.current = SocketIOClient(process.env.NEXTAUTH_URL as string, {
             path: '/api/groups/socket',
             query: {
                 room: routerQuery.group as string,
@@ -80,9 +81,9 @@ const GroupPage = () => {
             closeOnBeforeunload: true,
         })
         socket.current.on('connect', () => {
-            console.log('socket connected, id:', socket.current.id)
+            console.log('socket connected, id:', socket.current?.id)
             //join a room
-            socket.current.emit('create', routerQuery.group)
+            socket.current?.emit('create', routerQuery.group)
             setConnected(true)
             console.log('joined room')
             console.log(socket.current)
@@ -98,6 +99,7 @@ const GroupPage = () => {
     //socket events
     useEffect(() => {
         if (socket.current === null) return
+
         console.log('socket events')
         socket.current.on('active-members', (data) => {
             console.log('active:', data)
@@ -119,8 +121,8 @@ const GroupPage = () => {
             }
         })
         socket.current.on('disconnect', () => {
-            socket.current.emit('leave', routerQuery.group)
-            socket.current.emit('active', routerQuery.group)
+            socket.current?.emit('leave', routerQuery.group)
+            socket.current?.emit('active', routerQuery.group)
             console.log('socket disconnected MessageComponent')
             setConnected(false)
         })
@@ -128,11 +130,12 @@ const GroupPage = () => {
 
     const handleLeaveGroup = useCallback(() => {
         if (!session) return
-        leaveGroupAsync(session.user.id)
+        leaveGroupAsync(session.user.id as string)
     }, [leaveGroupAsync, session])
 
     const handlePendingMember = useCallback(
         async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
+            if (!group.data) return
             const addMutateObj: AddMutateObj = {
                 groupId: group.data._id,
                 admin: group.data.admin,
@@ -141,7 +144,7 @@ const GroupPage = () => {
             }
             adminMutatePending.mutateAsync(addMutateObj)
         },
-        [adminMutatePending, group?.data?._id, group?.data?.admin]
+        [adminMutatePending, group.data]
     )
 
     const isAdmin = useCallback(() => {
@@ -260,42 +263,17 @@ const GroupPage = () => {
                                             </div>
                                         </>
                                     )}
-
                                     {renderAdminPanel()}
                                 </div>
                             )}
-                            {activeTab === 1 && (
-                                <div className='flex flex-col gap-2  '>
-                                    {group.data.members.map((member, i) => (
-                                        <div
-                                            key={member.userId.toString()}
-                                            className='flex flex-row gap-2  border-b border-purple-4 w-full p-2 '>
-                                            <Image
-                                                src={member?.picture}
-                                                alt=''
-                                                width={48}
-                                                height={48}
-                                                className='rounded-full'
-                                            />
-                                            <div className='flex flex-col  '>
-                                                <div className='font-semibold'>
-                                                    {member.userName}
-                                                </div>
-                                                {member.userId ===
-                                                group.data.admin?.userId ? (
-                                                    <div className='italic'>
-                                                        Admin
-                                                    </div>
-                                                ) : (
-                                                    <div className='italic'>
-                                                        Gruppemedlem
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                            {activeTab === 1 &&
+                                group.data.members.map((member, i) => (
+                                    <MemberItem
+                                        key={member.userId}
+                                        member={member}
+                                        adminId={group.data.admin?.userId}
+                                    />
+                                ))}
                             {activeTab === 2 && (
                                 <div className='col-span-1 lg:col-span-3'>
                                     <MessagesWrapper

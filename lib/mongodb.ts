@@ -5,9 +5,9 @@ if (!mongodb_url) {
     throw new Error('MONGODB_URL is not defined')
 }
 
-let promise: Promise<MongoClient> = null
-let cachedClient: MongoClient = null
-let cachedDb: Db = null
+let promise: Promise<MongoClient> | null = null
+let cachedClient: MongoClient | null = null
+let cachedDb: Db | null = null
 
 export const connectToDB = async () => {
     if (cachedClient && cachedDb) {
