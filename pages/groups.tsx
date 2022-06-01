@@ -9,6 +9,7 @@ import FindOrCreateBtn from '@/components/findgroups/FindOrCreateBtn'
 import Tabs from '@/components/groups/Tabs'
 import { PaginatedGroups } from '@/types/groups'
 import PaginationNav from '@/components/PaginationNav'
+import { baseUrl } from '@/lib/constants'
 
 const Groups = () => {
     const queryClient = useQueryClient()
@@ -22,7 +23,7 @@ const Groups = () => {
     )
     const router = useRouter()
 
-    const hasNextPage = groups.data?.totalPages > page
+    const hasNextPage = groups?.data?.totalPages > page
     const [activeTab, setActiveTab] = useState(0)
     const tabs = ['Mine grupper', 'Finn ny gruppe']
 
@@ -158,14 +159,13 @@ export async function getServerSideProps(context: GetSessionParams) {
         }
     }
     const queryClient = new QueryClient()
-    //why this no work
-    // await queryClient.prefetchQuery<PaginatedGroups, Error>(
-    //     ['groups', 1],
-    //     async () => {
-    //         const res = await fetch(baseUrl + '/api/groups?page=1')
-    //         return await res.json()
-    //     }
-    // )
+    await queryClient.prefetchQuery<PaginatedGroups, Error>(
+        ['groups', 1],
+        async () => {
+            const res = await fetch(baseUrl + '/api/groups?page=1')
+            return await res.json()
+        }
+    )
     return {
         props: {
             dehydratedState: dehydrate(queryClient),

@@ -150,8 +150,8 @@ const GroupPage = () => {
     }, [group, session])
 
     const renderAdminPanel = useCallback(() => {
-        if (!isAdmin()) return null
         if (!group?.data) return null
+        if (!isAdmin()) return null
         return (
             <div className='flex flex-col gap-2'>
                 <h1 className=' font-semibold'>Ventende medlemmer</h1>
@@ -324,6 +324,7 @@ export const getServerSideProps = async (
 ) => {
     const { group } = context.query
     const session = await getSession(context)
+    const queryClient = new QueryClient()
 
     if (!session) {
         return {
@@ -333,8 +334,6 @@ export const getServerSideProps = async (
             },
         }
     }
-
-    const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group, Error>(
         ['group', group],
         async () => {

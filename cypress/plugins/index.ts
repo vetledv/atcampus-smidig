@@ -18,7 +18,7 @@
 // eslint-disable-next-line no-unused-vars
 const { GoogleSocialLogin } = require('cypress-social-logins').plugins
 const codeCoverageTask = require('@cypress/code-coverage/task')
-module.exports = (on, config) => {
+module.exports = (on:any, config:any) => {
     //require('@cypress/code-coverage/task')(on, config)
     // `on` is used to hook into various events Cypress emits
     // `config` is the resolved Cypress config

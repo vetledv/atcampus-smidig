@@ -1,6 +1,6 @@
 import ProgressBarTab from './ProgressBarTab'
 
-const ProgressBar = ({ step }) => {
+const ProgressBar = ({ step }: { step: number }) => {
     const steps = [1, 2, 3, 4]
     return (
         <div className='flex flex-row'>
