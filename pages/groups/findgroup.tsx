@@ -22,6 +22,8 @@ const FindGroupPage = () => {
     const [goalsTags, setGoalsTags] = useState([])
     const [errorText, setErrorText] = useState('')
 
+    const stepTitles = ['Velg Skole', 'Velg Fag', 'Velg Mål']
+
     const search = useQuery<PaginatedGroups, Error>(
         ['search', page],
         fetchReactQuery(
@@ -47,7 +49,6 @@ const FindGroupPage = () => {
             setErrorText('')
             if (selectedSchool !== '') {
                 setStep(step + 1)
-                setStepTitle('Velg Fag')
             } else {
                 setErrorText('Du må velge en skole først!')
             }
@@ -56,7 +57,6 @@ const FindGroupPage = () => {
             setErrorText('')
             if (selectedSubject !== '') {
                 setStep(step + 1)
-                setStepTitle('Velg Mål')
             } else {
                 setErrorText('Velg et fag først!')
             }
@@ -65,7 +65,6 @@ const FindGroupPage = () => {
             setErrorText('')
             if (goalsTags.length !== 0) {
                 setStep(step + 1)
-                setStepTitle('Gruppeforslag')
             } else {
                 setErrorText('Velg minst ett mål!')
             }
@@ -74,18 +73,7 @@ const FindGroupPage = () => {
 
     const handleStepback = () => {
         setErrorText('')
-        if (step === 1) {
-            setStep(0)
-            setStepTitle('Velg Skole')
-        }
-        if (step === 2) {
-            setStep(1)
-            setStepTitle('Velg Fag')
-        }
-        if (step === 3) {
-            setStep(2)
-            setStepTitle('Velg Mål')
-        }
+        setStep(step - 1 || 0)
     }
 
     if (search.isError) {
@@ -93,95 +81,94 @@ const FindGroupPage = () => {
     }
 
     return (
-        <>
-            <div className='bg-dark-6 w-full'>
-                <FindGroupsHeader
-                    stepTitle={stepTitle}
-                    step={step}
-                    stepBack={handleStepback}
-                    nextStep={handleStep}
-                />
-                <div className='flex justify-center'>
-                    <div className='bg-white input-shadow h-full min-w-full max-w-7xl w-full my-16 p-4'>
-                        {step === 0 && (
-                            <ChooseSchool
-                                setSelectedSchool={setSelectedSchool}
-                                selectedSchool={selectedSchool}
-                            />
-                        )}
-                        {step === 1 && (
-                            <FindClassPage
-                                setSelectedSubject={setSelectedSubject}
-                                selectedSubject={selectedSubject}
-                            />
-                        )}
-                        {step === 2 && (
-                            <SelectGoals
-                                setSelectedGoal={setGoalsTags}
-                                selectedGoal={goalsTags}
-                                setSelectedPreferances={setGoalsTags}
-                                selectedPreferences={goalsTags}
-                            />
-                        )}
-                        {step === 3 && (
-                            <>
-                                {search.isLoading ? (
-                                    <div className='min-w-[400px]'>
-                                        Laster inn...
-                                    </div>
-                                ) : (
-                                    <>
-                                        {search.data && (
-                                            <>
-                                                <ChooseGroup
-                                                    search={search.data}
-                                                    refetch={refetch}
-                                                    selectedGoals={goalsTags}
-                                                />
-                                                <RenderPaginationNav
-                                                    isPreviousData={
-                                                        search.isPreviousData
-                                                    }
-                                                    hasNextPage={hasNextPage}
-                                                    data={search.data}
-                                                    page={page}
-                                                    setPage={setPage}
-                                                    limit={search.data!.limit}
-                                                />
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-                        <div className='m-6 flex flex-row-reverse justify-between'>
-                            {step! < 3 && (
-                                <div className='flex gap-4 items-center'>
-                                    {errorText}
-                                    <FlatButton
-                                        as='button'
-                                        onClick={handleStep}
-                                        className={
-                                            'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
-                                        }>
-                                        Gå videre
-                                    </FlatButton>
+        <div className='bg-dark-6 w-full'>
+            <FindGroupsHeader
+                stepTitles={stepTitles}
+                step={step}
+                stepBack={handleStepback}
+                nextStep={handleStep}
+                setStep={setStep}
+            />
+            <div className='flex justify-center'>
+                <div className='bg-white input-shadow h-full min-w-full max-w-7xl w-full my-16 p-4'>
+                    {step === 0 && (
+                        <ChooseSchool
+                            setSelectedSchool={setSelectedSchool}
+                            selectedSchool={selectedSchool}
+                        />
+                    )}
+                    {step === 1 && (
+                        <FindClassPage
+                            setSelectedSubject={setSelectedSubject}
+                            selectedSubject={selectedSubject}
+                        />
+                    )}
+                    {step === 2 && (
+                        <SelectGoals
+                            setSelectedGoal={setGoalsTags}
+                            selectedGoal={goalsTags}
+                            setSelectedPreferances={setGoalsTags}
+                            selectedPreferences={goalsTags}
+                        />
+                    )}
+                    {step === 3 && (
+                        <>
+                            {search.isLoading ? (
+                                <div className='min-w-[400px]'>
+                                    Laster inn...
                                 </div>
+                            ) : (
+                                <>
+                                    {search.data && (
+                                        <>
+                                            <ChooseGroup
+                                                search={search.data}
+                                                refetch={refetch}
+                                                selectedGoals={goalsTags}
+                                            />
+                                            <RenderPaginationNav
+                                                isPreviousData={
+                                                    search.isPreviousData
+                                                }
+                                                hasNextPage={hasNextPage}
+                                                data={search.data}
+                                                page={page}
+                                                setPage={setPage}
+                                                limit={search.data!.limit}
+                                            />
+                                        </>
+                                    )}
+                                </>
                             )}
-                            {step != 0 && (
+                        </>
+                    )}
+                    <div className='m-6 flex flex-row-reverse justify-between'>
+                        {step! < 3 && (
+                            <div className='flex gap-4 items-center'>
+                                {errorText}
                                 <FlatButton
+                                    as='button'
+                                    onClick={handleStep}
                                     className={
-                                        'ml-6 hover:transition-all duration-200 ease-in-out transform hover:scale-110'
-                                    }
-                                    onClick={handleStepback}>
-                                    Tilbake
+                                        'hover:transition-all duration-200 ease-in-out transform hover:scale-110'
+                                    }>
+                                    Gå videre
                                 </FlatButton>
-                            )}
-                        </div>
+                            </div>
+                        )}
+                        {step != 0 && (
+                            <FlatButton
+                                className={
+                                    'ml-6 hover:transition-all duration-200 ease-in-out transform hover:scale-110'
+                                }
+                                onClick={handleStepback}>
+                                Tilbake
+                            </FlatButton>
+                        )}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
