@@ -1,3 +1,4 @@
+import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import FlatButton from 'components/general/FlatButton'
 import { postJSON } from 'hooks/useGroups'
 import { ObjectId } from 'mongodb'
@@ -9,7 +10,6 @@ import {
     SetStateAction,
     useCallback,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -17,7 +17,7 @@ import {
 import { useInfiniteQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
-import { Member, Message, SendMessage } from 'types/groups'
+import { Group, Member, Message, SendMessage } from 'types/groups'
 import MessageItem from './MessageItem'
 
 interface ByDayMessage {
@@ -31,21 +31,15 @@ interface InfMessages {
 }
 
 const Chat = ({
-    groupId,
-    groupName,
-    groupMembers,
+    group,
     connected,
     socket,
-    activeTab,
     userTyping,
     setUserTyping,
 }: {
-    groupId: ObjectId
-    groupName: string
-    groupMembers: Member[]
+    group: Group
     connected: boolean
     socket: MutableRefObject<Socket<DefaultEventsMap, DefaultEventsMap> | null>
-    activeTab: number
     userTyping: string
     setUserTyping: Dispatch<SetStateAction<string>>
 }) => {
@@ -53,7 +47,7 @@ const Chat = ({
 
     const fetchData = async ({ pageParam = 1 }) => {
         const response = await fetch(
-            `/api/groups/${groupId}/messages?page=` + pageParam
+            `/api/groups/${group._id}/messages?page=` + pageParam
         )
         const data = await response.json()
         return data
@@ -62,18 +56,17 @@ const Chat = ({
         getNextPageParam: (lastPage, pages) => lastPage.next,
     })
 
+    const { contRef } = useRetainScrollPos([query?.data?.pages?.length])
     const [msg, setMsg] = useState<string>('')
 
-    const msgCont = useRef<HTMLDivElement>(null)
-    const previousScrollPos = useRef(0)
     const typingTimeout: { current: NodeJS.Timeout | null } = useRef(null)
     const stoppedTypeTimeout: { current: NodeJS.Timeout | null } = useRef(null)
 
     const scrollToBottom = useCallback(() => {
-        if (msgCont.current) {
-            msgCont.current.scrollTop = msgCont.current.scrollHeight
+        if (contRef.current) {
+            contRef.current.scrollTop = contRef.current.scrollHeight
         }
-    }, [])
+    }, [contRef])
 
     const refetch = useCallback(() => {
         query.refetch()
@@ -81,8 +74,8 @@ const Chat = ({
 
     //fetch more when scrolled to top
     useEffect(() => {
-        if (msgCont.current) {
-            const messageCont = msgCont.current
+        if (contRef.current) {
+            const messageCont = contRef.current
             const onScroll = () => {
                 if (messageCont.scrollTop === 0 && query.hasNextPage) {
                     query.fetchNextPage()
@@ -94,29 +87,30 @@ const Chat = ({
                 messageCont.removeEventListener('scroll', onScroll)
             }
         }
-    }, [query, query.hasNextPage])
+    }, [contRef, query, query.hasNextPage])
 
     //socket events
     useEffect(() => {
         if (!socket.current) return
-        socket.current.on(`message ${groupId.toString()}`, (data: Message) => {
-            setUserTyping('')
-            refetch()
-            const userPosInChat = msgCont.current
-                ? msgCont.current.scrollHeight -
-                  msgCont.current.scrollTop -
-                  msgCont.current.clientHeight
-                : 0
-            // scroll to bottom if user sent message and has not scrolled more than 300px
-            if (userPosInChat < 300 && msgCont.current) {
-                msgCont.current.scrollTop = msgCont.current.scrollHeight
+        socket.current.on(
+            `message ${group._id.toString()}`,
+            (data: Message) => {
+                setUserTyping('')
+                refetch()
+                const userPosInChat = contRef.current
+                    ? contRef.current.scrollHeight -
+                      contRef.current.scrollTop -
+                      contRef.current.clientHeight
+                    : 0
+                // scroll to bottom if user sent message and has not scrolled more than 300px
+                if (userPosInChat < 300 && contRef.current) {
+                    contRef.current.scrollTop = contRef.current.scrollHeight
+                }
             }
-        })
+        )
         socket.current.on(`typing`, (data, user: string) => {
             console.log('typing:', data, 'user: ', user)
-            if (activeTab === 2) {
-                setUserTyping(user)
-            }
+            setUserTyping(user)
         })
         socket.current.on(`stopped-typing`, (data, user) => {
             console.log(
@@ -125,18 +119,9 @@ const Chat = ({
                 'user: ',
                 user
             )
-            if (activeTab === 2) {
-                setUserTyping('')
-            }
+            setUserTyping('')
         })
-    }, [
-        activeTab,
-        groupId,
-        refetch,
-        session.data?.user.id,
-        setUserTyping,
-        socket,
-    ])
+    }, [contRef, group, refetch, session.data.user.id, setUserTyping, socket])
 
     const handleUserTyping = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
@@ -163,7 +148,7 @@ const Chat = ({
                 typingTimeout.current = setTimeout(() => {
                     socket.current?.emit(
                         `typing`,
-                        groupId,
+                        group._id.toString(),
                         session.data?.user?.name
                     )
                     typingTimeout.current = null
@@ -175,12 +160,12 @@ const Chat = ({
             stoppedTypeTimeout.current = setTimeout(() => {
                 socket.current?.emit(
                     `stopped-typing`,
-                    groupId,
+                    group._id.toString(),
                     session.data?.user?.name
                 )
             }, 4000)
         },
-        [groupId, session.data?.user.name, socket]
+        [group, session.data?.user.name, socket]
     )
 
     const sendMessage = useCallback(
@@ -191,31 +176,27 @@ const Chat = ({
                     userId: session.data.user.id as string,
                     userName: session.data.user.name as string,
                     message: message,
-                    groupName,
-                    groupId,
+                    groupName: group.groupName,
+                    groupId: group._id,
                 }
-                postJSON(`/api/groups/${groupId}/messages`, msgData)
-                socket.current?.emit(`message ${groupId}`, msgData)
+                postJSON(
+                    `/api/groups/${group._id.toString()}/messages`,
+                    msgData
+                )
+                socket.current?.emit(`message ${group._id.toString()}`, msgData)
                 setMsg('')
                 if (stoppedTypeTimeout.current) {
                     console.log('clearing timeout')
                     clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
                     socket.current?.emit(
-                        `stopped-typing ${groupId}`,
-                        groupId,
+                        `stopped-typing ${group._id.toString()}`,
+                        group._id.toString(),
                         session?.data.user?.name
                     )
                 }
             }
         },
-        [
-            groupId,
-            groupName,
-            msg.length,
-            session.data?.user,
-            session.status,
-            socket,
-        ]
+        [group, msg.length, session.data.user, session.status, socket]
     )
 
     //filter messages by the day they were sent
@@ -298,7 +279,7 @@ const Chat = ({
                             ) : (
                                 <MessageItem
                                     message={message}
-                                    groupMembers={groupMembers}
+                                    groupMembers={group.members}
                                 />
                             )}
                         </div>
@@ -306,23 +287,7 @@ const Chat = ({
                 </div>
             )
         })
-    }, [groupMembers, messagesByDay, shouldShowName])
-
-    //retain scroll pos when loading more messages
-    useMemo(() => {
-        if (msgCont.current) {
-            const cont = msgCont.current
-            previousScrollPos.current = cont.scrollHeight - cont.scrollTop
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query?.data?.pages?.length])
-
-    useLayoutEffect(() => {
-        if (msgCont?.current) {
-            const cont = msgCont.current
-            cont.scrollTop = cont.scrollHeight - previousScrollPos.current
-        }
-    }, [query?.data?.pages?.length])
+    }, [group.members, messagesByDay, shouldShowName])
 
     //scroll to bottom the first time the component is rendered
     useEffect(() => {
@@ -337,7 +302,7 @@ const Chat = ({
     return (
         <div className='relative flex flex-col gap-2'>
             <div
-                ref={msgCont}
+                ref={contRef}
                 className='flex flex-col h-[500px] overflow-y-auto gap-1'>
                 <>
                     {/* {query.isFetchingNextPage && (

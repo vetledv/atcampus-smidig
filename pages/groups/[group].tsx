@@ -1,20 +1,19 @@
-import { ObjectId } from 'mongodb'
-import { getSession, GetSessionParams, useSession } from 'next-auth/react'
-import dynamic from 'next/dynamic'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { dehydrate, QueryClient, useMutation } from 'react-query'
-import SocketIOClient, { Socket } from 'socket.io-client'
 import FlatButton from '@/components/general/FlatButton'
 import GroupHeader from '@/components/groups/GroupHeaderMobile'
+import MemberItem from '@/components/groups/MemberItem'
 import Tabs from '@/components/groups/Tabs'
 import TopNav from '@/components/groups/TopNav'
 import { postJSON, useGroup } from '@/hooks/useGroups'
 import { baseUrl } from '@/lib/constants'
 import { Group, GroupMessages, Member } from '@/types/groups'
-import MemberItem from '@/components/groups/MemberItem'
+import { ObjectId } from 'mongodb'
+import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { dehydrate, QueryClient, useMutation } from 'react-query'
+import SocketIOClient, { Socket } from 'socket.io-client'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const Chat = dynamic(() => import('../../components/groups/chat/Chat'))
 
@@ -275,12 +274,9 @@ const GroupPage = () => {
                             {activeTab === 2 && (
                                 <div className='col-span-1 lg:col-span-3'>
                                     <Chat
-                                        groupId={group.data._id}
-                                        groupName={group.data.groupName}
-                                        groupMembers={group.data.members}
+                                        group={group.data}
                                         connected={connected}
                                         socket={socket}
-                                        activeTab={activeTab}
                                         userTyping={userTyping}
                                         setUserTyping={setUserTyping}
                                     />

@@ -13,9 +13,7 @@ import SelectGoals from '../../components/findgroups/selectgoals'
 
 const FindGroupPage = () => {
     const [page, setPage] = useState(1)
-
     const [step, setStep] = useState(0)
-    const [stepTitle, setStepTitle] = useState('Velg Skole')
 
     const [selectedSchool, setSelectedSchool] = useState('')
     const [selectedSubject, setSelectedSubject] = useState('')
