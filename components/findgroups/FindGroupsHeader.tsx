@@ -37,9 +37,9 @@ const FindGroupsHeader = ({
     }, [stepTitles, step, setStep])
 
     return (
-        <div className='bg-white lg:h-40 input-shadow text-dark-1'>
+        <div className='bg-white input-shadow text-dark-1'>
             <div className='flex items-center justify-between'>
-                <div className='lg:h-40 flex flex-col justify-between py-6 px-6 w-full'>
+                <div className='flex flex-col justify-between py-6 px-6 w-full'>
                     <div className='flex gap-2'>{stepper}</div>
                     <div className='flex flex-row w-full justify-center items-center mt-2'>
                         <ChevronLeftIcon
@@ -54,8 +54,6 @@ const FindGroupsHeader = ({
                     </div>
                     <div className='text-2xl'>{stepTitles[step]}</div>
                 </div>
-
-                <div></div>
             </div>
         </div>
     )

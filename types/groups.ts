@@ -65,3 +65,18 @@ export interface AddOrRemoveMember {
     userToAdd: Member
     action: 'ADD' | 'REMOVE'
 }
+
+export interface GroupCreate {
+    groupName: string
+    members: Member[]
+    maxMembers: number
+    tags: {
+        school: string
+        course: string
+        goals: string[]
+    }
+    description: string
+    private: boolean
+    admin: GroupAdmin | null
+    pendingMembers: Member[]
+}

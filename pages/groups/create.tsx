@@ -6,27 +6,13 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
-import type { Group, GroupAdmin, Member, Tags } from 'types/groups'
-import type { Dispatch, SetStateAction, ChangeEvent, MouseEvent } from 'react'
+import type { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from 'react'
+import type { Group, GroupCreate, Tags } from 'types/groups'
 
-interface GroupSubmit {
-    groupName: string
-    members: Member[]
-    maxMembers: number
-    tags: {
-        school: string
-        course: string
-        goals: string[]
-    }
-    description: string
-    private: boolean
-    admin: GroupAdmin | null
-    pendingMembers: Member[]
-}
-
-const TestCreateGroup = () => {
+const CreateGroup = () => {
     const { data: session } = useSession()
     const router = useRouter()
+
     const [groupName, setGroupName] = useState('')
     const [description, setDescription] = useState('')
     const [school, setSchool] = useState('')
@@ -129,7 +115,7 @@ const TestCreateGroup = () => {
                 userName: session.user.name as string,
             }
             //properties of the group
-            const GroupToSubmit: GroupSubmit = {
+            const GroupToSubmit: GroupCreate = {
                 groupName,
                 description,
                 private: isPrivate,
@@ -190,7 +176,7 @@ const TestCreateGroup = () => {
         )
     }
 
-    const schoolSelect = (tag: string) => {
+    const selectOption = (tag: string) => {
         return (
             <option key={tag} value={tag} className=' p-2'>
                 {tag}
@@ -283,7 +269,7 @@ const TestCreateGroup = () => {
                             disabled>
                             Velg en skole
                         </option>
-                        {schoolTags.map((tag) => schoolSelect(tag))}
+                        {schoolTags.map((tag) => selectOption(tag))}
                     </select>
                     <h1>Populære instutisjoner</h1>
                     <div className='flex lg:flex-row'>
@@ -294,13 +280,18 @@ const TestCreateGroup = () => {
                         ))}
                     </div>
                     <h1>Fag</h1>
-                    <div className='flex md:flex-row md:flex-wrap flex-col'>
-                        {courseTags.map((tag) => (
-                            <div className='mr-2 mb-2' key={tag}>
-                                {TagButton(tag, course, setCourse)}
-                            </div>
-                        ))}
-                    </div>
+                    <select
+                        className='group w-fit border border-purple-3 rounded p-2 '
+                        value={course ? course : 'course'}
+                        onChange={(e) => setCourse(e.target.value)}>
+                        <option
+                            className='group-focus:hidden'
+                            value={'course'}
+                            disabled>
+                            Velg ett fag
+                        </option>
+                        {courseTags.map((tag) => selectOption(tag))}
+                    </select>
                     <h1>Mål (kan velge fler)</h1>
                     <div className='flex flex-wrap h-fit gap-2'>
                         {goalTags.map((tag) => (
@@ -354,4 +345,4 @@ export const getServerSideProps = async (context: GetSessionParams) => {
     }
 }
 
-export default TestCreateGroup
+export default CreateGroup

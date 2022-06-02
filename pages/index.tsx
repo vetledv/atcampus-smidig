@@ -25,15 +25,14 @@ const HomePage: NextPage = () => {
     }
     return (
         <>
-            <h1>Oversikt</h1>
-            <div className='pr-4 grid grid-cols-2 gap-12 md:grid-cols-8 md:gap-2 lg:text-center lg:grid-col-10 lg:gap-5 '>
+            <div className='pr-4 grid grid-cols-2 gap-12 md:grid-cols-8 md:gap-2 lg:grid-col-10 lg:gap-5'>
+                <h1>Oversikt</h1>
                 <FlatButton
-                    className='bg-logout-red flex col-start-6 col-end-6 col col-span-2 justify-center lg:text-center'
+                    className='bg-logout-red flex col-start-6 col-end-6 col col-span-2 justify-center'
                     onClick={() => signOut()}>
                     Logg ut
                 </FlatButton>
             </div>
-            <>dont add shit here</>
         </>
     )
 }

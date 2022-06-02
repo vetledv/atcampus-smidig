@@ -20,7 +20,7 @@ const FindGroupPage = () => {
     const [goalsTags, setGoalsTags] = useState([])
     const [errorText, setErrorText] = useState('')
 
-    const stepTitles = ['Velg Skole', 'Velg Fag', 'Velg Mål']
+    const stepTitles = ['Velg Skole', 'Velg Fag', 'Velg Mål', 'Forslag']
 
     const search = useQuery<PaginatedGroups, Error>(
         ['search', page],

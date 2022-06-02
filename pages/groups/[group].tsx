@@ -5,18 +5,18 @@ import Tabs from '@/components/groups/Tabs'
 import { postJSON, useGroup } from '@/hooks/useGroups'
 import useGroupSocket from '@/hooks/useGroupSocket'
 import { baseUrl } from '@/lib/constants'
-import type {
-    AddOrRemoveMember,
-    Group,
-    GroupMessages,
-    Member,
-} from '@/types/groups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
+import type {
+    AddOrRemoveMember,
+    Group,
+    GroupMessages,
+    Member,
+} from '@/types/groups'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const Chat = dynamic(() => import('../../components/groups/chat/Chat'))
 const MemberItem = dynamic(() => import('../../components/groups/MemberItem'))
@@ -113,7 +113,7 @@ const GroupPage = () => {
 
     const isAdmin = useCallback(() => {
         if (!session?.user || !group.data) return false
-        return session?.user?.id === group.data?.admin?.userId?.toString()
+        return session.user?.id === group.data?.admin?.userId?.toString()
     }, [group, session])
 
     const renderAdminPanel = useCallback(() => {
