@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import onClickOutside from 'react-onclickoutside'
 
 function DropDown({

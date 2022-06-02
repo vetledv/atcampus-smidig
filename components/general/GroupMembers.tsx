@@ -1,5 +1,4 @@
 import { UserGroupIcon } from '@heroicons/react/outline'
-import React from 'react'
 
 export const GroupMembers = ({
     members,

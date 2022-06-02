@@ -1,5 +1,4 @@
 import FlatButton from 'components/general/FlatButton'
-import React from 'react'
 import MemberCard from './MemberCard'
 
 const MembersSettings = ({ members, admin, handleLeaveGroup }) => {

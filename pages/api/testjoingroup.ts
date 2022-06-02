@@ -1,8 +1,8 @@
 import { connectToDB } from 'lib/mongodb'
-import { ObjectId, WithId } from 'mongodb'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { ObjectId } from 'mongodb'
 import nextConnect from 'next-connect'
-import { Group, Member } from 'types/groups'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import type { Group, Member } from 'types/groups'
 
 const handler = nextConnect()
 

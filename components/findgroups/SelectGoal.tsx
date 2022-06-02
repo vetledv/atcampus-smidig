@@ -1,9 +1,5 @@
 import Checkbox from 'components/general/Checkbox'
 
-interface State {
-    selectedGoal: Array<String>
-}
-
 const SelectGoal = ({
     selectedGoal,
     setSelectedGoal,

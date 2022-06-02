@@ -43,8 +43,6 @@ export default NextAuth({
         async session({ session, token }) {
             session.accessToken = token.accessToken
             session.user = token.user as any
-            // console.log('SESSION: ', session)
-            //console.log('TOKEN:', token)
             return session
         },
         async jwt({ token, user, account }) {

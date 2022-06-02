@@ -1,8 +1,8 @@
-import FlatButton from 'components/general/FlatButton'
-import { GetServerSideProps } from 'next'
+import FlatButton from '@/components/general/FlatButton'
 import { getProviders, signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
+import type { GetServerSideProps } from 'next'
 
 const Login = ({ providers }: { providers: GetServerSideProps }) => {
     return (

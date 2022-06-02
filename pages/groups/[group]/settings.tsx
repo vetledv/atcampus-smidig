@@ -7,7 +7,7 @@ import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 
 interface MutateOptions {

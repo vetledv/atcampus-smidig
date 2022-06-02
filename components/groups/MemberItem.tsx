@@ -1,4 +1,4 @@
-import { Member } from '@/types/groups'
+import type { Member } from '@/types/groups'
 import Image from 'next/image'
 
 const MemberItem = ({

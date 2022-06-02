@@ -1,6 +1,6 @@
-import { GroupMembers } from 'components/general/Lib'
-import { ObjectId } from 'mongodb'
+import { GroupMembers } from '@/components/general/GroupMembers'
 import Image from 'next/image'
+import type { ObjectId } from 'mongodb'
 
 interface SubjectCardProps {
     groupName: string

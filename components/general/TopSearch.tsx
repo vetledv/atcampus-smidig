@@ -1,5 +1,4 @@
 import { SearchIcon } from '@heroicons/react/outline'
-import React from 'react'
 
 export default function TopSearch({ title }: { title: string }) {
     const handleChange = (e: { target: any }) => {

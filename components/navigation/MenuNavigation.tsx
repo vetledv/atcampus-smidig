@@ -1,6 +1,5 @@
 import { HomeIcon, DocumentTextIcon } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
-import React from 'react'
 
 const MenuNavigation = () => {
     const router = useRouter()

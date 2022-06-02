@@ -23,7 +23,6 @@
     "include": "*.{js,jsx,ts,tsx}"
   },
   "dependencies": {
-    "@babel/preset-react": "^7.17.12",
     "@fullcalendar/common": "^5.11.0",
     "@fullcalendar/interaction": "^5.11.0",
     "@fullcalendar/react": "^5.11.1",
@@ -46,6 +45,7 @@
     "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.17.12",
     "@cypress/code-coverage": "^3.10.0",
     "@cypress/instrument-cra": "^1.4.0",
     "@cypress/react": "^5.12.5",

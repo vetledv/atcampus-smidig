@@ -1,5 +1,4 @@
 import { CollectionIcon, MailIcon, MenuIcon } from '@heroicons/react/outline'
-import React from 'react'
 
 const MobileNav = ({ toggle }: { toggle: () => void }) => {
     return (

@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { Group } from 'types/groups'
+import type { Group } from 'types/groups'
 
 export const fetchReactQuery = (query?: string) => {
     return async () => {

@@ -1,11 +1,10 @@
 import { secret_key } from 'lib/constants'
 import { connectToDB } from 'lib/mongodb'
-import { ModifyResult, ObjectId } from 'mongodb'
-import { NextApiRequest } from 'next'
-import { NextApiResponse } from 'next'
+import { ObjectId } from 'mongodb'
 import { getToken } from 'next-auth/jwt'
 import nextConnect from 'next-connect'
-import { Group } from 'types/groups'
+import type { Group } from 'types/groups'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = nextConnect()
 
@@ -17,8 +16,8 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
         secret: secret_key,
     })
     const { group } = req.query
-    if (!session.sub) {
-        console.log(session.sub)
+    // [group].tsx getServerSideProps prefetch gets error here, session is first null and then defined
+    if (!session) {
         res.status(401).json({
             error: 'You are not logged in',
         })

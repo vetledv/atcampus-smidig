@@ -5,12 +5,13 @@ import Tabs from '@/components/groups/Tabs'
 import { postJSON, useGroup } from '@/hooks/useGroups'
 import useGroupSocket from '@/hooks/useGroupSocket'
 import { baseUrl } from '@/lib/constants'
-import { getSession, GetSessionParams, useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
+import type { GetSessionParams } from 'next-auth/react'
 import type {
     AddOrRemoveMember,
     Group,
@@ -263,7 +264,6 @@ export const getServerSideProps = async (
 ) => {
     const { group } = context.query
     const session = await getSession(context)
-    const queryClient = new QueryClient()
 
     if (!session) {
         return {
@@ -273,6 +273,8 @@ export const getServerSideProps = async (
             },
         }
     }
+
+    const queryClient = new QueryClient()
     await queryClient.prefetchQuery<Group, Error>(
         ['group', group],
         async () => {

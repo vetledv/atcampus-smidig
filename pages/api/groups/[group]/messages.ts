@@ -1,9 +1,9 @@
 import { connectToDB } from 'lib/mongodb'
-import { ObjectId, WithId } from 'mongodb'
-import { NextApiRequest } from 'next'
+import { ObjectId } from 'mongodb'
 import nextConnect from 'next-connect'
 import { NextApiResponseServerIO } from 'types/socket'
-import { GroupMessages, SendMessage } from '../../../../types/groups'
+import type { SendMessage } from '../../../../types/groups'
+import type { NextApiRequest } from 'next'
 
 const messagesHandler = nextConnect()
 

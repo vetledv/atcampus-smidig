@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongodb'
-import { Key } from 'react'
 import FindGroupsPopularSchools from './FindGroupsPopularSchools'
 
 export const SchoolMap = ({
@@ -26,10 +24,10 @@ export const SchoolMap = ({
 
     return (
         <div>
-            {schools.map((school: { id: Key | ObjectId; value: any }) => (
+            {schools.map((school: { id: number; value: any }) => (
                 <div
                     className='flex justify-center'
-                    key={school.id.toString()}
+                    key={school.id}
                     onClick={() => {
                         setSelectedSchool(school.value)
                     }}>

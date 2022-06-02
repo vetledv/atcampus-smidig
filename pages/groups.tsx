@@ -7,9 +7,9 @@ import { fetchReactQuery } from '@/hooks/useGroups'
 import SubjectCard from '@/components/cards/SubjectCard'
 import FindOrCreateBtn from '@/components/findgroups/FindOrCreateBtn'
 import Tabs from '@/components/groups/Tabs'
-import { PaginatedGroups } from '@/types/groups'
 import PaginationNav from '@/components/PaginationNav'
 import { baseUrl } from '@/lib/constants'
+import type { PaginatedGroups } from '@/types/groups'
 
 const Groups = () => {
     const queryClient = useQueryClient()

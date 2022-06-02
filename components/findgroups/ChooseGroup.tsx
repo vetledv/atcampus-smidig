@@ -1,13 +1,13 @@
-import SubjectCard from '@/components/cards/SubjectCard'
-import FlatButton from '@/components/general/FlatButton'
-import { postReactQuery } from '@/hooks/useGroups'
-import { useShowModal } from '@/hooks/useShowModal'
-import { Group, PaginatedGroups } from '@/types/groups'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useMutation } from 'react-query'
+import SubjectCard from '@/components/cards/SubjectCard'
+import FlatButton from '@/components/general/FlatButton'
+import { postReactQuery } from '@/hooks/useGroups'
+import { useShowModal } from '@/hooks/useShowModal'
+import type { Group, PaginatedGroups } from '@/types/groups'
 
 const ChooseGroup = ({
     search,

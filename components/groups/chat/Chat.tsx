@@ -1,6 +1,6 @@
 import useRetainScrollPos from '@/hooks/useRetainScrollPos'
-import FlatButton from 'components/general/FlatButton'
-import { postJSON } from 'hooks/useGroups'
+import FlatButton from '@/components/general/FlatButton'
+import { postJSON } from '@/hooks/useGroups'
 import MessageItem from './MessageItem'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'

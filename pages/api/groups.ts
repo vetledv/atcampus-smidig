@@ -1,8 +1,8 @@
 import { secret_key } from 'lib/constants'
 import { connectToDB } from 'lib/mongodb'
-import { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
 import nextConnect from 'next-connect'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = nextConnect()
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {

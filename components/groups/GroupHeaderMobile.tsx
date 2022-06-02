@@ -1,10 +1,10 @@
 import { useShowModal } from '@/hooks/useShowModal'
 import { CogIcon } from '@heroicons/react/solid'
-import FlatButton from 'components/general/FlatButton'
-import { GroupMembers } from 'components/general/Lib'
+import FlatButton from '@/components/general/FlatButton'
+import { GroupMembers } from '@/components/general/GroupMembers'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Group } from 'types/groups'
+import type { Group } from 'types/groups'
 
 const GroupHeader = ({
     group,
