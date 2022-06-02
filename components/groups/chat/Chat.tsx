@@ -1,24 +1,19 @@
 import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import FlatButton from 'components/general/FlatButton'
 import { postJSON } from 'hooks/useGroups'
-import { ObjectId } from 'mongodb'
+import MessageItem from './MessageItem'
 import { useSession } from 'next-auth/react'
-import {
-    Dispatch,
-    KeyboardEvent,
-    MutableRefObject,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
-import { Group, Member, Message, SendMessage } from 'types/groups'
-import MessageItem from './MessageItem'
+import type { Group, Message, SendMessage } from 'types/groups'
+import type {
+    Dispatch,
+    SetStateAction,
+    KeyboardEvent,
+    MutableRefObject,
+} from 'react'
 
 interface ByDayMessage {
     day: Date
@@ -29,6 +24,8 @@ interface InfMessages {
     messages: Message[]
     next: number | null
 }
+
+type timeoutRef = { current: NodeJS.Timeout | null }
 
 const Chat = ({
     group,
@@ -59,8 +56,8 @@ const Chat = ({
     const { contRef } = useRetainScrollPos([query?.data?.pages?.length])
     const [msg, setMsg] = useState<string>('')
 
-    const typingTimeout: { current: NodeJS.Timeout | null } = useRef(null)
-    const stoppedTypeTimeout: { current: NodeJS.Timeout | null } = useRef(null)
+    const typingTimeout: timeoutRef = useRef(null)
+    const stoppedTypeTimeout: timeoutRef = useRef(null)
 
     const scrollToBottom = useCallback(() => {
         if (contRef.current) {
@@ -304,14 +301,7 @@ const Chat = ({
             <div
                 ref={contRef}
                 className='flex flex-col h-[500px] overflow-y-auto gap-1'>
-                <>
-                    {/* {query.isFetchingNextPage && (
-                        <div className='flex justify-center items-center'>
-                            <div>Laster inn...</div>
-                        </div>
-                    )} */}
-                    {renderMessages()}
-                </>
+                {renderMessages()}
             </div>
             <div className='flex gap-2'>
                 <input

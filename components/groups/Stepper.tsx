@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-const TopNav = ({
+const Stepper = ({
     groupId,
     groupName,
     settings,
@@ -39,4 +39,4 @@ const TopNav = ({
     )
 }
 
-export default TopNav
+export default Stepper

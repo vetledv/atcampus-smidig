@@ -4,18 +4,10 @@ import { postReactQuery } from 'hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import {
-    ChangeEvent,
-    Dispatch,
-    FormEvent,
-    MouseEvent,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
-import { Group, GroupAdmin, Member, Tags } from 'types/groups'
+import type { Group, GroupAdmin, Member, Tags } from 'types/groups'
+import type { Dispatch, SetStateAction, ChangeEvent, MouseEvent } from 'react'
 
 interface GroupSubmit {
     groupName: string

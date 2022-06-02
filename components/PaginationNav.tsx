@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import { Dispatch, SetStateAction, useCallback } from 'react'
-import { PaginatedGroups } from 'types/groups'
+import { useCallback } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import type { PaginatedGroups } from 'types/groups'
 
 const PaginationNav = ({
     isPreviousData,

@@ -1,7 +1,7 @@
 import { useShowModal } from '@/hooks/useShowModal'
 import FlatButton from '@/components/general/FlatButton'
 import GroupHeader from '@/components/groups/GroupHeaderMobile'
-import TopNav from '@/components/groups/TopNav'
+import Stepper from '@/components/groups/Stepper'
 import { useGroup } from '@/hooks/useGroups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -239,7 +239,7 @@ const Settings = () => {
                     <Head>
                         <title>{group.data?.groupName} - Innstillinger</title>
                     </Head>
-                    <TopNav
+                    <Stepper
                         groupId={group.data._id.toString()}
                         groupName={group.data.groupName}
                         settings={true}

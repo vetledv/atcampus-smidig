@@ -55,3 +55,13 @@ export interface SendMessage {
     groupName: string
     groupId: ObjectId
 }
+
+export interface AddOrRemoveMember {
+    groupId: ObjectId
+    admin: {
+        userId: string
+        userName: string
+    }
+    userToAdd: Member
+    action: 'ADD' | 'REMOVE'
+}

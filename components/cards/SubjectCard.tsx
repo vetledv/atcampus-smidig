@@ -1,4 +1,3 @@
-import FlatButton from 'components/general/FlatButton'
 import { GroupMembers } from 'components/general/Lib'
 import { ObjectId } from 'mongodb'
 import Image from 'next/image'

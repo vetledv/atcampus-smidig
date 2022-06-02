@@ -1,44 +1,39 @@
 import FlatButton from '@/components/general/FlatButton'
 import GroupHeader from '@/components/groups/GroupHeaderMobile'
-import MemberItem from '@/components/groups/MemberItem'
+import Stepper from '@/components/groups/Stepper'
 import Tabs from '@/components/groups/Tabs'
-import TopNav from '@/components/groups/TopNav'
 import { postJSON, useGroup } from '@/hooks/useGroups'
+import useGroupSocket from '@/hooks/useGroupSocket'
 import { baseUrl } from '@/lib/constants'
-import { Group, GroupMessages, Member } from '@/types/groups'
-import { ObjectId } from 'mongodb'
+import type {
+    AddOrRemoveMember,
+    Group,
+    GroupMessages,
+    Member,
+} from '@/types/groups'
 import { getSession, GetSessionParams, useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { dehydrate, QueryClient, useMutation } from 'react-query'
-import SocketIOClient, { Socket } from 'socket.io-client'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const Chat = dynamic(() => import('../../components/groups/chat/Chat'))
-
-interface AddMutateObj {
-    groupId: ObjectId
-    admin: {
-        userId: string
-        userName: string
-    }
-    userToAdd: Member
-    action: 'ADD' | 'REMOVE'
-}
+const MemberItem = dynamic(() => import('../../components/groups/MemberItem'))
 
 const GroupPage = () => {
     const { data: session } = useSession()
     const router = useRouter()
     const routerQuery = router.query
     const group = useGroup(routerQuery.group as string)
+    const { socket, connected, setConnected } = useGroupSocket(
+        [routerQuery.group],
+        routerQuery.group as string
+    )
 
     const [activeMembers, setActiveMembers] = useState<number>(0)
     const [activeTab, setActiveTab] = useState(0)
-    const [connected, setConnected] = useState<boolean>(false)
     const [userTyping, setUserTyping] = useState<string>('')
-
-    const socket = useRef<Socket | null>(null)
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
     const { mutateAsync: leaveGroupAsync } = useMutation(
@@ -51,7 +46,7 @@ const GroupPage = () => {
         }
     )
     const adminMutatePending = useMutation(
-        (object: AddMutateObj) =>
+        (object: AddOrRemoveMember) =>
             postJSON(
                 `/api/groups/${routerQuery.group}/handlependingmembers`,
                 object
@@ -67,37 +62,9 @@ const GroupPage = () => {
         }
     )
 
-    //initialize socket
-    useEffect(() => {
-        //if (!routerQuery.group || group?.data) return
-        socket.current = SocketIOClient(process.env.NEXTAUTH_URL as string, {
-            path: '/api/groups/socket',
-            query: {
-                room: routerQuery.group as string,
-            },
-            closeOnBeforeunload: true,
-        })
-        socket.current.on('connect', () => {
-            console.log('socket connected, id:', socket.current?.id)
-            //join a room
-            socket.current?.emit('create', routerQuery.group)
-            setConnected(true)
-            console.log('joined room')
-            console.log(socket.current)
-        })
-        const currSocket = socket.current
-        currSocket.connect()
-        return () => {
-            currSocket.disconnect()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     //socket events
     useEffect(() => {
         if (socket.current === null) return
-
-        console.log('socket events')
         socket.current.on('active-members', (data) => {
             console.log('active:', data)
             setActiveMembers(data)
@@ -123,7 +90,7 @@ const GroupPage = () => {
             console.log('socket disconnected MessageComponent')
             setConnected(false)
         })
-    }, [activeTab, routerQuery.group])
+    }, [activeTab, routerQuery.group, setConnected, socket])
 
     const handleLeaveGroup = useCallback(() => {
         if (!session) return
@@ -133,7 +100,7 @@ const GroupPage = () => {
     const handlePendingMember = useCallback(
         async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
             if (!group.data) return
-            const addMutateObj: AddMutateObj = {
+            const addMutateObj: AddOrRemoveMember = {
                 groupId: group.data._id,
                 admin: group.data.admin,
                 userToAdd,
@@ -205,7 +172,7 @@ const GroupPage = () => {
             </Head>
             {group.data && (
                 <>
-                    <TopNav
+                    <Stepper
                         groupId={group.data._id?.toString()}
                         groupName={group.data.groupName}
                     />
