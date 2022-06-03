@@ -32,6 +32,23 @@ const CreateGroup = () => {
         }
     )
 
+    const createMutate = useMutation(
+        (object: GroupCreate) => postReactQuery('/api/groups/create', object),
+        {
+            onSuccess: (result: { groupId: string }) => {
+                setCreatedGroupId(result.groupId)
+                setGroupName('')
+                setDescription('')
+                setSchool('')
+                setCourse('')
+                setGoal([])
+                setMaxMembers(12)
+                setIsPrivate(false)
+                setErrorText('')
+            },
+        }
+    )
+
     useEffect(() => {
         if (createdGroupId) {
             console.log('created, group id: ', createdGroupId)
@@ -107,56 +124,35 @@ const CreateGroup = () => {
     //create a group
     const handleSubmitGroup = async (e: MouseEvent) => {
         e.preventDefault()
-        if (isValid()) {
-            if (!session) return
-            //admin is the user who created the group
-            const admin = {
-                userId: session.user.id as string,
-                userName: session.user.name as string,
-            }
-            //properties of the group
-            const GroupToSubmit: GroupCreate = {
-                groupName,
-                description,
-                private: isPrivate,
-                admin,
-                members: [
-                    {
-                        userId: session.user.id as string,
-                        userName: session.user.name as string,
-                        picture: session.user.image as string,
-                    },
-                ],
-                maxMembers,
-                pendingMembers: [],
-                tags: {
-                    school,
-                    course,
-                    goals: goal,
-                },
-            }
-            //send group to server
-            await fetch(`/api/groups/create`, {
-                method: 'POST',
-                body: JSON.stringify(GroupToSubmit),
-            }).then((r) => {
-                r.json().then((res) => {
-                    console.log(res)
-                    //server returns the id of the group, set it to state
-                    setCreatedGroupId(res.groupId)
-                })
-                console.log(r)
-                //reset all states
-                setGroupName('')
-                setDescription('')
-                setSchool('')
-                setCourse('')
-                setGoal([])
-                setMaxMembers(12)
-                setIsPrivate(false)
-                setErrorText('')
-            })
+        if (!isValid()) return
+        if (!session) return
+
+        const admin = {
+            userId: session.user.id as string,
+            userName: session.user.name as string,
         }
+        //properties of the group
+        const GroupToSubmit: GroupCreate = {
+            groupName,
+            description,
+            private: isPrivate,
+            admin,
+            members: [
+                {
+                    userId: session.user.id as string,
+                    userName: session.user.name as string,
+                    picture: session.user.image as string,
+                },
+            ],
+            maxMembers,
+            pendingMembers: [],
+            tags: {
+                school,
+                course,
+                goals: goal,
+            },
+        }
+        createMutate.mutateAsync(GroupToSubmit)
     }
     const TagButton = (
         tag: string,
@@ -315,9 +311,13 @@ const CreateGroup = () => {
                         ))}
                     </div>
                     <FlatButton
-                        className='h-fit'
+                        as='button'
+                        className='h-fit disabled:bg-dark-4 disabled:hover:bg-dark-4'
+                        disabled={
+                            createMutate.isLoading || createMutate.isSuccess
+                        }
                         onClick={(e) => {
-                            handleSubmitGroup(e)
+                            !createMutate.isLoading && handleSubmitGroup(e)
                         }}>
                         Lag gruppe
                     </FlatButton>
