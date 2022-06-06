@@ -274,35 +274,35 @@ export const getServerSideProps = async (
         }
     }
 
-    const queryClient = new QueryClient()
-    await queryClient.prefetchQuery<Group, Error>(
-        ['group', group],
-        async () => {
-            const res = await fetch(`${baseUrl}/api/groups/${group}`)
-            if (!res.ok) {
-                throw new Error(res.statusText)
-            } else {
-                return res.json()
-            }
-        }
-    )
-    await queryClient.prefetchQuery<GroupMessages, Error>(
-        ['messages', group],
-        async () => {
-            const res = await fetch(
-                `${baseUrl}/api/groups/${group}/messages?page=1`
-            )
-            if (!res.ok) {
-                throw new Error(res.statusText)
-            } else {
-                return res.json()
-            }
-        }
-    )
+    // const queryClient = new QueryClient()
+    // await queryClient.prefetchQuery<Group, Error>(
+    //     ['group', group],
+    //     async () => {
+    //         const res = await fetch(`${baseUrl}/api/groups/${group}`)
+    //         if (!res.ok) {
+    //             throw new Error(res.statusText)
+    //         } else {
+    //             return res.json()
+    //         }
+    //     }
+    // )
+    // await queryClient.prefetchQuery<GroupMessages, Error>(
+    //     ['messages', group],
+    //     async () => {
+    //         const res = await fetch(
+    //             `${baseUrl}/api/groups/${group}/messages?page=1`
+    //         )
+    //         if (!res.ok) {
+    //             throw new Error(res.statusText)
+    //         } else {
+    //             return res.json()
+    //         }
+    //     }
+    // )
 
     return {
         props: {
-            dehydratedState: dehydrate(queryClient),
+            // dehydratedState: dehydrate(queryClient),
             session,
         },
     }
