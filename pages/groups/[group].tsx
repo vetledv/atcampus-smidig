@@ -264,7 +264,6 @@ export const getServerSideProps = async (
 ) => {
     const { group } = context.query
     const session = await getSession(context)
-
     if (!session) {
         return {
             redirect: {
@@ -274,9 +273,7 @@ export const getServerSideProps = async (
         }
     }
 
-    const queryClient = new QueryClient()
-    await queryClient.removeQueries('messages')
-
+    // const queryClient = new QueryClient()
     // await queryClient.prefetchQuery<Group, Error>(
     //     ['group', group],
     //     async () => {

@@ -1,19 +1,19 @@
-import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import FlatButton from '@/components/general/FlatButton'
 import { postJSON } from '@/hooks/useGroups'
-import MessageItem from './MessageItem'
+import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import { useSession } from 'next-auth/react'
+import type {
+    Dispatch,
+    KeyboardEvent,
+    MutableRefObject,
+    SetStateAction,
+} from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useInfiniteQuery } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import type { Group, Message, SendMessage } from 'types/groups'
-import type {
-    Dispatch,
-    SetStateAction,
-    KeyboardEvent,
-    MutableRefObject,
-} from 'react'
+import MessageItem from './MessageItem'
 
 interface ByDayMessage {
     day: Date
@@ -41,7 +41,6 @@ const Chat = ({
     setUserTyping: Dispatch<SetStateAction<string>>
 }) => {
     const session = useSession()
-
     const fetchData = async ({ pageParam = 1 }) => {
         const response = await fetch(
             `/api/groups/${group._id}/messages?page=` + pageParam
@@ -49,25 +48,43 @@ const Chat = ({
         const data = await response.json()
         return data
     }
-    const query = useInfiniteQuery<InfMessages, Error>('messages', fetchData, {
-        getNextPageParam: (lastPage, pages) => lastPage.next,
-    })
 
-    const { contRef } = useRetainScrollPos([query?.data?.pages?.length])
+    const query = useInfiniteQuery<InfMessages, Error>(
+        ['messages', group._id],
+        fetchData,
+        {
+            getNextPageParam: (lastPage, pages) => lastPage.next,
+            onSettled: (data) => {
+                // scroll to bottom if user sent message and has not scrolled more than 300px
+                console.log(
+                    contRef.current.scrollHeight -
+                        contRef.current.scrollTop -
+                        contRef.current.clientHeight
+                )
+                if (
+                    contRef.current &&
+                    contRef.current.scrollHeight -
+                        contRef.current.scrollTop -
+                        contRef.current.clientHeight <
+                        300
+                ) {
+                    contRef.current.scrollTop = contRef.current.scrollHeight
+                }
+                //scroll to bottom on first load
+                if (!query.isFetchingNextPage && data.pages.length <= 1) {
+                    if (contRef.current) {
+                        contRef.current.scrollTop = contRef.current.scrollHeight
+                    }
+                }
+            },
+        }
+    )
+
+    const { contRef } = useRetainScrollPos([query?.data?.pages])
     const [msg, setMsg] = useState<string>('')
 
     const typingTimeout: timeoutRef = useRef(null)
     const stoppedTypeTimeout: timeoutRef = useRef(null)
-
-    const scrollToBottom = useCallback(() => {
-        if (contRef.current) {
-            contRef.current.scrollTop = contRef.current.scrollHeight
-        }
-    }, [contRef])
-
-    const refetch = useCallback(() => {
-        query.refetch()
-    }, [query])
 
     //fetch more when scrolled to top
     useEffect(() => {
@@ -89,36 +106,19 @@ const Chat = ({
     //socket events
     useEffect(() => {
         if (!socket.current) return
-        socket.current.on(
-            `message ${group._id.toString()}`,
-            (data: Message) => {
-                setUserTyping('')
-                refetch()
-                const userPosInChat = contRef.current
-                    ? contRef.current.scrollHeight -
-                      contRef.current.scrollTop -
-                      contRef.current.clientHeight
-                    : 0
-                // scroll to bottom if user sent message and has not scrolled more than 300px
-                if (userPosInChat < 300 && contRef.current) {
-                    contRef.current.scrollTop = contRef.current.scrollHeight
-                }
-            }
-        )
+        socket.current.on(`message ${group._id}`, (data) => {
+            setUserTyping('')
+            query.refetch()
+        })
         socket.current.on(`typing`, (data, user: string) => {
             console.log('typing:', data, 'user: ', user)
             setUserTyping(user)
         })
         socket.current.on(`stopped-typing`, (data, user) => {
-            console.log(
-                'stopped typing messagecomponent:',
-                data,
-                'user: ',
-                user
-            )
+            console.log('stopped typing Chat.tsx, user: ', user)
             setUserTyping('')
         })
-    }, [contRef, group, refetch, session.data.user.id, setUserTyping, socket])
+    }, [contRef, group, query, session.data.user.id, setUserTyping, socket])
 
     const handleUserTyping = useCallback(
         (e: KeyboardEvent<HTMLInputElement>) => {
@@ -126,11 +126,6 @@ const Chat = ({
             if (
                 e.key === 'Enter' ||
                 e.key === 'Backspace' ||
-                e.key === 'Delete' ||
-                e.key === 'ArrowUp' ||
-                e.key === 'ArrowDown' ||
-                e.key === 'ArrowLeft' ||
-                e.key === 'ArrowRight' ||
                 e.key === 'Tab' ||
                 e.key === 'Control' ||
                 e.key === 'Shift' ||
@@ -138,7 +133,6 @@ const Chat = ({
             ) {
                 return
             }
-
             if (typingTimeout.current) {
                 return
             } else {
@@ -151,7 +145,6 @@ const Chat = ({
                     typingTimeout.current = null
                 }, 1000)
             }
-
             stoppedTypeTimeout.current &&
                 clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
             stoppedTypeTimeout.current = setTimeout(() => {
@@ -285,13 +278,6 @@ const Chat = ({
             )
         })
     }, [group.members, messagesByDay, shouldShowName])
-
-    //scroll to bottom the first time the component is rendered
-    useEffect(() => {
-        if (messagesByDay.length <= 1) {
-            scrollToBottom()
-        }
-    }, [messagesByDay.length, scrollToBottom])
 
     if (query.isError) {
         return <div>Error: {query.error.message}</div>
