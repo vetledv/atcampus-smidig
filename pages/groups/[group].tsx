@@ -274,7 +274,8 @@ export const getServerSideProps = async (
         }
     }
 
-    // const queryClient = new QueryClient()
+    const queryClient = new QueryClient()
+    await queryClient.invalidateQueries('messages')
     // await queryClient.prefetchQuery<Group, Error>(
     //     ['group', group],
     //     async () => {
