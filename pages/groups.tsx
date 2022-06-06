@@ -158,7 +158,7 @@ export async function getServerSideProps(context: GetSessionParams) {
             },
         }
     }
-    const queryClient = new QueryClient()
+    // const queryClient = new QueryClient()
     // await queryClient.prefetchQuery<PaginatedGroups, Error>(
     //     ['groups', 1],
     //     async () => {
@@ -168,7 +168,7 @@ export async function getServerSideProps(context: GetSessionParams) {
     // )
     return {
         props: {
-            dehydratedState: dehydrate(queryClient),
+            // dehydratedState: dehydrate(queryClient),
             session,
         },
     }
