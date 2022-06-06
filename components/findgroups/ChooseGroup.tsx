@@ -66,7 +66,7 @@ const ChooseGroup = ({
     const isPending = (group: Group) => {
         if (group.pendingMembers) {
             return group.pendingMembers.some(
-                (member) => member.userId.toString() === session.data?.user.id
+                (member) => member?.userId === session.data?.user.id
             )
         }
         return false
