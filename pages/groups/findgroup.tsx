@@ -72,7 +72,10 @@ const FindGroupPage = () => {
 
     const handleStepback = () => {
         setErrorText('')
-        setStep(step - 1 || 0)
+        if (step != 0) {
+            //dont step back when already at step 0
+            setStep(step - 1 || 0)
+        }
     }
 
     if (search.isError) {

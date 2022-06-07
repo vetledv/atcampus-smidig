@@ -267,7 +267,7 @@ const CreateGroup = () => {
                         </option>
                         {schoolTags.map((tag) => selectOption(tag))}
                     </select>
-                    <h1>Populære instutisjoner</h1>
+                    <h1>Populære institusjoner</h1>
                     <div className='flex lg:flex-row'>
                         {schoolTags.map((tag) => (
                             <div className='mr-2 mb-2' key={tag}>

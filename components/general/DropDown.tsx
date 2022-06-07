@@ -25,7 +25,7 @@ function DropDown({
             <div tabIndex={0} onClick={() => toggle()}>
                 <div className='flex justify-between px-6 cursor-pointer items-center'>
                     <div className='font-semibold text-lg text-purple-1 w-fit '>
-                        {dropDownTitle}
+                        {dropDownTitle || 'Velg Skole'}
                     </div>
                     <ChevronDownIcon className='h-11 w-11 fill-gray-800' />
                 </div>
