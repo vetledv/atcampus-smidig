@@ -248,14 +248,16 @@ const Chat = ({
                     {day.messages.map((message: Message, j) => (
                         <div key={j}>
                             {!shouldShowName(day.messages, j) ? (
-                                <div className='group flex gap-2 items-center hover:bg-gray-100'>
-                                    <div className='w-14 text-white text-center text-xs group-hover:text-dark-3'>
+                                <div className='group relative flex gap-2 items-center hover:bg-gray-100'>
+                                    <div className='w-14 min-w-[3.5rem] text-white text-center text-xs group-hover:text-dark-3'>
                                         {new Date(message.timestamp)
                                             .toLocaleTimeString()
                                             .slice(0, -3)}
                                     </div>
-                                    <div className='flex flex-col'>
-                                        {message.message}
+                                    <div className='flex flex-col bg-red-200 w-10/12 break-words'>
+                                        <p className='break-words'>
+                                            {message.message}
+                                        </p>
                                     </div>
                                 </div>
                             ) : (
