@@ -4,20 +4,14 @@ import Stepper from '@/components/groups/Stepper'
 import Tabs from '@/components/groups/Tabs'
 import { postJSON, useGroup } from '@/hooks/useGroups'
 import useGroupSocket from '@/hooks/useGroupSocket'
-import { baseUrl } from '@/lib/constants'
+import type { AddOrRemoveMember, Member } from '@/types/groups'
+import type { GetSessionParams } from 'next-auth/react'
 import { getSession, useSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
-import { dehydrate, QueryClient, useMutation } from 'react-query'
-import type { GetSessionParams } from 'next-auth/react'
-import type {
-    AddOrRemoveMember,
-    Group,
-    GroupMessages,
-    Member,
-} from '@/types/groups'
+import { useEffect, useState } from 'react'
+import { useMutation } from 'react-query'
 const GroupCalendar = dynamic(() => import('../../components/groups/Calendar'))
 const Chat = dynamic(() => import('../../components/groups/chat/Chat'))
 const MemberItem = dynamic(() => import('../../components/groups/MemberItem'))
@@ -27,17 +21,13 @@ const GroupPage = () => {
     const router = useRouter()
     const routerQuery = router.query
     const group = useGroup(routerQuery.group as string)
-    const { socket, connected, setConnected } = useGroupSocket(
-        [routerQuery.group],
-        routerQuery.group as string
-    )
 
     const [activeMembers, setActiveMembers] = useState<number>(0)
     const [activeTab, setActiveTab] = useState(0)
     const [userTyping, setUserTyping] = useState<string>('')
     const groupNavTabs = ['Generelt', 'Medlemmer', 'Chat', 'Kalender']
 
-    const { mutateAsync: leaveGroupAsync } = useMutation(
+    const { mutate: leaveGroup } = useMutation(
         (userId: string) =>
             postJSON(`/api/groups/${routerQuery.group}/leave`, userId),
         {
@@ -46,6 +36,7 @@ const GroupPage = () => {
             },
         }
     )
+
     const adminMutatePending = useMutation(
         (object: AddOrRemoveMember) =>
             postJSON(
@@ -54,33 +45,25 @@ const GroupPage = () => {
             ),
         {
             onSuccess: () => {
-                console.log('success')
                 group.refetch()
             },
-            onError: (err) => {
-                console.log(err)
-            },
         }
+    )
+
+    //socket init
+    const { socket, connected, setConnected } = useGroupSocket(
+        [routerQuery.group],
+        routerQuery.group as string
     )
 
     //socket events
     useEffect(() => {
         if (socket.current === null) return
-        socket.current.on('active-members', (data) => {
-            console.log('active:', data)
+        socket.current.on('active-members', (data: number) => {
             setActiveMembers(data)
         })
-        socket.current.on(
-            `message ${routerQuery.group as string}`,
-            (message) => {
-                console.log('message received:', message)
-            }
-        )
-        socket.current.on(`typing`, (data, user: string) => {
-            console.log('typing group.tsx:', data, 'user: ', user)
-        })
-        socket.current.on(`stopped-typing`, (data, user) => {
-            console.log('stopped typing group.tsx:', data, 'user: ', user)
+        socket.current.on(`stopped-typing`, () => {
+            // clear user typing if we're not on the chat tab
             if (activeTab !== 2) {
                 setUserTyping('')
             }
@@ -88,36 +71,35 @@ const GroupPage = () => {
         socket.current.on('disconnect', () => {
             socket.current?.emit('leave', routerQuery.group)
             socket.current?.emit('active', routerQuery.group)
-            console.log('socket disconnected MessageComponent')
             setConnected(false)
         })
     }, [activeTab, routerQuery.group, setConnected, socket])
 
-    const handleLeaveGroup = useCallback(() => {
+    const handleLeaveGroup = () => {
         if (!session) return
-        leaveGroupAsync(session.user.id as string)
-    }, [leaveGroupAsync, session])
+        leaveGroup(session.user.id as string)
+    }
 
-    const handlePendingMember = useCallback(
-        async (userToAdd: Member, action: 'ADD' | 'REMOVE') => {
-            if (!group.data) return
-            const addMutateObj: AddOrRemoveMember = {
-                groupId: group.data._id,
-                admin: group.data.admin,
-                userToAdd,
-                action,
-            }
-            adminMutatePending.mutateAsync(addMutateObj)
-        },
-        [adminMutatePending, group.data]
-    )
+    const handlePendingMember = async (
+        userToAdd: Member,
+        action: 'ADD' | 'REMOVE'
+    ) => {
+        if (!group.data) return
+        const addMutateObj: AddOrRemoveMember = {
+            groupId: group.data._id,
+            admin: group.data.admin,
+            userToAdd,
+            action,
+        }
+        adminMutatePending.mutate(addMutateObj)
+    }
 
-    const isAdmin = useCallback(() => {
+    const isAdmin = () => {
         if (!session?.user || !group.data) return false
         return session.user?.id === group.data?.admin?.userId?.toString()
-    }, [group, session])
+    }
 
-    const renderAdminPanel = useCallback(() => {
+    const renderAdminPanel = () => {
         if (!group?.data) return null
         if (!isAdmin()) return null
         return (
@@ -153,7 +135,7 @@ const GroupPage = () => {
                 )}
             </div>
         )
-    }, [adminMutatePending.isLoading, group.data, handlePendingMember, isAdmin])
+    }
 
     if (group.isLoading) {
         return <div>Loading...</div>
@@ -259,10 +241,7 @@ const GroupPage = () => {
     )
 }
 
-export const getServerSideProps = async (
-    context: GetSessionParams & { query: { group: string } }
-) => {
-    const { group } = context.query
+export const getServerSideProps = async (context: GetSessionParams) => {
     const session = await getSession(context)
     if (!session) {
         return {
@@ -272,36 +251,8 @@ export const getServerSideProps = async (
             },
         }
     }
-
-    // const queryClient = new QueryClient()
-    // await queryClient.prefetchQuery<Group, Error>(
-    //     ['group', group],
-    //     async () => {
-    //         const res = await fetch(`${baseUrl}/api/groups/${group}`)
-    //         if (!res.ok) {
-    //             throw new Error(res.statusText)
-    //         } else {
-    //             return res.json()
-    //         }
-    //     }
-    // )
-    // await queryClient.prefetchQuery<GroupMessages, Error>(
-    //     ['messages', group],
-    //     async () => {
-    //         const res = await fetch(
-    //             `${baseUrl}/api/groups/${group}/messages?page=1`
-    //         )
-    //         if (!res.ok) {
-    //             throw new Error(res.statusText)
-    //         } else {
-    //             return res.json()
-    //         }
-    //     }
-    // )
-
     return {
         props: {
-            // dehydratedState: dehydrate(queryClient),
             session,
         },
     }

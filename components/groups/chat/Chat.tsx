@@ -1,5 +1,5 @@
 import FlatButton from '@/components/general/FlatButton'
-import { postJSON } from '@/hooks/useGroups'
+import { postJSON, postReactQuery } from '@/hooks/useGroups'
 import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import { useSession } from 'next-auth/react'
 import type {
@@ -9,7 +9,7 @@ import type {
     SetStateAction,
 } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useInfiniteQuery } from 'react-query'
+import { useInfiniteQuery, useMutation } from 'react-query'
 import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import type { Group, Message, SendMessage } from 'types/groups'
@@ -56,11 +56,6 @@ const Chat = ({
             getNextPageParam: (lastPage, pages) => lastPage.next,
             onSettled: (data) => {
                 // scroll to bottom if user sent message and has not scrolled more than 300px
-                console.log(
-                    contRef.current.scrollHeight -
-                        contRef.current.scrollTop -
-                        contRef.current.clientHeight
-                )
                 if (
                     contRef.current &&
                     contRef.current.scrollHeight -
@@ -80,18 +75,22 @@ const Chat = ({
         }
     )
 
+    const { mutate: mutateMsg } = useMutation((object: SendMessage) =>
+        postReactQuery(`/api/groups/${group._id.toString()}/messages`, object)
+    )
+
     const { contRef } = useRetainScrollPos([query?.data?.pages])
     const [msg, setMsg] = useState<string>('')
 
     const typingTimeout: timeoutRef = useRef(null)
     const stoppedTypeTimeout: timeoutRef = useRef(null)
 
-    //fetch more when scrolled to top
+    //fetch more when scrolling up
     useEffect(() => {
         if (contRef.current) {
             const messageCont = contRef.current
             const onScroll = () => {
-                if (messageCont.scrollTop === 0 && query.hasNextPage) {
+                if (messageCont.scrollTop < 500 && query.hasNextPage) {
                     query.fetchNextPage()
                 }
             }
@@ -111,83 +110,73 @@ const Chat = ({
             query.refetch()
         })
         socket.current.on(`typing`, (data, user: string) => {
-            console.log('typing:', data, 'user: ', user)
             setUserTyping(user)
         })
         socket.current.on(`stopped-typing`, (data, user) => {
-            console.log('stopped typing Chat.tsx, user: ', user)
             setUserTyping('')
         })
     }, [contRef, group, query, session.data.user.id, setUserTyping, socket])
 
-    const handleUserTyping = useCallback(
-        (e: KeyboardEvent<HTMLInputElement>) => {
-            if (!socket.current) return
-            if (
-                e.key === 'Enter' ||
-                e.key === 'Backspace' ||
-                e.key === 'Tab' ||
-                e.key === 'Control' ||
-                e.key === 'Shift' ||
-                e.key === 'Alt'
-            ) {
-                return
-            }
-            if (typingTimeout.current) {
-                return
-            } else {
-                typingTimeout.current = setTimeout(() => {
-                    socket.current?.emit(
-                        `typing`,
-                        group._id.toString(),
-                        session.data?.user?.name
-                    )
-                    typingTimeout.current = null
-                }, 1000)
-            }
-            stoppedTypeTimeout.current &&
-                clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
-            stoppedTypeTimeout.current = setTimeout(() => {
+    //emit typing event with timeouts
+    const handleUserTyping = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (!socket.current) return
+        if (
+            e.key === 'Enter' ||
+            e.key === 'Backspace' ||
+            e.key === 'Tab' ||
+            e.key === 'Control' ||
+            e.key === 'Shift' ||
+            e.key === 'Alt'
+        ) {
+            return
+        }
+        if (typingTimeout.current) {
+            return
+        } else {
+            typingTimeout.current = setTimeout(() => {
                 socket.current?.emit(
-                    `stopped-typing`,
+                    `typing`,
                     group._id.toString(),
                     session.data?.user?.name
                 )
-            }, 4000)
-        },
-        [group, session.data?.user.name, socket]
-    )
+                typingTimeout.current = null
+            }, 1000)
+        }
+        stoppedTypeTimeout.current &&
+            clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
+        stoppedTypeTimeout.current = setTimeout(() => {
+            socket.current?.emit(
+                `stopped-typing`,
+                group._id.toString(),
+                session.data?.user?.name
+            )
+        }, 4000)
+    }
 
-    const sendMessage = useCallback(
-        (message: string) => {
-            if (session.status === 'authenticated' && msg.length > 0) {
-                if (session.data.user === null || undefined) return
-                const msgData: SendMessage = {
-                    userId: session.data.user.id as string,
-                    userName: session.data.user.name as string,
-                    message: message,
-                    groupName: group.groupName,
-                    groupId: group._id,
-                }
-                postJSON(
-                    `/api/groups/${group._id.toString()}/messages`,
-                    msgData
-                )
-                socket.current?.emit(`message ${group._id.toString()}`, msgData)
-                setMsg('')
-                if (stoppedTypeTimeout.current) {
-                    console.log('clearing timeout')
-                    clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
-                    socket.current?.emit(
-                        `stopped-typing ${group._id.toString()}`,
-                        group._id.toString(),
-                        session?.data.user?.name
-                    )
-                }
-            }
-        },
-        [group, msg.length, session.data.user, session.status, socket]
-    )
+    const sendMessage = (message: string) => {
+        if (session.status !== 'authenticated' && msg.length === 0) return
+        if (session.data.user === null || undefined) return
+
+        const msgData: SendMessage = {
+            userId: session.data.user.id,
+            userName: session.data.user.name,
+            message: message,
+            groupName: group.groupName,
+            groupId: group._id,
+        }
+        mutateMsg(msgData)
+        socket.current?.emit(`message ${group._id.toString()}`, msgData)
+        setMsg('')
+        //emit stopped typing event if user was typing before sending message
+        if (stoppedTypeTimeout.current) {
+            clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
+            socket.current?.emit(
+                `stopped-typing ${group._id.toString()}`,
+                group._id.toString(),
+                session?.data.user?.name
+            )
+        }
+    }
 
     //filter messages by the day they were sent
     const messagesByDay = useMemo(() => {
@@ -282,6 +271,7 @@ const Chat = ({
     if (query.isError) {
         return <div>Error: {query.error.message}</div>
     }
+
     return (
         <div className='relative flex flex-col gap-2'>
             <div

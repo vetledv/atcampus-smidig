@@ -92,19 +92,27 @@ const GroupHeader = ({
         <div className={'h-48 min-w-96 bg-dark-1 text-white'}>
             <div className='flex justify-between h-full'>
                 <div className='flex flex-col justify-center px-6'>
-                    <div className={'text-2xl font-bold pb-3'}>{groupName}</div>
-                    {activeMembers > 0 && (
-                        <div className='flex flex-row items-center'>
-                            <div>Medlemmer Aktive: {activeMembers} </div>{' '}
-                            {<div className='text-xs'>🟢</div>}
-                        </div>
-                    )}
-
-                    <GroupMembers
-                        members={group?.members.length}
-                        totalMembers={group?.maxMembers}
-                        color={'white'}
-                    />
+                    <div className='flex gap-4 items-center'>
+                        <div className={'text-2xl font-bold'}>{groupName}</div>
+                        {group.private ? (
+                            <div className='bg-dark-4 px-3 py-0.5 rounded-full'>
+                                Privat
+                            </div>
+                        ) : null}
+                    </div>
+                    <div className='flex gap-4'>
+                        <GroupMembers
+                            members={group?.members.length}
+                            totalMembers={group?.maxMembers}
+                            color={'white'}
+                        />
+                        {activeMembers > 0 && (
+                            <div className='flex flex-row items-center'>
+                                <div className='text-xs'>🟢</div>
+                                <div>{activeMembers} aktive</div>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div>
                     {isInSettings ? (

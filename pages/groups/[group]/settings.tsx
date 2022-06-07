@@ -27,61 +27,58 @@ const Settings = () => {
 
     const [showModal, setShowModal] = useShowModal()
 
+    // states for updating group
     const [newGroupName, setNewGroupName] = useState('')
     const [newGroupDescription, setNewGroupDescription] = useState('')
     const [newMaxMembers, setNewMaxMembers] = useState(0)
 
+    // confirm states
     const [confirmDeleteText, setConfirmDeleteText] = useState('')
     const [confirmDelete, setConfirmDelete] = useState(false) // true when text is equal to group name
     const [successMessage, setSuccessMessage] = useState('')
 
+    //upload group image states
     const [image, setImage] = useState<string | null>(null)
     const [notImplementedError, setNotImplementedError] = useState<boolean>()
 
     const putFetch = async (object: MutateOptions) => {
-        await fetch(`/api/groups/${routerQuery.group}`, {
+        const res = await fetch(`/api/groups/${routerQuery.group}`, {
             method: 'PUT',
             body: JSON.stringify(object),
         })
-            .then((res) => {
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        if (!res.ok) {
+            throw new Error(res.statusText)
+        }
+        return res.json()
     }
     const deleteFetch = async () => {
-        await fetch(`/api/groups/${routerQuery.group}`, {
+        const res = await fetch(`/api/groups/${routerQuery.group}`, {
             method: 'DELETE',
         })
-            .then((res) => {
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        if (!res.ok) {
+            throw new Error(res.statusText)
+        }
+        return res.json()
     }
 
-    const changeGroupMutate = useMutation(
-        (object: MutateOptions) => putFetch(object),
-        {
-            onSuccess: (result) => {
-                group.refetch()
-                setNewGroupName('')
-                setNewGroupDescription('')
-                setNewMaxMembers(group.data!.maxMembers)
-                setSuccessMessage('Gruppen ble endret!')
-            },
-        }
-    )
+    const editGroup = useMutation((object: MutateOptions) => putFetch(object), {
+        onSuccess: (result) => {
+            group.refetch()
+            setNewGroupName('')
+            setNewGroupDescription('')
+            setNewMaxMembers(group.data!.maxMembers)
+            setSuccessMessage('Gruppen ble endret!')
+        },
+    })
 
-    const deleteGroupMutate = useMutation(() => deleteFetch(), {
+    const deleteGroup = useMutation(() => deleteFetch(), {
         onSuccess: (result) => {
             console.log(result)
             router.push('/groups')
         },
     })
 
+    // update confirm delete text
     useEffect(() => {
         if (!showModal) return
         if (confirmDeleteText === group.data?.groupName) {
@@ -102,7 +99,8 @@ const Settings = () => {
     }
 
     const handleChangeGroup = () => {
-        const mutateObj: any = {}
+        const mutateObj: MutateOptions = {}
+        // check if any of the fields has been changed, add to mutateObj if so
         if (newGroupName !== '') {
             mutateObj.groupName = newGroupName
         }
@@ -112,13 +110,15 @@ const Settings = () => {
         if (newMaxMembers !== group.data?.maxMembers) {
             mutateObj.maxMembers = newMaxMembers
         }
+        // cancel if no changes
         if (Object.keys(mutateObj).length === 0) {
             setShowModal(false)
             return
         } else {
-            changeGroupMutate.mutateAsync(mutateObj as MutateOptions)
+            editGroup.mutateAsync(mutateObj)
         }
     }
+
     const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const file = e.target.files[0]
@@ -132,7 +132,7 @@ const Settings = () => {
         }
     }
 
-    const isSaveButtonDisabled = useCallback(() => {
+    const isSaveButtonDisabled = () => {
         if (
             newGroupName === '' &&
             newGroupDescription === '' &&
@@ -141,7 +141,7 @@ const Settings = () => {
             return true
         }
         return false
-    }, [newGroupName, newGroupDescription, newMaxMembers])
+    }
 
     const renderDeleteModal = () => {
         if (!group.data) return null
@@ -199,7 +199,7 @@ const Settings = () => {
                                     <button
                                         onClick={() => {
                                             setShowModal(false)
-                                            deleteGroupMutate.mutateAsync()
+                                            deleteGroup.mutateAsync()
                                         }}
                                         disabled={
                                             confirmDeleteText !==
