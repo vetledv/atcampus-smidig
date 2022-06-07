@@ -254,7 +254,7 @@ const Chat = ({
                                             .toLocaleTimeString()
                                             .slice(0, -3)}
                                     </div>
-                                    <div className='flex flex-col bg-red-200 w-10/12 break-words'>
+                                    <div className='flex flex-col w-10/12 break-words'>
                                         <p className='break-words'>
                                             {message.message}
                                         </p>

@@ -37,7 +37,7 @@ const MessageItem = ({
                         </div>
                     )}
                 </div>
-                <div className='flex flex-col w-10/12 bg-red-500'>
+                <div className='flex flex-col w-10/12'>
                     <div className='flex flex-row gap-2 items-baseline'>
                         {groupMembers.filter(
                             (m) => m.userId === message.from.userId
