@@ -1,5 +1,5 @@
 import FlatButton from '@/components/general/FlatButton'
-import { postJSON, postReactQuery } from '@/hooks/useGroups'
+import { postReactQuery } from '@/hooks/useGroups'
 import useRetainScrollPos from '@/hooks/useRetainScrollPos'
 import { useSession } from 'next-auth/react'
 import type {
@@ -87,18 +87,17 @@ const Chat = ({
 
     //fetch more when scrolling up
     useEffect(() => {
-        if (contRef.current) {
-            const messageCont = contRef.current
-            const onScroll = () => {
-                if (messageCont.scrollTop === 0 && query.hasNextPage) {
-                    query.fetchNextPage()
-                }
+        if (!contRef.current) return
+        const messageCont = contRef.current
+        const onScroll = () => {
+            if (messageCont.scrollTop === 0 && query.hasNextPage) {
+                query.fetchNextPage()
             }
-            messageCont.addEventListener('scroll', onScroll)
+        }
+        messageCont.addEventListener('scroll', onScroll)
 
-            return () => {
-                messageCont.removeEventListener('scroll', onScroll)
-            }
+        return () => {
+            messageCont.removeEventListener('scroll', onScroll)
         }
     }, [contRef, query, query.hasNextPage])
 
@@ -170,6 +169,10 @@ const Chat = ({
         //emit stopped typing event if user was typing before sending message
         if (stoppedTypeTimeout.current) {
             clearTimeout(stoppedTypeTimeout.current as NodeJS.Timeout)
+            if (typingTimeout.current) {
+                clearTimeout(typingTimeout.current as NodeJS.Timeout)
+                typingTimeout.current = null
+            }
             socket.current?.emit(
                 `stopped-typing ${group._id.toString()}`,
                 group._id.toString(),
