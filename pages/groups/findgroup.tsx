@@ -32,9 +32,6 @@ const FindGroupPage = () => {
             enabled: step === 3,
         }
     )
-    const refetch = useCallback(() => {
-        search.refetch()
-    }, [search])
 
     const hasNextPage = useMemo(() => {
         if (!search.data) {
@@ -125,7 +122,7 @@ const FindGroupPage = () => {
                                         <>
                                             <ChooseGroup
                                                 search={search.data}
-                                                refetch={refetch}
+                                                refetch={search.refetch}
                                                 selectedGoals={goalsTags}
                                             />
                                             <RenderPaginationNav
