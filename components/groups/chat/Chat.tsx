@@ -90,7 +90,7 @@ const Chat = ({
         if (contRef.current) {
             const messageCont = contRef.current
             const onScroll = () => {
-                if (messageCont.scrollTop < 500 && query.hasNextPage) {
+                if (messageCont.scrollTop === 0 && query.hasNextPage) {
                     query.fetchNextPage()
                 }
             }
