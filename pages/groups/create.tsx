@@ -84,7 +84,11 @@ const CreateGroup = () => {
     const selectMembersAmount = () => {
         let maxMem: JSX.Element[] = []
         for (let i = 3; i < 12; i++) {
-            maxMem.push(<option key={i} label={`${i + 1}`} value={i + 1} />)
+            maxMem.push(
+                <option key={i} value={i + 1}>
+                    {i + 1}
+                </option>
+            )
         }
         return maxMem
     }
